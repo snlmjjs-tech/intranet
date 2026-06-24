@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intranet Didáctica | Teacher Seba - English Workshop</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Playpen Sans (manuscrita) y Plus Jakarta Sans (UI) -->
     <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti para celebraciones -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -38,12 +34,10 @@
     </script>
 
     <style>
-        /* Estilos Scrapbook inspirados en image_ea1b61.jpg */
         .paper-dashed-border {
             border: 2px dashed #a89682;
         }
         
-        /* Cintas Adhesivas de Notas (Tapes) */
         .sticky-tape {
             position: relative;
         }
@@ -62,14 +56,12 @@
             z-index: 10;
         }
 
-        /* Efecto espiral de cuaderno */
         .notebook-spiral {
             background-image: radial-gradient(#2e3e4f 30%, transparent 35%);
             background-size: 24px 24px;
             background-position: 0 0;
         }
 
-        /* Animación de flotar (Mascota) */
         @keyframes float-avatar {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-10px) rotate(1.5deg); }
@@ -78,7 +70,6 @@
             animation: float-avatar 5s ease-in-out infinite;
         }
 
-        /* Scroll personalizado estilo madera clara */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -97,7 +88,6 @@
 </head>
 <body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
 
-    <!-- Custom Notification Toast -->
     <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-2xl border-2 border-brandBrown flex items-center space-x-3 max-w-sm">
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
@@ -106,12 +96,9 @@
         </div>
     </div>
 
-    <!-- VIEW: LOGIN (Inspirada en el costado izquierdo de image_ea1b61.jpg) -->
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
         
-        <!-- Left Side: Interactive Mascot & Brand Logo -->
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
-            <!-- US Shield Header Style Logo -->
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border-2 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
                 <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-3xl border-4 border-brandBrown shadow">
                     🇺🇸
@@ -123,14 +110,11 @@
                 </div>
             </div>
 
-            <!-- The Big Mascot Avatar (Glasses, Suit, Peace Sign - as in image_ea1b61.jpg) -->
             <div class="relative animate-mascot mt-4">
-                <!-- Dialogue bubble -->
                 <div class="absolute -top-12 -left-8 bg-white text-brandDarkBlue border-2 border-brandDarkBlue rounded-2xl p-3 shadow-md font-hand font-bold text-xs max-w-[180px] text-center rotate-[-3deg]">
                     "Welcome to my page! 👋 ¡Listos para aprender inglés hoy?"
                 </div>
                 
-                <!-- Stylized CSS Avatar representing Teacher Seba -->
                 <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue shadow-2xl relative flex items-center justify-center overflow-hidden">
                     <div class="text-center">
                         <span class="text-8xl block select-none">👨‍🏫</span>
@@ -140,14 +124,12 @@
                     </div>
                 </div>
                 
-                <!-- Floating design elements around mascot -->
                 <div class="absolute bottom-2 -right-4 bg-brandStickyYellow text-amber-950 font-black text-xs px-3 py-1.5 rounded-lg border border-amber-500 rotate-12 shadow">
                     🕶️ Stylish Coach
                 </div>
             </div>
         </div>
 
-        <!-- Right Side: Scrapbook Styled PIN Card -->
         <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f] relative">
             <div class="absolute top-4 right-4 bg-white/60 border border-brandDarkBlue/20 rounded-full w-8 h-8 flex items-center justify-center text-xs">
                 📌
@@ -158,7 +140,6 @@
             
             <div class="h-1 bg-brandDarkBlue/10 w-24 my-6 rounded"></div>
 
-            <!-- Pin input -->
             <div class="space-y-6">
                 <div>
                     <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
@@ -170,7 +151,6 @@
                            onkeydown="if(event.key==='Enter') attemptLogin()">
                 </div>
 
-                <!-- Custom Inline Error Alert -->
                 <div id="loginErrorMsg" class="hidden bg-rose-50 border-2 border-rose-400 text-rose-800 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center space-x-2">
                     <i class="fas fa-exclamation-triangle text-rose-600 text-lg"></i>
                     <span id="loginErrorText">Código no encontrado. Intenta con tu PIN oficial.</span>
@@ -189,12 +169,9 @@
         </div>
     </div>
 
-    <!-- VIEW: STUDENT PORTAL DASHBOARD (Hidden by default) -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
-        <!-- Top Scrapbook Header Navigation -->
         <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-                <!-- Left brand info -->
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border-2 border-brandBrown">
                         👨‍🏫
@@ -205,7 +182,6 @@
                     </div>
                 </div>
 
-                <!-- Active Student Profile Info -->
                 <div class="flex items-center flex-wrap gap-3">
                     <div class="bg-white border-2 border-brandDarkBlue rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
                         <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
@@ -221,13 +197,9 @@
             </div>
         </header>
 
-        <!-- Main Corkboard Content Canvas -->
         <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
             
-            <!-- DIDACTIC CONNECTIVITY HUB: Google Meet & Classroom Split Hero -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
-                <!-- Card 1: Ingresar a la clase Online -->
                 <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBlue/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -249,7 +221,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Google Classroom Materials -->
                 <div class="bg-[#efe5db] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBrown/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -270,16 +241,11 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- MAIN GRID SYSTEM (2 Columns for visual structure) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE (JOTFORM REDIRECT) -->
                 <div class="lg:col-span-1 space-y-8">
-                    
-                    <!-- Section: Tips estilo Scrapbook de image_ea1b61.jpg -->
                     <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
                         <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
                             <h3 class="text-lg font-black text-brandDarkBlue flex items-center">
@@ -288,13 +254,11 @@
                             <span class="text-[10px] uppercase font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">New</span>
                         </div>
 
-                        <!-- Sticky Notes Stack -->
                         <div class="space-y-8 pt-2">
-                            <!-- Dynamic Daily Sticky Note -->
                             <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-lg rotate-1 sticky-tape transform transition hover:rotate-0 duration-300 border border-amber-300/40">
                                 <div class="font-hand text-xs text-amber-800 font-bold uppercase tracking-wider mb-2">💡 Tip del Día</div>
                                 <p class="font-hand text-sm text-amber-950 font-extrabold leading-relaxed mb-4" id="dailyTipText">
-                                    "Para mejorar tu pronunciación de la 'R' en inglés, enrolla tu lengua hacia atrás sin tocar el cielo de la boca. ¡Intenta con 'Red Rose'!"
+                                    Cargando tip...
                                 </p>
                                 <div class="flex justify-between items-center border-t border-amber-900/10 pt-2 text-[10px] text-amber-900/60 font-bold">
                                     <span>Shared by Seba 👨‍🏫</span>
@@ -302,23 +266,20 @@
                                 </div>
                             </div>
 
-                            <!-- Extra Static Scrapbook Sticky -->
                             <div class="bg-brandStickyPink p-6 rounded-2xl shadow-lg -rotate-2 sticky-tape transform transition hover:rotate-0 duration-300 border border-rose-300/40">
-                                <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Reminder</div>
-                                <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4">
-                                    ¡No olvides participar en el foro de deletreo del Spelling Bee! Sumarás puntos extra para tu récord mensual.
+                                <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Recordatorio</div>
+                                <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4" id="reminderText">
+                                    No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases
                                 </p>
                                 <div class="flex justify-between items-center border-t border-rose-900/10 pt-2 text-[10px] text-rose-900/60 font-bold">
-                                    <span>Deadline: Friday ⏳</span>
-                                    <span>#SpellingBee</span>
+                                    <span>¡Importante! ⏳</span>
+                                    <span>#Lessons</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- REDESIGNED SUBMIT ZONE (As requested, clean direct link mimicking the original capsule Submit) -->
                     <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] relative overflow-hidden group">
-                        <!-- Tape effect on top -->
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200/60 w-32 h-6 border-l border-r border-dashed border-amber-900/10 rotate-1"></div>
                         
                         <div class="flex items-center space-x-3 mb-4 mt-2">
@@ -335,7 +296,6 @@
                             Envía tus tareas, guías y grabaciones de forma cómoda y rápida directamente a la plataforma oficial de entregas del Teacher Seba.
                         </p>
 
-                        <!-- Stylized Scrapbook Button representing the image's original pill SUBMIT icon -->
                         <a href="https://teacherseba.com/subbmit" target="_blank" 
                            class="w-full flex items-center justify-between p-4 bg-brandDarkBlue hover:bg-slate-800 text-white rounded-2xl border-3 border-brandDarkBlue transition-all shadow-[4px_4px_0px_0px_#c5b39e] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c5b39e]">
                             <span class="font-extrabold text-xs uppercase tracking-widest pl-2">SUBIR MI TRABAJO</span>
@@ -344,13 +304,10 @@
                             </div>
                         </a>
                     </div>
-
                 </div>
 
-                <!-- COLUMN 2: CLASS RECORDINGS & SYLLABUS -->
                 <div class="lg:col-span-2 space-y-8">
                     
-                    <!-- VIDEOTECA: "AQUÍ VERÁS TODOS LOS VIDEOS DE LAS CLASES" -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f]">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -360,14 +317,12 @@
                                 <p class="text-xs text-gray-500 font-medium">Revisa las grabaciones de clases anteriores en Google Drive para repasar.</p>
                             </div>
                             
-                            <!-- Search -->
                             <div class="relative w-full sm:w-auto">
                                 <input type="text" id="videoSearch" onkeyup="filterVideos()" placeholder="Buscar clase..." class="px-4 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-brandBlue outline-none w-full sm:w-48 pl-8">
                                 <i class="fas fa-search text-gray-400 absolute left-3 top-3 text-xs"></i>
                             </div>
                         </div>
 
-                        <!-- Featured Video Canvas Player Representation -->
                         <div class="mb-6 bg-slate-950 rounded-2xl aspect-video relative overflow-hidden group border-2 border-brandDarkBlue shadow-md">
                             <div class="absolute inset-0 bg-cover bg-center opacity-80 transition-all group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200');" id="videoPlayerThumbnail"></div>
                             
@@ -389,13 +344,10 @@
                             </div>
                         </div>
 
-                        <!-- Playlist Scroll Container -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="videoPlaylist">
-                            <!-- Dynamic video cards populated by JS -->
-                        </div>
+                            </div>
                     </div>
 
-                    <!-- PRÓXIMAS CLASES: "TEMAS DE LAS PRÓXIMAS CLASES" -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#c5b39e] relative">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -407,13 +359,10 @@
                             <span class="text-xs font-extrabold text-brandBlue bg-brandBlue/10 px-3 py-1 rounded-full border border-brandBlue/20">Syllabus 2026</span>
                         </div>
 
-                        <!-- Interactive Accordion Agenda Checklist -->
                         <div class="space-y-4" id="topicsContainer">
-                            <!-- Dynamic Syllabus List -->
-                        </div>
+                            </div>
                     </div>
 
-                    <!-- INTERESTING COMPONENT: INTERACTIVE ENGLISH GAME (SPELLING BEE) -->
                     <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#8ea4b0] relative">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b-2 border-dashed border-brandDarkBlue/10">
                             <div>
@@ -425,7 +374,6 @@
                                 <p class="text-xs text-gray-700 font-semibold leading-relaxed">Escucha el término en inglés, lee su definición y escribe la palabra correctamente para sumar puntos.</p>
                             </div>
 
-                            <!-- Scores -->
                             <div class="flex items-center space-x-3 flex-shrink-0">
                                 <div class="bg-white px-4 py-2 rounded-2xl border-2 border-brandDarkBlue text-center shadow-sm">
                                     <div class="text-[9px] font-black text-gray-500 uppercase tracking-widest">Score</div>
@@ -438,17 +386,13 @@
                             </div>
                         </div>
 
-                        <!-- Game Deck -->
                         <div class="bg-white rounded-3xl p-6 border-3 border-brandDarkBlue flex flex-col lg:flex-row gap-6 items-center">
-                            
-                            <!-- Sound & Word definitions -->
                             <div class="w-full lg:w-1/2 space-y-4">
                                 <div class="bg-[#f0f7fc] p-5 rounded-2xl border-2 border-brandStickyBlue text-center">
                                     <span class="text-[9px] text-cyan-800 font-black uppercase tracking-widest block mb-1">Concepto / Definición</span>
                                     <p class="text-sm font-extrabold text-cyan-950 leading-relaxed" id="spellingDefinition">Cargando...</p>
                                 </div>
 
-                                <!-- Audio synthesize controls -->
                                 <div class="p-4 bg-gray-50 rounded-2xl border-2 border-gray-200 text-center">
                                     <p class="text-[10px] text-gray-500 uppercase font-black tracking-wider mb-2">Escucha la pronunciación en inglés:</p>
                                     <div class="flex justify-center space-x-2">
@@ -464,7 +408,6 @@
                                 </div>
                             </div>
 
-                            <!-- Spelling Input zone -->
                             <div class="w-full lg:w-1/2 space-y-4">
                                 <div>
                                     <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">Deletrea la palabra:</label>
@@ -489,11 +432,9 @@
 
                 </div>
             </div>
-
         </main>
     </div>
 
-    <!-- VIEW: TEACHER/ADMIN CONTROL PANEL (Triggered ONLY by code 000) -->
     <div id="teacherView" class="hidden min-h-screen bg-brandBg flex flex-col justify-between p-4 sm:p-6 lg:p-12">
         <div class="max-w-4xl w-full mx-auto bg-white border-4 border-brandDarkBlue rounded-[3rem] shadow-2xl p-6 lg:p-10 relative">
             
@@ -501,7 +442,6 @@
                 <i class="fas fa-times-circle"></i>
             </button>
 
-            <!-- Head -->
             <div class="flex items-center space-x-3 mb-6 pb-4 border-b-2 border-gray-200">
                 <div class="text-3xl">🔑</div>
                 <div>
@@ -510,12 +450,9 @@
                 </div>
             </div>
 
-            <!-- Dashboard Admin settings -->
             <div class="space-y-8">
-                
-                <!-- Zoom Link and daily tip configuration -->
                 <div class="bg-brandPaper p-6 rounded-2xl border-2 border-brandDarkBlue grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
                             <i class="fas fa-video text-cyan-600 mr-1"></i> Link de Clase Online (Google Meet):
                         </label>
@@ -525,11 +462,16 @@
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
                             <i class="fas fa-lightbulb text-yellow-600 mr-1"></i> Tip de Inglés del Día:
                         </label>
-                        <textarea id="adminTipInput" rows="2" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
+                        <textarea id="adminTipInput" rows="3" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
+                            <i class="fas fa-bell text-rose-600 mr-1"></i> Recordatorio (Reminder):
+                        </label>
+                        <textarea id="adminReminderInput" rows="3" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
                     </div>
                 </div>
 
-                <!-- Add dynamic classes to playlist -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
                         <i class="fas fa-plus-circle text-red-500 mr-2"></i> Registrar Video de Clase Grabada
@@ -553,19 +495,18 @@
                     </button>
                 </div>
 
-                <!-- Manage Next syllabus topics -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
-                        <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Agendar Próximo Tema de Clase
+                        <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Agendar / Editar Plan de Próxima Clase
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Título del Tema</label>
-                            <input type="text" id="adminTopicTitle" placeholder="Ej: Condicionales 1 y 2" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
+                            <input type="text" id="adminTopicTitle" placeholder="Ej: Próxima Clase: Present Simple vs Continuous" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
                         </div>
                         <div>
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Descripción / Material</label>
-                            <input type="text" id="adminTopicDesc" placeholder="Ej: Descargar PDF de práctica" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
+                            <input type="text" id="adminTopicDesc" placeholder="Ej: Revisar Classroom para descargar guía técnica." class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
                         </div>
                     </div>
                     <button onclick="addAdminTopic()" class="mt-4 px-4 py-2 bg-brandBlue text-white hover:bg-brandDarkBlue rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
@@ -573,25 +514,20 @@
                     </button>
                 </div>
 
-                <!-- Submit trigger buttons -->
                 <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
                     <button onclick="saveAdminSettings()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
-                        <i class="fas fa-save mr-1.5"></i> Guardar Configuración
+                        <i class="fas fa-save mr-1.5"></i> Guardar Configuración General
                     </button>
                     
                     <button onclick="resetToDefaults()" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-600 font-bold text-xs rounded-xl transition">
                         Resetear Valores
                     </button>
                 </div>
-
             </div>
-
         </div>
     </div>
 
-    <!-- DATABASE & LOGICAL CORE ENGINE -->
     <script>
-        // Official student list with their PIN codes
         const studentDatabase = [
             { code: "101", name: "Alberto Badi Toledo Muñoz" },
             { code: "102", name: "Anais Millaray Espinoza Medina" },
@@ -618,10 +554,10 @@
             { code: "123", name: "Ángel Gonzales" }
         ];
 
-        // Global Interactive State with corrected links
         let currentUser = null;
         let zoomLink = "https://meet.google.com/ksk-pezo-ojq";
         let dailyTip = "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!";
+        let dailyReminder = "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases";
         
         let classVideos = [
             { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
@@ -640,7 +576,6 @@
             { id: 3, title: "Taller Especial: Phrasal Verbs de uso diario", desc: "Clase 100% conversacional para sonar como un hablante nativo.", completed: false }
         ];
 
-        // Spelling Bee word deck
         const spellingWords = [
             { word: "Knowledge", definition: "Hechos, información y habilidades adquiridos por una persona a través de la educación." },
             { word: "Beautiful", definition: "Muy atractivo o agradable a la vista, estético y hermoso." },
@@ -660,13 +595,15 @@
             initSpellingGame();
         };
 
-        // Local Storage engine load
         function loadDatabaseSettings() {
             if (localStorage.getItem('seba_zoom_v2')) {
                 zoomLink = localStorage.getItem('seba_zoom_v2');
             }
             if (localStorage.getItem('seba_tip_v2')) {
                 dailyTip = localStorage.getItem('seba_tip_v2');
+            }
+            if (localStorage.getItem('seba_reminder_v2')) {
+                dailyReminder = localStorage.getItem('seba_reminder_v2');
             }
             if (localStorage.getItem('seba_videos_v2')) {
                 classVideos = JSON.parse(localStorage.getItem('seba_videos_v2'));
@@ -681,12 +618,12 @@
 
             document.getElementById('zoomLinkButton').href = zoomLink;
             document.getElementById('dailyTipText').innerText = dailyTip;
+            document.getElementById('reminderText').innerText = dailyReminder;
             
             renderVideos();
             renderTopics();
         }
 
-        // Custom Toast Dialog Notification
         function showNotification(title, message, isSuccess = true) {
             const toast = document.getElementById('toastNotification');
             const icon = document.getElementById('toastIcon');
@@ -709,7 +646,6 @@
             }, 4500);
         }
 
-        // Login Authenticator
         function attemptLogin() {
             const codeInput = document.getElementById('studentCode').value.trim();
             const errorAlert = document.getElementById('loginErrorMsg');
@@ -720,15 +656,14 @@
                 return;
             }
 
-            // Exclusive teacher control panel bypass (Students cannot access this)
-            if (codeInput === "000") {
+            // Claves maestras de acceso directo para el Panel
+            if (codeInput === "000" || codeInput === "00") {
                 errorAlert.classList.add('hidden');
                 toggleTeacherMode();
                 showNotification("Modo Admin", "Ingresaste al Panel de control exclusivo de Teacher Seba.", true);
                 return;
             }
 
-            // Find matching official pupil from the strict 23 student list
             const foundStudent = studentDatabase.find(s => s.code === codeInput);
 
             if (foundStudent) {
@@ -738,11 +673,9 @@
                 document.getElementById('portalStudentName').innerText = foundStudent.name;
                 document.getElementById('portalStudentPIN').innerText = `#${foundStudent.code}`;
 
-                // Swap visual modules
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('dashboardView').classList.remove('hidden');
 
-                // Confetti blast celebrating entrance
                 confetti({
                     particleCount: 120,
                     spread: 80,
@@ -756,7 +689,6 @@
             }
         }
 
-        // Logout exit
         function logout() {
             currentUser = null;
             document.getElementById('studentCode').value = '';
@@ -765,7 +697,6 @@
             showNotification("Sesión Cerrada", "Has salido del portal estudiantil.");
         }
 
-        // Video list rendering algorithms
         function renderVideos() {
             const container = document.getElementById('videoPlaylist');
             container.innerHTML = '';
@@ -842,7 +773,6 @@
             setTimeout(() => element.classList.remove('animate-pulse'), 800);
         }
 
-        // Didactical Upcoming Topics logic
         function renderTopics() {
             const container = document.getElementById('topicsContainer');
             container.innerHTML = '';
@@ -875,9 +805,9 @@
                 });
                 showNotification("¡Estudio Completado!", "Has marcado este tema de clase como repasado.");
             }
+            localStorage.setItem('seba_topics_v2', JSON.stringify(classTopics));
         }
 
-        // SPELLING BEE INTERACTIVE GAME ENGINE
         function initSpellingGame() {
             const currentDeck = spellingWords[currentSpellingIndex];
             document.getElementById('spellingDefinition').innerText = `"${currentDeck.definition}"`;
@@ -938,17 +868,16 @@
             }
         }
 
-        // Skip to next spelling challenge
         function skipSpellingWord() {
             currentSpellingIndex = (currentSpellingIndex + 1) % spellingWords.length;
             initSpellingGame();
             showNotification("Spelling Bee", "Siguiente palabra cargada.");
         }
 
-        // ADMIN DASHBOARD SYSTEMS (Teachers view logic)
         function toggleTeacherMode() {
             document.getElementById('adminZoomInput').value = zoomLink;
             document.getElementById('adminTipInput').value = dailyTip;
+            document.getElementById('adminReminderInput').value = dailyReminder;
 
             document.getElementById('dashboardView').classList.add('hidden');
             document.getElementById('loginView').classList.add('hidden');
@@ -987,6 +916,7 @@
             document.getElementById('adminVideoUrl').value = '';
             document.getElementById('adminVideoDesc').value = '';
 
+            localStorage.setItem('seba_videos_v2', JSON.stringify(classVideos));
             showNotification("Video Agregado", `Se publicó: "${title}"`);
         }
 
@@ -1006,26 +936,30 @@
                 completed: false
             };
 
-            classTopics.push(newTopic);
+            classTopics.unshift(newTopic); // Agrega al inicio para priorizar lo nuevo
             renderTopics();
 
             document.getElementById('adminTopicTitle').value = '';
             document.getElementById('adminTopicDesc').value = '';
 
+            localStorage.setItem('seba_topics_v2', JSON.stringify(classTopics));
             showNotification("Tema Agendado", `Se agregó al cronograma: "${title}"`);
         }
 
         function saveAdminSettings() {
             zoomLink = document.getElementById('adminZoomInput').value;
             dailyTip = document.getElementById('adminTipInput').value;
+            dailyReminder = document.getElementById('adminReminderInput').value;
 
             localStorage.setItem('seba_zoom_v2', zoomLink);
             localStorage.setItem('seba_tip_v2', dailyTip);
+            localStorage.setItem('seba_reminder_v2', dailyReminder);
             localStorage.setItem('seba_videos_v2', JSON.stringify(classVideos));
             localStorage.setItem('seba_topics_v2', JSON.stringify(classTopics));
 
             document.getElementById('zoomLinkButton').href = zoomLink;
             document.getElementById('dailyTipText').innerText = dailyTip;
+            document.getElementById('reminderText').innerText = dailyReminder;
 
             showNotification("Cambios Guardados", "Configuraciones del Teacher Seba actualizadas con éxito.", true);
             exitTeacherMode();
@@ -1035,6 +969,7 @@
             localStorage.clear();
             zoomLink = "https://meet.google.com/ksk-pezo-ojq";
             dailyTip = "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!";
+            dailyReminder = "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases";
             
             classVideos = [
                 { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
