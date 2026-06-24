@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intranet Didáctica | Teacher Seba - English Workshop</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playpen Sans (manuscrita) y Plus Jakarta Sans (UI) -->
     <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti para celebraciones -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -88,6 +92,7 @@
 </head>
 <body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
 
+    <!-- Custom Notification Toast -->
     <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-2xl border-2 border-brandBrown flex items-center space-x-3 max-w-sm">
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
@@ -96,12 +101,15 @@
         </div>
     </div>
 
+    <!-- VIEW: LOGIN -->
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
         
+        <!-- Left Side: Interactive Mascot & Brand Logo -->
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border-2 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
-                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-3xl border-4 border-brandBrown shadow">
-                    🇺🇸
+                <!-- Bandera Británica y Americana Unidas -->
+                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border-4 border-brandBrown shadow select-none">
+                    🇬🇧🇺🇸
                 </div>
                 <div class="text-left">
                     <h1 class="text-2xl font-black text-brandDarkBlue tracking-tight leading-none">Sebastián Núñez López</h1>
@@ -117,7 +125,8 @@
                 
                 <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue shadow-2xl relative flex items-center justify-center overflow-hidden">
                     <div class="text-center">
-                        <span class="text-8xl block select-none">👨‍🏫</span>
+                        <!-- Emoji de Profesor Cool con Gafas de Sol -->
+                        <span class="text-8xl block select-none">😎</span>
                         <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-brandDarkBlue text-yellow-300 font-extrabold text-[11px] px-3 py-1 rounded-full border border-yellow-300/30 uppercase tracking-widest">
                             Teacher Seba
                         </div>
@@ -130,6 +139,7 @@
             </div>
         </div>
 
+        <!-- Right Side: PIN Card -->
         <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f] relative">
             <div class="absolute top-4 right-4 bg-white/60 border border-brandDarkBlue/20 rounded-full w-8 h-8 flex items-center justify-center text-xs">
                 📌
@@ -169,12 +179,13 @@
         </div>
     </div>
 
+    <!-- VIEW: STUDENT PORTAL DASHBOARD -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
         <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border-2 border-brandBrown">
-                        👨‍🏫
+                        😎
                     </div>
                     <div>
                         <div class="text-[10px] font-extrabold tracking-widest uppercase text-brandBlue">Teacher Seba Workshop</div>
@@ -200,6 +211,7 @@
         <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Card 1: Online Class -->
                 <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBlue/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -221,6 +233,7 @@
                     </div>
                 </div>
 
+                <!-- Card 2: Google Classroom -->
                 <div class="bg-[#efe5db] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBrown/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -243,8 +256,10 @@
                 </div>
             </div>
 
+            <!-- MAIN GRID SYSTEM -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
+                <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
                     <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
                         <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
@@ -254,7 +269,9 @@
                             <span class="text-[10px] uppercase font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">New</span>
                         </div>
 
+                        <!-- Sticky Notes Stack -->
                         <div class="space-y-8 pt-2">
+                            <!-- Dynamic Daily Sticky Note -->
                             <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-lg rotate-1 sticky-tape transform transition hover:rotate-0 duration-300 border border-amber-300/40">
                                 <div class="font-hand text-xs text-amber-800 font-bold uppercase tracking-wider mb-2">💡 Tip del Día</div>
                                 <p class="font-hand text-sm text-amber-950 font-extrabold leading-relaxed mb-4" id="dailyTipText">
@@ -266,6 +283,7 @@
                                 </div>
                             </div>
 
+                            <!-- Dynamic Reminder Sticky Note -->
                             <div class="bg-brandStickyPink p-6 rounded-2xl shadow-lg -rotate-2 sticky-tape transform transition hover:rotate-0 duration-300 border border-rose-300/40">
                                 <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Recordatorio</div>
                                 <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4" id="reminderText">
@@ -279,6 +297,7 @@
                         </div>
                     </div>
 
+                    <!-- SUBMIT ZONE -->
                     <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] relative overflow-hidden group">
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200/60 w-32 h-6 border-l border-r border-dashed border-amber-900/10 rotate-1"></div>
                         
@@ -306,8 +325,10 @@
                     </div>
                 </div>
 
+                <!-- COLUMN 2: VIDEOS & SYLLABUS -->
                 <div class="lg:col-span-2 space-y-8">
                     
+                    <!-- VIDEOTECA -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f]">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -345,9 +366,11 @@
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="videoPlaylist">
-                            </div>
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
 
+                    <!-- PLAN DE PRÓXIMAS CLASES -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#c5b39e] relative">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -360,9 +383,11 @@
                         </div>
 
                         <div class="space-y-4" id="topicsContainer">
-                            </div>
+                            <!-- Populated by JS de forma 100% Dinámica desde Firestore -->
+                        </div>
                     </div>
 
+                    <!-- INTERACTIVE ENGLISH GAME (SPELLING BEE) -->
                     <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#8ea4b0] relative">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b-2 border-dashed border-brandDarkBlue/10">
                             <div>
@@ -435,6 +460,7 @@
         </main>
     </div>
 
+    <!-- VIEW: TEACHER/ADMIN CONTROL PANEL -->
     <div id="teacherView" class="hidden min-h-screen bg-brandBg flex flex-col justify-between p-4 sm:p-6 lg:p-12">
         <div class="max-w-4xl w-full mx-auto bg-white border-4 border-brandDarkBlue rounded-[3rem] shadow-2xl p-6 lg:p-10 relative">
             
@@ -451,6 +477,7 @@
             </div>
 
             <div class="space-y-8">
+                <!-- Inputs de configuración general -->
                 <div class="bg-brandPaper p-6 rounded-2xl border-2 border-brandDarkBlue grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
@@ -472,6 +499,7 @@
                     </div>
                 </div>
 
+                <!-- Registrar Video -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
                         <i class="fas fa-plus-circle text-red-500 mr-2"></i> Registrar Video de Clase Grabada
@@ -495,28 +523,38 @@
                     </button>
                 </div>
 
+                <!-- MODIFICADO: Agendar Próximo Tema (Syllabus) y Control de Clases en Pantalla -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
-                    <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
-                        <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Agendar / Editar Plan de Próxima Clase
+                    <h4 class="text-sm font-black text-brandDarkBlue mb-1 flex items-center">
+                        <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Control y Edición del Plan de Clases
                     </h4>
+                    <p class="text-[11px] text-gray-500 mb-4 font-semibold">Agrega nuevos temas al cronograma. Todos los temas añadidos se sincronizan y reemplazan lo antiguo en la base de datos.</p>
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Título del Tema</label>
-                            <input type="text" id="adminTopicTitle" placeholder="Ej: Próxima Clase: Present Simple" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
+                            <input type="text" id="adminTopicTitle" placeholder="Ej: NEXT CLASS: LISTENING SKILL" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
                         </div>
                         <div>
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Descripción / Material</label>
-                            <input type="text" id="adminTopicDesc" placeholder="Ej: Revisar Classroom para descargar guía técnica." class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
+                            <input type="text" id="adminTopicDesc" placeholder="Ej: NEXT CLASS: SPEAKING SKILLS" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
                         </div>
                     </div>
-                    <button onclick="addAdminTopic()" class="mt-4 px-4 py-2 bg-brandBlue text-white hover:bg-brandDarkBlue rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
-                        Agendar al Cronograma
-                    </button>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="addAdminTopic()" class="px-4 py-2 bg-brandBlue text-white hover:bg-brandDarkBlue rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
+                            Añadir Tema al Cronograma
+                        </button>
+                        <button onclick="clearAdminTopics()" class="px-4 py-2 bg-rose-600 text-white hover:bg-rose-700 rounded-xl text-xs font-black transition shadow-sm">
+                            <i class="fas fa-trash-alt mr-1"></i> Limpiar Temas Anteriores
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Botones de Acción -->
                 <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
                     <button id="btnSaveAdmin" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
-                        <i class="fas fa-save mr-1.5"></i> Guardar Configuración General
+                        <i class="fas fa-save mr-1.5"></i> Guardar e Imprimir Cambios en la Nube
                     </button>
                     
                     <button id="btnResetAdmin" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-600 font-bold text-xs rounded-xl transition">
@@ -527,11 +565,12 @@
         </div>
     </div>
 
+    <!-- FIREBASE SYSTEM INTEGRATION MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-        // Firebase credentials pulled directly from image_ec7c1b.png
+        // Configuración de Firestore enlazada a tu cuenta de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAT3rVceLdDoieMF9w4qMUXNAzALN6TnEg",
             authDomain: "intranet-c0271.firebaseapp.com",
@@ -545,24 +584,18 @@
         const db = getFirestore(app);
         const intranetDocRef = doc(db, "settings", "intranet_data");
 
+        // Estado inicial limpio por si la base de datos se blanquea
         let defaultState = {
             zoomLink: "https://meet.google.com/ksk-pezo-ojq",
             dailyTip: "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!",
             dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases",
             classVideos: [
                 { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
-                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
-                { id: 3, title: "Clase 3: FRASES ÚTILES PARA USAR EN INGLÉS", url: "https://drive.google.com/file/d/1XXt1hD-nhO29o8iRzhmFQMJKExJ2a340/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
-                { id: 4, title: "Clase 4: INGLÉS PARA VIAJES", url: "https://drive.google.com/file/d/1ssCauGSs2-RWvvfohXLATQKaxMYl7Tnx/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=600" },
-                { id: 5, title: "Clase 5: PREGUNTAS Y RESPUESTAS MÁS FRECUENTES", url: "https://drive.google.com/file/d/10Ldsw2gaEqPMQQZ_DNrTwNetLko497CO/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600" },
-                { id: 6, title: "Clase 6: ENGLISH VERBS", url: "https://drive.google.com/file/d/1Kd8u7ppMUaIt4Rh5G9oKWOQOrCByZBhI/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=600" },
-                { id: 7, title: "Clase 7: PRONUNCIATION TIPS", url: "https://drive.google.com/file/d/1tG2LtpIkJFmVdonS_5qsk36lKWv9VyQq/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?q=80&w=600" },
-                { id: 8, title: "Clase 8: ENGLISH FOR WORK", url: "https://drive.google.com/file/d/1YmmiaUOUeeui_crDsHWxgeG2rPOp8sMP/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=600" }
+                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" }
             ],
+            // Ahora la lista arranca vacía o tú controlas qué temas van saliendo en el Syllabus
             classTopics: [
-                { id: 1, title: "Próxima Clase: Modal Verbs of Ability & Permission", desc: "Aprenderemos a usar Can, Could y Be able to. Revisa Classroom para descargar material previo.", completed: false },
-                { id: 2, title: "Siguiente Clase: Conditional Sentences (Type 0 & 1)", desc: "Estudiaremos estructuras lógicas y de causa-efecto con 'If' y 'Unless'.", completed: false },
-                { id: 3, title: "Taller Especial: Phrasal Verbs de uso diario", desc: "Clase 100% conversacional para sonar como un hablante nativo.", completed: false }
+                { id: 1, title: "NEXT CLASS: LISTENING SKILL", desc: "NEXT CLASS: SPEAKING SKILLS", completed: false }
             ]
         };
 
@@ -604,7 +637,7 @@
                     classTopics: window.classTopics
                 }, { merge: true });
 
-                window.showNotification("Éxito en la Nube", "Cambios sincronizados en todos los dispositivos.", true);
+                window.showNotification("Éxito en la Nube", "Cambios e itinerario de clases sincronizados.", true);
                 window.exitTeacherMode();
             } catch (error) {
                 console.error("Error guardando en Firebase: ", error);
@@ -627,6 +660,7 @@
         document.getElementById('btnResetAdmin').addEventListener('click', window.resetToDefaults);
     </script>
 
+    <!-- LOGICAL INTERACTIVE CORE SCRIPT -->
     <script>
         const studentDatabase = [
             { code: "101", name: "Alberto Badi Toledo Muñoz" },
@@ -973,6 +1007,7 @@
             showNotification("Guardado Temporal", "Video preparado. Presiona el botón verde de abajo para sincronizar con la nube.");
         }
 
+        // Añade una clase al cronograma temporalmente
         function addAdminTopic() {
             const title = document.getElementById('adminTopicTitle').value.trim();
             const desc = document.getElementById('adminTopicDesc').value.trim();
@@ -989,12 +1024,21 @@
                 completed: false
             };
 
-            window.classTopics.unshift(newTopic);
+            window.classTopics.push(newTopic);
             window.renderTopics();
 
             document.getElementById('adminTopicTitle').value = '';
             document.getElementById('adminTopicDesc').value = '';
-            showNotification("Guardado Temporal", "Tema preparado. Presiona el botón verde de abajo para sincronizar con la nube.");
+            showNotification("Añadido localmente", "Presiona el botón verde 'Guardar' para subir e imprimir toda la lista en la nube.");
+        }
+
+        // NUEVO: Limpia toda la lista para que pongas solo lo que quieres que se vea
+        function clearAdminTopics() {
+            if(confirm("¿Quieres borrar todas las clases de la lista para escribir una nueva desde cero?")) {
+                window.classTopics = [];
+                window.renderTopics();
+                showNotification("Lista Limpia", "Recuerda guardar para aplicar el vacío en la nube.");
+            }
         }
     </script>
 </body>
