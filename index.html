@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intranet Didáctica | Teacher Seba - English Workshop</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playpen Sans (manuscrita) y Plus Jakarta Sans (UI) -->
     <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti para celebraciones -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -88,6 +92,7 @@
 </head>
 <body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
 
+    <!-- Custom Notification Toast -->
     <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-2xl border-2 border-brandBrown flex items-center space-x-3 max-w-sm">
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
@@ -96,10 +101,13 @@
         </div>
     </div>
 
+    <!-- VIEW: LOGIN -->
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
         
+        <!-- Left Side: Interactive Mascot & Brand Logo -->
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border-2 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
+                <!-- Bandera Británica y Americana Unidas -->
                 <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border-4 border-brandBrown shadow select-none">
                     🇬🇧🇺🇸
                 </div>
@@ -117,6 +125,7 @@
                 
                 <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue shadow-2xl relative flex items-center justify-center overflow-hidden">
                     <div class="text-center">
+                        <!-- Emoji de Profesor Cool con Gafas de Sol -->
                         <span class="text-8xl block select-none">😎</span>
                         <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-brandDarkBlue text-yellow-300 font-extrabold text-[11px] px-3 py-1 rounded-full border border-yellow-300/30 uppercase tracking-widest">
                             Teacher Seba
@@ -130,6 +139,7 @@
             </div>
         </div>
 
+        <!-- Right Side: PIN Card -->
         <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f] relative">
             <div class="absolute top-4 right-4 bg-white/60 border border-brandDarkBlue/20 rounded-full w-8 h-8 flex items-center justify-center text-xs">
                 📌
@@ -169,6 +179,7 @@
         </div>
     </div>
 
+    <!-- VIEW: STUDENT PORTAL DASHBOARD -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
         <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
@@ -200,6 +211,7 @@
         <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Card 1: Online Class -->
                 <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBlue/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -221,6 +233,7 @@
                     </div>
                 </div>
 
+                <!-- Card 2: Google Classroom -->
                 <div class="bg-[#efe5db] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBrown/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
@@ -242,6 +255,7 @@
                     </div>
                 </div>
 
+                <!-- Card 3: Online Test (NUEVO BOTÓN) -->
                 <div class="bg-[#eed1d1] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] lg:col-span-2">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
@@ -254,7 +268,8 @@
                             <p class="text-xs text-brandDarkBlue/80 font-medium">Haz clic para acceder directamente al test asignado para tu nivel.</p>
                         </div>
                         <div class="w-full md:w-auto shrink-0">
-                            <a href="https://ejemplo.com" target="_blank" 
+                            <!-- Enlace corregido a tu servidor de pruebas -->
+                            <a href="https://test.teacherseba.com/" target="_blank" 
                                class="inline-flex w-full items-center justify-center space-x-3 px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
                                 <span>INICIAR MI PRUEBA</span>
                                 <i class="fas fa-arrow-right text-xs"></i>
@@ -264,8 +279,10 @@
                 </div>
             </div>
 
+            <!-- MAIN GRID SYSTEM -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
+                <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
                     <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
                         <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
@@ -275,7 +292,9 @@
                             <span class="text-[10px] uppercase font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">New</span>
                         </div>
 
+                        <!-- Sticky Notes Stack -->
                         <div class="space-y-8 pt-2">
+                            <!-- Dynamic Daily Sticky Note -->
                             <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-lg rotate-1 sticky-tape transform transition hover:rotate-0 duration-300 border border-amber-300/40">
                                 <div class="font-hand text-xs text-amber-800 font-bold uppercase tracking-wider mb-2">💡 Tip del Día</div>
                                 <p class="font-hand text-sm text-amber-950 font-extrabold leading-relaxed mb-4" id="dailyTipText">
@@ -287,6 +306,7 @@
                                 </div>
                             </div>
 
+                            <!-- Dynamic Reminder Sticky Note -->
                             <div class="bg-brandStickyPink p-6 rounded-2xl shadow-lg -rotate-2 sticky-tape transform transition hover:rotate-0 duration-300 border border-rose-300/40">
                                 <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Recordatorio</div>
                                 <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4" id="reminderText">
@@ -300,6 +320,7 @@
                         </div>
                     </div>
 
+                    <!-- SUBMIT ZONE -->
                     <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] relative overflow-hidden group">
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200/60 w-32 h-6 border-l border-r border-dashed border-amber-900/10 rotate-1"></div>
                         
@@ -327,8 +348,10 @@
                     </div>
                 </div>
 
+                <!-- COLUMN 2: VIDEOS & SYLLABUS -->
                 <div class="lg:col-span-2 space-y-8">
                     
+                    <!-- VIDEOTECA -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f]">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -366,9 +389,11 @@
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="videoPlaylist">
-                            </div>
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
 
+                    <!-- PLAN DE PRÓXIMAS CLASES -->
                     <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#c5b39e] relative">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
                             <div>
@@ -381,9 +406,11 @@
                         </div>
 
                         <div class="space-y-4" id="topicsContainer">
-                            </div>
+                            <!-- Populated by JS de forma 100% Dinámica desde Firestore -->
+                        </div>
                     </div>
 
+                    <!-- INTERACTIVE ENGLISH GAME (SPELLING BEE) -->
                     <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#8ea4b0] relative">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b-2 border-dashed border-brandDarkBlue/10">
                             <div>
@@ -456,6 +483,7 @@
         </main>
     </div>
 
+    <!-- VIEW: TEACHER/ADMIN CONTROL PANEL -->
     <div id="teacherView" class="hidden min-h-screen bg-brandBg flex flex-col justify-between p-4 sm:p-6 lg:p-12">
         <div class="max-w-4xl w-full mx-auto bg-white border-4 border-brandDarkBlue rounded-[3rem] shadow-2xl p-6 lg:p-10 relative">
             
@@ -472,6 +500,7 @@
             </div>
 
             <div class="space-y-8">
+                <!-- Inputs de configuración general -->
                 <div class="bg-brandPaper p-6 rounded-2xl border-2 border-brandDarkBlue grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
@@ -493,6 +522,7 @@
                     </div>
                 </div>
 
+                <!-- Registrar Video -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
                         <i class="fas fa-plus-circle text-red-500 mr-2"></i> Registrar Video de Clase Grabada
@@ -516,6 +546,7 @@
                     </button>
                 </div>
 
+                <!-- MODIFICADO: Agendar Próximo Tema (Syllabus) y Control de Clases en Pantalla -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-1 flex items-center">
                         <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Control y Edición del Plan de Clases
@@ -543,6 +574,7 @@
                     </div>
                 </div>
 
+                <!-- Botones de Acción -->
                 <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
                     <button id="btnSaveAdmin" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
                         <i class="fas fa-save mr-1.5"></i> Guardar e Imprimir Cambios en la Nube
@@ -556,6 +588,7 @@
         </div>
     </div>
 
+    <!-- FIREBASE SYSTEM INTEGRATION MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
@@ -650,6 +683,7 @@
         document.getElementById('btnResetAdmin').addEventListener('click', window.resetToDefaults);
     </script>
 
+    <!-- LOGICAL INTERACTIVE CORE SCRIPT -->
     <script>
         const studentDatabase = [
             { code: "101", name: "Alberto Badi Toledo Muñoz" },
