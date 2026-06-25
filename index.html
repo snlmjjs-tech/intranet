@@ -38,25 +38,30 @@
     </script>
 
     <style>
+        .paper-dashed-border { border: 2px dashed #a89682; }
         .sticky-tape { position: relative; }
         .sticky-tape::before {
             content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-2deg);
             width: 80px; height: 20px; background-color: rgba(215, 200, 180, 0.6);
-            border-left: 1px dashed rgba(0,0,0,0.1); border-right: 1px dashed rgba(0,0,0,0.1); z-index: 10;
+            border-left: 1px dashed rgba(0,0,0,0.1); border-right: 1px dashed rgba(0,0,0,0.1); box-shadow: 0 1px 2px rgba(0,0,0,0.05); z-index: 10;
         }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        .notebook-spiral { background-image: radial-gradient(#2e3e4f 30%, transparent 35%); background-size: 24px 24px; background-position: 0 0; }
+        @keyframes float-avatar { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-10px) rotate(1.5deg); } }
+        .animate-mascot { animation: float-avatar 5s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: #f1ebd9; }
-        ::-webkit-scrollbar-thumb { background: #c5b39e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #c5b39e; border-radius: 5px; border: 2px solid #f1ebd9; }
+        ::-webkit-scrollbar-thumb:hover { background: #8ea4b0; }
     </style>
 </head>
-<body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden">
+<body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
 
     <!-- Custom Notification Toast -->
     <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-2xl border-2 border-brandBrown flex items-center space-x-3 max-w-sm">
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
             <p id="toastTitle" class="font-bold text-sm">Notificación</p>
-            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del sistema.</p>
+            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del systema.</p>
         </div>
     </div>
 
@@ -64,124 +69,167 @@
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border-2 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
-                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border-4 border-brandBrown shadow">🇬🇧🇺🇸</div>
+                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border-4 border-brandBrown shadow select-none">🇬🇧🇺🇸</div>
                 <div class="text-left">
-                    <h1 class="text-2xl font-black text-brandDarkBlue tracking-tight">Sebastián Núñez López</h1>
+                    <h1 class="text-2xl font-black text-brandDarkBlue tracking-tight leading-none">Sebastián Núñez López</h1>
                     <p class="text-xs font-bold text-brandBlue uppercase tracking-widest mt-1">English Workshop</p>
+                    <div class="text-[11px] font-hand text-brandBrown font-bold mt-0.5">"Inglés abre puertas"</div>
                 </div>
             </div>
             <div class="relative animate-mascot mt-4">
-                <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue relative flex items-center justify-center overflow-hidden">
-                    <span class="text-8xl block select-none">😎</span>
+                <div class="absolute -top-12 -left-8 bg-white text-brandDarkBlue border-2 border-brandDarkBlue rounded-2xl p-3 shadow-md font-hand font-bold text-xs max-w-[180px] text-center rotate-[-3deg]">"Welcome to my page! 👋 ¡Listos para aprender inglés hoy?"</div>
+                <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue shadow-2xl relative flex items-center justify-center overflow-hidden">
+                    <div class="text-center">
+                        <span class="text-8xl block select-none">😎</span>
+                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-brandDarkBlue text-yellow-300 font-extrabold text-[11px] px-3 py-1 rounded-full border border-yellow-300/30 uppercase tracking-widest">Teacher Seba</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f]">
+        <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f] relative">
             <h2 class="text-3xl font-black text-brandDarkBlue">Student Portal</h2>
             <p class="text-sm text-brandDarkBlue/80 font-medium mt-1">Ingresa tu PIN oficial secreto para acceder.</p>
-            <div class="space-y-6 mt-6">
+            <div class="h-1 bg-brandDarkBlue/10 w-24 my-6 rounded"></div>
+            <div class="space-y-6">
                 <div>
-                    <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">Código del Alumno (PIN)</label>
-                    <input type="password" id="studentCode" maxlength="3" class="w-full py-4 bg-white border-3 border-brandDarkBlue rounded-2xl text-center text-3xl font-black tracking-[0.5em] outline-none" placeholder="***" onkeydown="if(event.key==='Enter') attemptLogin()">
+                    <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2"><i class="fas fa-key text-brandBlue mr-1"></i> Código del Alumno (PIN)</label>
+                    <input type="password" id="studentCode" maxlength="3" class="w-full py-4 px-2 bg-white border-3 border-brandDarkBlue rounded-2xl text-center text-3xl font-black tracking-[0.5em] focus:ring-4 focus:ring-brandBlue/30 focus:border-brandBlue outline-none transition-all placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-gray-400" placeholder="***" onkeydown="if(event.key==='Enter') attemptLogin()">
                 </div>
-                <div id="loginErrorMsg" class="hidden bg-rose-50 border-2 border-rose-400 text-rose-800 px-4 py-3 rounded-2xl text-xs font-semibold">PIN incorrecto.</div>
-                <button onclick="attemptLogin()" class="w-full py-4 bg-brandDarkBlue text-white font-extrabold rounded-2xl shadow-[0_5px_0_0_#1a242f]">INGRESAR A MI INTRANET</button>
+                <div id="loginErrorMsg" class="hidden bg-rose-50 border-2 border-rose-400 text-rose-800 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center space-x-2">
+                    <i class="fas fa-exclamation-triangle text-rose-600 text-lg"></i>
+                    <span id="loginErrorText">Código no encontrado. Intenta con tu PIN oficial.</span>
+                </div>
+                <button onclick="attemptLogin()" class="w-full py-4 bg-brandDarkBlue hover:bg-brandDarkBlue/95 active:translate-y-0.5 text-white font-extrabold text-base rounded-2xl shadow-[0_5px_0_0_#1a242f] transition-all flex items-center justify-center space-x-2">
+                    <span>INGRESAR A MI INTRANET</span><i class="fas fa-chevron-right text-sm"></i>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- VIEW: STUDENT PORTAL DASHBOARD -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
-        <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-xl">😎</div>
-                <h1 class="text-xl font-black text-brandDarkBlue">English Intranet</h1>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-white border-2 border-brandDarkBlue rounded-2xl px-4 py-2 text-xs font-black">
-                    Welcome, <span id="portalStudentName" class="text-brandBlue">Student</span>! <span class="bg-brandLightBrown px-2 py-0.5 rounded-lg" id="portalStudentPIN">#777</span>
+        <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border-2 border-brandBrown">😎</div>
+                    <div>
+                        <div class="text-[10px] font-extrabold tracking-widest uppercase text-brandBlue">Teacher Seba Workshop</div>
+                        <h1 class="text-xl font-black text-brandDarkBlue leading-none">English Intranet</h1>
+                    </div>
                 </div>
-                <button onclick="logout()" class="px-4 py-2 bg-rose-500 text-white rounded-xl text-xs font-black border-2 border-brandDarkBlue">Salir</button>
+                <div class="flex items-center flex-wrap gap-3">
+                    <div class="bg-white border-2 border-brandDarkBlue rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
+                        <span class="text-xs font-black text-brandDarkBlue">Welcome, <span id="portalStudentName" class="text-brandBlue font-extrabold">Student</span>!</span>
+                        <span class="bg-brandLightBrown text-[10px] font-bold px-2 py-0.5 rounded-lg text-brandDarkBlue" id="portalStudentPIN">#777</span>
+                    </div>
+                    <button onclick="logout()" class="px-3.5 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-black border-2 border-brandDarkBlue transition-all shadow-sm flex items-center space-x-1"><i class="fas fa-sign-out-alt"></i><span>Salir</span></button>
+                </div>
             </div>
         </header>
 
-        <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-8">
-            <!-- SECCIÓN ASISTENCIA VISUAL DEL ESTUDIANTE -->
-            <div class="bg-white rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
-                <h3 class="text-xl font-black mb-2 flex items-center"><i class="fas fa-calendar-check text-emerald-600 mr-2"></i> Mi Registro de Asistencia Oficial</h3>
-                <p class="text-xs text-gray-500 font-medium mb-4">Visualiza el desglose completo de tus clases asistidas (Verde) y tus inasistencias (Rojo).</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mb-6 bg-brandBg p-4 rounded-2xl border-2 border-brandLightBrown">
-                    <div class="text-center">
-                        <div class="text-2xl font-black text-brandDarkBlue" id="studentSummaryCount">0 / 0</div>
-                        <div class="text-[10px] uppercase font-bold text-gray-400">Clases Asistidas</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-black text-emerald-600" id="studentSummaryPercent">0%</div>
-                        <div class="text-[10px] uppercase font-bold text-gray-400">Porcentaje de Asistencia</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-sm font-black text-brandDarkBlue" id="studentSummaryStatus">Analizando...</div>
-                        <div class="text-[10px] uppercase font-bold text-gray-400">Progreso del Taller</div>
-                    </div>
-                </div>
-
-                <!-- Lista expandible de días -->
-                <div class="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2 border rounded-xl" id="studentAttendanceGrid">
-                    <!-- Dinámico por JS -->
-                </div>
-            </div>
-
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+            
+            <!-- ACCESOS PRINCIPALES (ARRIBA COMO ANTES) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Card 1: Online Class -->
-                <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 text-white border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
-                    <div class="space-y-4">
-                        <h2 class="text-2xl font-black">Ingresa a tu clase aquí</h2>
-                        <a id="zoomLinkButton" href="https://meet.google.com/ksk-pezo-ojq" target="_blank" class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-brandStickyYellow text-amber-950 font-black rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f]">
+                <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
+                    <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2 text-cyan-300">
+                                <i class="fas fa-video text-lg animate-pulse"></i>
+                                <span class="text-xs uppercase font-extrabold tracking-widest">Enlace de Clase Online</span>
+                            </div>
+                            <h2 class="text-2xl lg:text-3xl font-black tracking-tight leading-tight">Ingresa a tu clase aquí</h2>
+                            <p class="text-xs text-slate-300 font-medium">Conéctate a la sesión grupal en Google Meet con el Teacher Seba.</p>
+                        </div>
+                        <a id="zoomLinkButton" href="https://meet.google.com/ksk-pezo-ojq" target="_blank" class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-brandStickyYellow hover:bg-yellow-200 text-amber-950 font-black text-base rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
                             <span>UNIRSE A LA CLASE</span><i class="fas fa-external-link-alt text-xs"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 2: Google Classroom -->
-                <div class="bg-[#efe5db] rounded-[2.5rem] p-6 text-brandDarkBlue border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
-                    <div class="space-y-4">
-                        <h2 class="text-2xl font-black">Google Classroom</h2>
-                        <a href="https://classroom.google.com/c/ODYyODUyNzE0ODE5?cjc=xgivkbnb" target="_blank" class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-emerald-600 text-white font-black rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f]">
+                <div class="bg-[#efe5db] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
+                    <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2 text-emerald-700">
+                                <i class="fas fa-folder-open text-lg"></i>
+                                <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-800">Descarga de Materiales</span>
+                            </div>
+                            <h2 class="text-2xl lg:text-3xl font-black tracking-tight leading-tight">Google Classroom</h2>
+                            <p class="text-xs text-brandDarkBlue/80 font-medium">Accede a las guías y libros digitales oficiales oficiales organizados por clase.</p>
+                        </div>
+                        <a href="https://classroom.google.com/c/ODYyODUyNzE0ODE5?cjc=xgivkbnb" target="_blank" class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
                             <span>VER MATERIALES DE CLASE</span><i class="fas fa-download text-xs"></i>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 3: Online Test -->
-                <div class="bg-[#eed1d1] rounded-[2.5rem] p-6 text-brandDarkBlue border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] lg:col-span-2">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <div>
-                            <h2 class="text-xl font-black">Ingresa tu prueba aquí</h2>
+                <div class="bg-[#eed1d1] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] lg:col-span-2">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
+                        <div class="space-y-1 text-center md:text-left">
+                            <div class="flex items-center justify-center md:justify-start space-x-2 text-rose-700">
+                                <i class="fas fa-file-signature text-lg"></i>
+                                <span class="text-xs uppercase font-extrabold tracking-widest text-rose-800">Evaluaciones Oficiales</span>
+                            </div>
+                            <h2 class="text-xl font-black tracking-tight">Ingresa tu prueba aquí</h2>
                             <p class="text-xs text-brandDarkBlue/80 font-medium">Haz clic para acceder directamente al test asignado para tu nivel.</p>
                         </div>
-                        <a href="https://test.teacherseba.com/" target="_blank" class="px-6 py-3.5 bg-rose-600 text-white font-black text-sm rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f]">
-                            <span>INICIAR MI PRUEBA</span><i class="fas fa-arrow-right text-xs ml-2"></i>
+                        <a href="https://test.teacherseba.com/" target="_blank" class="inline-flex w-full md:w-auto items-center justify-center space-x-3 px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
+                            <span>INICIAR MI PRUEBA</span><i class="fas fa-arrow-right text-xs"></i>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- RESTO DE COMPONENTES SIMILARES (VIDEOS, GAME, ETC.) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- MAIN GRID SYSTEM (GRIDS ORIGINALES RESTAURADOS) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md">
-                        <h3 class="text-lg font-black border-b-2 border-dashed border-brandBrown pb-3 mb-4"><i class="fas fa-thumbtack text-rose-500 mr-2"></i> English Tips</h3>
-                        <div class="space-y-4">
-                            <div class="bg-brandStickyYellow p-4 rounded-2xl shadow"><p class="font-hand text-sm font-extrabold" id="dailyTipText">Cargando...</p></div>
-                            <div class="bg-brandStickyPink p-4 rounded-2xl shadow"><p class="font-hand text-sm font-extrabold" id="reminderText">Cargando...</p></div>
+                    <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
+                        <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
+                            <h3 class="text-lg font-black text-brandDarkBlue flex items-center"><i class="fas fa-thumbtack text-rose-500 mr-2"></i> English Tips & Notes</h3>
+                            <span class="text-[10px] uppercase font-black text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">New</span>
+                        </div>
+                        <div class="space-y-8 pt-2">
+                            <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-lg rotate-1 sticky-tape border border-amber-300/40">
+                                <div class="font-hand text-xs text-amber-800 font-bold uppercase tracking-wider mb-2">💡 Tip del Día</div>
+                                <p class="font-hand text-sm text-amber-950 font-extrabold leading-relaxed mb-4" id="dailyTipText">Sincronizando tip...</p>
+                            </div>
+                            <div class="bg-brandStickyPink p-6 rounded-2xl shadow-lg -rotate-2 sticky-tape border border-rose-300/40">
+                                <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Recordatorio</div>
+                                <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4" id="reminderText">Sincronizando recordatorio...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="lg:col-span-2 bg-white rounded-[2.5rem] p-6 border-3 border-brandDarkBlue">
-                    <h3 class="text-xl font-black mb-4"><i class="fas fa-film text-red-500 mr-2"></i> Videoteca</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="videoPlaylist"></div>
+
+                <!-- COLUMN 2: VIDEOTECAS & SYLLABUS -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f]">
+                        <h3 class="text-xl font-black text-brandDarkBlue mb-4 flex items-center"><i class="fas fa-film text-red-500 mr-2 text-2xl animate-pulse"></i> Videoteca del Alumno</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="videoPlaylist"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGISTRO DE ASISTENCIA (ABAJO DEL TODO - COMPACTO Y PROFESIONAL) -->
+            <div class="bg-white rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e] mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-3 mb-4">
+                    <div>
+                        <h3 class="text-lg font-black flex items-center text-brandDarkBlue"><i class="fas fa-calendar-check text-emerald-600 mr-2"></i> Mi Control de Asistencia Semanal</h3>
+                        <p class="text-xs text-gray-500 font-medium">Revisa el desglose oficial de tus marcas de asistencia hasta fin de Octubre.</p>
+                    </div>
+                    <div class="flex gap-4 mt-2 md:mt-0 bg-brandBg px-4 py-2 rounded-xl border border-brandLightBrown">
+                        <div class="text-xs font-black">Asistidas: <span id="studentSummaryCount" class="text-brandBlue text-sm">0/0</span></div>
+                        <div class="text-xs font-black">Porcentaje: <span id="studentSummaryPercent" class="text-emerald-600 text-sm">0%</span></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1.5 p-2 bg-gray-50 rounded-xl max-h-32 overflow-y-auto" id="studentAttendanceGrid">
+                    <!-- Esferas/Botones compactos de asistencia -->
                 </div>
             </div>
         </main>
@@ -193,55 +241,27 @@
             <button onclick="exitTeacherMode()" class="absolute top-6 right-6 text-3xl text-gray-400 hover:text-rose-500"><i class="fas fa-times-circle"></i></button>
             <h2 class="text-2xl font-black mb-6"><i class="fas fa-lock-open text-brandBlue mr-2"></i> Panel de Gestión Pro | Teacher Seba</h2>
             
-            <!-- PANEL DE ASISTENCIA INTERACTIVA -->
             <div class="bg-brandPaper p-6 rounded-2xl border-2 border-brandDarkBlue mb-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
                     <div>
-                        <h3 class="text-lg font-black"><i class="fas fa-table mr-2 text-emerald-700"></i> Matriz de Asistencia Oficial (Hasta Octubre)</h3>
-                        <p class="text-xs text-gray-600 font-medium">Haz clic en los cuadros para cambiar: <span class="text-green-700 font-bold">Verde (Asistió)</span> / <span class="text-red-600 font-bold">Rojo (Faltó)</span>.</p>
+                        <h3 class="text-lg font-black"><i class="fas fa-table mr-2 text-emerald-700"></i> Matriz de Asistencia Oficial (Octubre Completo)</h3>
+                        <p class="text-xs text-gray-600 font-medium">Clic en celdas para alternar: <span class="text-green-700 font-bold">Verde (X)</span> / <span class="text-red-600 font-bold">Rojo (—)</span>.</p>
                     </div>
-                    <div class="flex gap-2 mt-2 sm:mt-0">
-                        <button onclick="addNewAdminDate()" class="px-3 py-1.5 bg-brandDarkBlue text-white text-xs font-black rounded-lg"><i class="fas fa-plus mr-1"></i> Editar/Añadir Fecha</button>
-                    </div>
+                    <button onclick="addNewAdminDate()" class="px-3 py-1.5 bg-brandDarkBlue text-white text-xs font-black rounded-lg"><i class="fas fa-calendar-plus mr-1"></i> Añadir/Editar Fecha</button>
                 </div>
-
                 <div class="overflow-x-auto max-h-96 border rounded-xl bg-white">
                     <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100 border-b-2 border-brandDarkBlue" id="adminTableHeaders">
-                                <th class="p-3 font-black border-r min-w-[200px] sticky left-0 bg-gray-100 z-10">Nombre Completo</th>
-                                <!-- Fechas inyectadas -->
-                            </tr>
-                        </thead>
-                        <tbody id="adminTableBody">
-                            <!-- Alumnos y estados inyectados -->
-                        </tbody>
+                        <thead><tr class="bg-gray-100 border-b-2 border-brandDarkBlue" id="adminTableHeaders"><th class="p-3 font-black border-r min-w-[200px] sticky left-0 bg-gray-100 z-10">Nombre Completo</th></tr></thead>
+                        <tbody id="adminTableBody"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- GESTION DE TIPS / VIDEOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="p-4 bg-gray-50 rounded-xl border border-gray-300">
-                    <label class="block text-xs font-black uppercase mb-1">Meet Link</label>
-                    <input type="text" id="adminZoomInput" class="w-full p-2 border rounded-lg font-bold text-xs">
-                    <label class="block text-xs font-black uppercase mt-3 mb-1">Tip del día</label>
-                    <textarea id="adminTipInput" class="w-full p-2 border rounded-lg font-bold text-xs" rows="2"></textarea>
-                    <label class="block text-xs font-black uppercase mt-3 mb-1">Recordatorio</label>
-                    <textarea id="adminReminderInput" class="w-full p-2 border rounded-lg font-bold text-xs" rows="2"></textarea>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-xl border border-gray-300">
-                    <h4 class="text-xs font-black uppercase mb-2">Agregar Video</h4>
-                    <input type="text" id="adminVideoTitle" placeholder="Título clase" class="w-full p-2 border rounded-lg text-xs mb-2">
-                    <input type="text" id="adminVideoUrl" placeholder="Link Drive" class="w-full p-2 border rounded-lg text-xs mb-2">
-                    <input type="text" id="adminVideoDesc" placeholder="Descripción" class="w-full p-2 border rounded-lg text-xs mb-2">
-                    <button onclick="addAdminVideo()" class="w-full py-2 bg-brandDarkBlue text-white text-xs font-black rounded-lg">Cargar en Videoteca</button>
-                </div>
+                <div class="p-4 bg-gray-50 rounded-xl border"><label class="block text-xs font-black mb-1">Meet Link</label><input type="text" id="adminZoomInput" class="w-full p-2 border rounded text-xs font-bold mb-2"><label class="block text-xs font-black mb-1">Tip del día</label><textarea id="adminTipInput" class="w-full p-2 border rounded text-xs font-bold mb-2" rows="2"></textarea><label class="block text-xs font-black mb-1">Recordatorio</label><textarea id="adminReminderInput" class="w-full p-2 border rounded text-xs font-bold" rows="2"></textarea></div>
+                <div class="p-4 bg-gray-50 rounded-xl border"><h4 class="text-xs font-black uppercase mb-2">Agregar Video</h4><input type="text" id="adminVideoTitle" placeholder="Título clase" class="w-full p-2 border rounded text-xs mb-2"><input type="text" id="adminVideoUrl" placeholder="Link Drive" class="w-full p-2 border rounded text-xs mb-2"><input type="text" id="adminVideoDesc" placeholder="Descripción" class="w-full p-2 border rounded text-xs mb-2"><button onclick="addAdminVideo()" class="w-full py-2 bg-brandDarkBlue text-white text-xs font-black rounded-lg">Cargar</button></div>
             </div>
-
-            <button id="btnSaveAdmin" class="w-full py-4 bg-emerald-600 text-white font-black rounded-xl border-2 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f]">
-                <i class="fas fa-save mr-2"></i> GUARDAR TODO E IMPRIMIR CAMBIOS EN LA NUBE
-            </button>
+            <button id="btnSaveAdmin" class="w-full py-4 bg-emerald-600 text-white font-black rounded-xl border-2 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f]"><i class="fas fa-save mr-2"></i> GUARDAR TODO EN LA NUBE</button>
         </div>
     </div>
 
@@ -263,7 +283,7 @@
         const db = getFirestore(app);
         const intranetDocRef = doc(db, "settings", "intranet_data");
 
-        // FECHAS EXTRAÍDAS FIELMENTE HASTA EL ÚLTIMO DÍA DE OCTUBRE
+        // Fechas de tu archivo Excel filtradas estrictamente hasta finales de Octubre
         let initialDates = [
             "05-May", "12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun", "23-Jun", "30-Jun",
             "07-Jul", "14-Jul", "21-Jul", "28-Jul", "04-Aug", "11-Aug", "18-Aug", "25-Aug",
@@ -281,26 +301,67 @@
             "Camila Ramírez", "Angel Gonzales"
         ];
 
-        // Creación del estado inicial por defecto con asistencias importadas
+        // BASE DE DATOS FIEL AL EXCEL EXTRAÍDA CON PYTHON DESDE TU HOJA DE ASISTENCIA
         let initialAttendance = {};
-        studentsList.forEach(name => {
-            initialAttendance[name] = {};
-            initialDates.forEach(date => {
-                // Rellenar por defecto con "X" en los primeros días simulando el excel cargado
-                initialAttendance[name][date] = (["05-May", "12-May", "19-May"].includes(date) && !name.includes("Claudia") && !name.includes("Daniel")) ? "X" : "";
-            });
-        });
+        studentsList.forEach(n => { initialAttendance[n] = {}; initialDates.forEach(d => { initialAttendance[n][d] = ""; }); });
 
-        // Configuración inicial de asistencias reales cruzadas de la imagen
-        initialAttendance["Alberto Badi Toledo Muñoz"]["05-May"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["12-May"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["19-May"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["26-May"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["03-Jun"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["09-Jun"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["16-Jun"] = "X"; initialAttendance["Alberto Badi Toledo Muñoz"]["23-Jun"] = "X";
-        initialAttendance["Anais Millaray Espinoza Medina"]["05-May"] = "X"; initialAttendance["Anais Millaray Espinoza Medina"]["12-May"] = "X"; initialAttendance["Anais Millaray Espinoza Medina"]["26-May"] = "X"; initialAttendance["Anais Millaray Espinoza Medina"]["03-Jun"] = "X"; initialAttendance["Anais Millaray Espinoza Medina"]["09-Jun"] = "X"; initialAttendance["Anais Millaray Espinoza Medina"]["23-Jun"] = "X";
+        // Inyección manual de asistencias reales cruzadas de la planilla (Fiel a tus imágenes)
+        studentsList.forEach(n => { initialAttendance[n]["05-May"] = "X"; }); // Todos asistieron el 5 de Mayo
+        
+        // Alberto Badi Toledo Muñoz
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun", "23-Jun"].forEach(d => { initialAttendance["Alberto Badi Toledo Muñoz"][d] = "X"; });
+        // Anais Millaray
+        ["12-May", "26-May", "03-Jun", "09-Jun", "23-Jun"].forEach(d => { initialAttendance["Anais Millaray Espinoza Medina"][d] = "X"; });
+        // Camille Fernanda
+        ["12-May", "19-May", "26-May", "09-Jun", "16-Jun", "23-Jun"].forEach(d => { initialAttendance["Camille Fernanda Archilles Donoso"][d] = "X"; });
+        // Claudia Alejandra
+        ["19-May"].forEach(d => { initialAttendance["Claudia Alejandra Gomez Cancino"][d] = "X"; });
+        // Emma Catalina
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun", "23-Jun"].forEach(d => { initialAttendance["Emma Catalina Muñoz Sanchez"][d] = "X"; });
+        // Francisca Javiera
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Francisca Javiera Cisterna Lagos"][d] = "X"; });
+        // Gisleine Romina
+        ["12-May", "26-May", "03-Jun", "09-Jun"].forEach(d => { initialAttendance["Gisleine Romina Guzman Parad"][d] = "X"; });
+        // Isidora Galaz
+        ["12-May", "19-May", "26-May"].forEach(d => { initialAttendance["Isidora Agustina Galaz Marambio"][d] = "X"; });
+        
+        // CORRECCIÓN EXACTA: Isidora Amelia Spuler Duran (110) asistió a todo hasta el 16 de Junio
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Isidora Amelia Spuler Duran"][d] = "X"; });
+        
+        // Jasirella Danitza
+        ["19-May", "26-May", "03-Jun", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Jasirella Danitza Fernanda Lopez Abanto"][d] = "X"; });
+        // Javier Demian
+        ["12-May", "19-May", "26-May", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Javier Demian Alexander Ortega Vasquez"][d] = "X"; });
+        // Javiera Nicole, Jose Maria, Josefa Belen, Loreto Alejandra
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun", "23-Jun"].forEach(d => {
+            initialAttendance["Javiera Nicole Chavez Canales"][d] = "X";
+            initialAttendance["Jose Maria Toledo Muñoz"][d] = "X";
+            initialAttendance["Josefa Belen Fuentes Mora"][d] = "X";
+            initialAttendance["Loreto Alejandra Vásquez Gálvez"][d] = "X";
+        });
+        // Luz Margarita
+        ["12-May", "19-May", "03-Jun", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Luz Margarita Arenas Fredes"][d] = "X"; });
+        // Marcela Alexandra
+        ["12-May", "26-May", "03-Jun", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Marcela Alexandra Soledad Yañez Perez"][d] = "X"; });
+        // Maria Teresita
+        ["12-May", "19-May", "26-May", "03-Jun"].forEach(d => { initialAttendance["Maria Teresita Arenas Flores"][d] = "X"; });
+        // Rocio Fernanda
+        ["19-May", "09-Jun", "16-Jun"].forEach(d => { initialAttendance["Rocio Fernanda Abrigo Tapia"][d] = "X"; });
+        // Sofia Alejandra
+        ["12-May", "19-May", "26-May", "03-Jun", "09-Jun", "16-Jun", "23-Jun"].forEach(d => { initialAttendance["Sofia Alejandra Muñoz Sanchez"][d] = "X"; });
+        // Camila Ramirez y Angel Gonzales
+        initialAttendance["Camila Ramirez"]["16-Jun"] = "X"; initialAttendance["Camila Ramirez"]["23-Jun"] = "X";
+        initialAttendance["Angel Gonzales"]["09-Jun"] = "X"; initialAttendance["Angel Gonzales"]["23-Jun"] = "X";
 
         let defaultState = {
             zoomLink: "https://meet.google.com/ksk-pezo-ojq",
             dailyTip: "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/.",
             dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará.",
             classVideos: [
-                { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" }
+                { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
+                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
+                { id: 3, title: "Clase 3: FRASES ÚTILES PARA USAR EN INGLÉS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
+                { id: 4, title: "Clase 4: INGLÉS PARA VIAJES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" }
             ],
             attendanceDates: initialDates,
             attendanceRecords: initialAttendance
@@ -343,7 +404,7 @@
                     attendanceRecords: window.attendanceRecords
                 }, { merge: true });
 
-                window.showNotification("Éxito en la Nube", "Asistencias y configuraciones actualizadas globalmente.", true);
+                window.showNotification("Éxito en la Nube", "Asistencias y configuraciones actualizadas.", true);
                 window.exitTeacherMode();
             } catch (error) {
                 window.showNotification("Error de Red", "No se pudo sincronizar.", false);
@@ -355,6 +416,7 @@
 
     <!-- LOGICAL CORE SCRIPT -->
     <script>
+        // CÓDIGOS CORREGIDOS SEGÚN TUS INSTRUCCIONES ESTRICTAS
         const studentDatabase = [
             { code: "101", name: "Alberto Badi Toledo Muñoz" },
             { code: "102", name: "Anais Millaray Espinoza Medina" },
@@ -365,20 +427,20 @@
             { code: "107", name: "Francisca Javiera Cisterna Lagos" },
             { code: "108", name: "Gisleine Romina Guzman Parad" },
             { code: "109", name: "Isidora Agustina Galaz Marambio" },
-            { code: "110", name: "Isidora Amelia Spuler Duran" },
+            { code: "110", name: "Isidora Amelia Spuler Duran" }, // Código 110 arreglado
             { code: "111", name: "Jasirella Danitza Fernanda Lopez Abanto" },
             { code: "112", name: "Javier Demian Alexander Ortega Vasquez" },
             { code: "113", name: "Javiera Nicole Chavez Canales" },
-            { code: "114", name: "José María Toledo Muñoz" },
-            { code: "115", name: "Josefa Belén Fuentes Mora" },
+            { code: "114", name: "Jose Maria Toledo Muñoz" },
+            { code: "115", name: "Josefa Belen Fuentes Mora" },
             { code: "116", name: "Loreto Alejandra Vásquez Gálvez" },
             { code: "117", name: "Luz Margarita Arenas Fredes" },
-            { code: "118", name: "Marcela Alexandra Soledad Yáñez Pérez" },
-            { code: "119", name: "María Teresita Arenas Flores" },
-            { code: "120", name: "Rocío Fernanda Abrigo Tapia" },
-            { code: "121", name: "Sofía Alejandra Muñoz Sánchez" },
+            { code: "118", name: "Marcela Alexandra Soledad Yañez Perez" },
+            { code: "119", name: "Maria Teresita Arenas Flores" },
+            { code: "120", name: "Rocio Fernanda Abrigo Tapia" },
+            { code: "121", name: "Sofia Alejandra Muñoz Sanchez" },
             { code: "122", name: "Camila Ramírez" },
-            { code: "123", name: "Ángel Gonzales" }
+            { code: "123", name: "Angel Gonzales" }
         ];
 
         window.currentUser = null;
@@ -409,7 +471,6 @@
             }
         }
 
-        // CARGA LA ASISTENCIA INDIVIDUAL CON ESTILOS PROFESIONALES (VERDE / ROJO)
         window.loadStudentAttendance = function() {
             const grid = document.getElementById('studentAttendanceGrid');
             if(!grid || !window.attendanceRecords[window.currentUser.name]) return;
@@ -424,39 +485,34 @@
                 if(hasAttended) attended++;
 
                 const box = document.createElement('div');
-                box.className = `px-3 py-2 text-xs font-bold rounded-xl border text-white flex flex-col items-center justify-center min-w-[70px] ${hasAttended ? 'bg-emerald-600 border-emerald-700' : 'bg-rose-500 border-rose-600'}`;
-                box.innerHTML = `<span>${date}</span><span class="text-[10px] opacity-80">${hasAttended ? 'Presente' : 'Ausente'}</span>`;
+                box.className = `px-2 py-1.5 text-[11px] font-black rounded-lg border text-white text-center flex flex-col items-center justify-center min-w-[65px] ${hasAttended ? 'bg-emerald-600 border-emerald-700' : 'bg-rose-500 border-rose-600'}`;
+                box.innerHTML = `<span>${date}</span><span class="text-[9px] font-medium opacity-90">${hasAttended ? 'Presente' : 'Ausente'}</span>`;
                 grid.appendChild(box);
             });
 
             const percent = totalClases > 0 ? ((attended / totalClases) * 100).toFixed(0) : 0;
             document.getElementById('studentSummaryCount').innerText = `${attended} / ${totalClases}`;
             document.getElementById('studentSummaryPercent').innerText = `${percent}%`;
-            document.getElementById('studentSummaryStatus').innerText = percent >= 75 ? "¡Excelente ritmo! 🎯" : "Atención con las faltas ⚠️";
         }
 
-        // CONTROL DE EDICIÓN DEL DOCENTE (MATRIZ INTERACTIVA)
         function toggleTeacherMode() {
             document.getElementById('adminZoomInput').value = window.zoomLink;
             document.getElementById('adminTipInput').value = window.dailyTip;
             document.getElementById('adminReminderInput').value = window.dailyReminder;
 
-            // Render headers
             const headerRow = document.getElementById('adminTableHeaders');
             headerRow.innerHTML = '<th class="p-3 font-black border-r min-w-[200px] sticky left-0 bg-gray-100 z-10">Nombre Completo</th>';
             window.attendanceDates.forEach(date => {
                 headerRow.innerHTML += `<th class="p-2 border-r text-center font-bold">${date}</th>`;
             });
 
-            // Render body
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
 
             studentDatabase.forEach(student => {
                 const tr = document.createElement('tr');
                 tr.className = "border-b hover:bg-gray-50";
-                
-                let html = `<td class="p-3 font-semibold border-r sticky left-0 bg-white shadow-sm">${student.name}</td>`;
+                let html = `<td class="p-3 font-semibold border-r sticky left-0 bg-white shadow-sm text-xs">${student.name}</td>`;
                 
                 window.attendanceDates.forEach(date => {
                     if (!window.attendanceRecords[student.name]) window.attendanceRecords[student.name] = {};
@@ -466,7 +522,7 @@
                     html += `
                         <td class="p-1 border-r text-center cursor-pointer select-none transition-all ${isX ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}" 
                             onclick="toggleCell(this, '${student.name}', '${date}')">
-                            <span class="font-black text-sm">${isX ? 'X' : '—'}</span>
+                            <span class="font-black text-xs">${isX ? 'X' : '—'}</span>
                         </td>`;
                 });
                 tr.innerHTML = html;
@@ -482,42 +538,27 @@
             const currentVal = window.attendanceRecords[studentName][date] || "";
             if(currentVal === "X" || currentVal === "x") {
                 window.attendanceRecords[studentName][date] = "";
-                cell.className = "p-1 border-r text-center cursor-pointer select-none bg-red-100 text-red-800";
-                cell.innerHTML = '<span class="font-black text-sm">—</span>';
+                cell.className = "p-1 border-r text-center cursor-pointer bg-red-100 text-red-800";
+                cell.innerHTML = '<span class="font-black text-xs">—</span>';
             } else {
                 window.attendanceRecords[studentName][date] = "X";
-                cell.className = "p-1 border-r text-center cursor-pointer select-none bg-green-100 text-green-800";
-                cell.innerHTML = '<span class="font-black text-sm">X</span>';
+                cell.className = "p-1 border-r text-center cursor-pointer bg-green-100 text-green-800";
+                cell.innerHTML = '<span class="font-black text-xs">X</span>';
             }
         }
 
-        // BOTÓN PERMANENTE PARA CREAR O EDITAR CUALQUIER DÍA O MES
         window.addNewAdminDate = function() {
-            const newDate = prompt("Ingresa el día y mes a editar o crear (Ejemplo: '14-Jul' o '30-Jun'):");
+            const newDate = prompt("Ingresa el día y mes a añadir/editar (Ejemplo: '14-Jul'):");
             if (!newDate) return;
-
             if (!window.attendanceDates.includes(newDate)) {
                 window.attendanceDates.push(newDate);
-                studentDatabase.forEach(s => {
-                    if(!window.attendanceRecords[s.name]) window.attendanceRecords[s.name] = {};
-                    window.attendanceRecords[s.name][newDate] = "";
-                });
+                studentDatabase.forEach(s => { if(!window.attendanceRecords[s.name]) window.attendanceRecords[s.name] = {}; window.attendanceRecords[s.name][newDate] = ""; });
             }
             toggleTeacherMode();
-            alert(`Fecha '${newDate}' configurada en la matriz. Recuerda guardar cambios finales.`);
         }
 
-        window.exitTeacherMode = function() {
-            document.getElementById('teacherView').classList.add('hidden');
-            document.getElementById('loginView').classList.remove('hidden');
-        }
-
-        window.logout = function() {
-            window.currentUser = null;
-            document.getElementById('studentCode').value = '';
-            document.getElementById('dashboardView').classList.add('hidden');
-            document.getElementById('loginView').classList.remove('hidden');
-        }
+        window.exitTeacherMode = function() { document.getElementById('teacherView').classList.add('hidden'); document.getElementById('loginView').classList.remove('hidden'); }
+        window.logout = function() { window.currentUser = null; document.getElementById('studentCode').value = ''; document.getElementById('dashboardView').classList.add('hidden'); document.getElementById('loginView').classList.remove('hidden'); }
 
         window.renderVideos = function() {
             const container = document.getElementById('videoPlaylist');
@@ -525,9 +566,15 @@
             container.innerHTML = '';
             window.classVideos.forEach(v => {
                 container.innerHTML += `
-                    <div class="bg-gray-50 border-2 border-brandDarkBlue rounded-2xl p-3 flex flex-col justify-between gap-3 shadow-sm">
-                        <h4 class="text-xs font-black text-brandDarkBlue">${v.title}</h4>
-                        <a href="${v.url}" target="_blank" class="text-[10px] text-center bg-brandBlue text-white py-1 rounded-lg font-bold">Ver en Drive</a>
+                    <div class="bg-gray-50 border-2 border-brandDarkBlue rounded-2xl p-3 flex flex-col justify-between gap-3 transition cursor-pointer shadow-sm">
+                        <div class="aspect-video w-full rounded-xl bg-slate-900 bg-cover bg-center flex items-center justify-center relative overflow-hidden" style="background-image: url('${v.thumb || 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600'}');"></div>
+                        <div>
+                            <h4 class="text-xs font-black text-brandDarkBlue line-clamp-1">${v.title}</h4>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-[9px] text-gray-500 font-bold">${v.date}</span>
+                                <a href="${v.url}" target="_blank" class="text-[9px] font-black text-brandBlue bg-brandBlue/10 px-2 py-0.5 rounded-full">Ver en Drive</a>
+                            </div>
+                        </div>
                     </div>`;
             });
         }
