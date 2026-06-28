@@ -97,7 +97,7 @@
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
             <p id="toastTitle" class="font-bold text-sm">Notificación</p>
-            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del systema.</p>
+            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del sistema.</p>
         </div>
     </div>
 
@@ -650,21 +650,21 @@
             "122": { attended: 2, absent: 0 }, "123": { attended: 2, absent: 0 }
         };
 
-        // INTEGRACIÓN COMPLETA DE TODAS TUS CLASES RESPALDADAS EN EL ESTADO INICIAL
+        // LAS 6 CLASES EXACTAS DE TU FOTO RESPALDADAS DE FORMA SÓLIDA
+        let localBackupVideos = [
+            { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo para visualizar", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
+            { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo para visualizar", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
+            { id: 3, title: "Clase 3: FRASES ÚTILES PARA USAR EN INGLÉS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
+            { id: 4, title: "Clase 4: INGLÉS PARA VIAJES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600" },
+            { id: 5, title: "Clase 5: PREGUNTAS Y RESPUESTAS MÁS FRECUENTES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1517842082775-24e71211746a?q=80&w=600" },
+            { id: 6, title: "Clase 6: ENGLISH VERBS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=600" }
+        ];
+
         let defaultState = {
             zoomLink: "https://meet.google.com/ksk-pezo-ojq",
             dailyTip: "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!",
-            dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases Atte: Mr Nunez",
-            classVideos: [
-                { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
-                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
-                { id: 3, title: "Clase 3: FRASES ÚTILES PARA USAR EN INGLÉS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
-                { id: 4, title: "Clase 4: INGLÉS PARA VIAJES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600" },
-                { id: 5, title: "Clase 5: PREGUNTAS Y RESPUESTAS MÁS FRECUENTES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1517842082775-24e71211746a?q=80&w=600" },
-                { id: 6, title: "Clase 6: ENGLISH VERBS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=600" },
-                { id: 7, title: "Clase 7: TALKING ABOUT MY FUTURE PLANS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600" },
-                { id: 8, title: "Clase 8: FINAL SUMMARY REVIEW", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=600" }
-            ],
+            dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases",
+            classVideos: localBackupVideos,
             classTopics: [
                 { id: 1, title: "NEXT CLASS: LISTENING SKILL", desc: "NEXT CLASS: SPEAKING SKILLS", completed: false }
             ],
@@ -684,9 +684,19 @@
                 window.zoomLink = data.zoomLink || defaultState.zoomLink;
                 window.dailyTip = data.dailyTip || defaultState.dailyTip;
                 window.dailyReminder = data.dailyReminder || defaultState.dailyReminder;
-                window.classVideos = data.classVideos || defaultState.classVideos;
                 window.classTopics = data.classTopics || defaultState.classTopics;
                 window.studentAttendance = data.studentAttendance || defaultState.studentAttendance;
+
+                // SOLUCIÓN DEFENSIVA CRUCIAL: Si la nube viene recortada, fusionar con el respaldo local
+                let cloudVideos = data.classVideos || [];
+                if (cloudVideos.length < localBackupVideos.length) {
+                    // Mantener los de la nube al principio y rellenar con los faltantes del respaldo
+                    let existingTitles = cloudVideos.map(v => v.title.toLowerCase());
+                    let missingVideos = localBackupVideos.filter(v => !existingTitles.includes(v.title.toLowerCase()));
+                    window.classVideos = [...cloudVideos, ...missingVideos];
+                } else {
+                    window.classVideos = cloudVideos;
+                }
             } else {
                 setDoc(intranetDocRef, defaultState);
             }
