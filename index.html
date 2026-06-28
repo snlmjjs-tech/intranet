@@ -97,7 +97,7 @@
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
             <p id="toastTitle" class="font-bold text-sm">Notificación</p>
-            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del sistema.</p>
+            <p id="toastMsg" class="text-xs text-brandLightBrown">Mensaje del systema.</p>
         </div>
     </div>
 
@@ -281,7 +281,7 @@
             <!-- MAIN GRID SYSTEM -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- COLUMN 1: BULLETIN BOARD, HOMEWORK ZONE & NEW ATTENDANCE COMPACT BOX -->
+                <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
                     <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
                         <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
@@ -346,7 +346,7 @@
                         </a>
                     </div>
 
-                    <!-- NUEVA CAJA DE ASISTENCIA: SÚPER CHICA, COMPACTA Y SIN ARRUINAR NADA ABAJO -->
+                    <!-- CAJA DE ASISTENCIA COMPACTA -->
                     <div class="bg-white rounded-[2rem] p-5 border-3 border-brandDarkBlue shadow-[4px_4px_0px_0px_#8ea4b0]">
                         <h4 class="text-xs font-black uppercase tracking-wider text-brandDarkBlue flex items-center mb-3">
                             <i class="fas fa-calendar-check text-emerald-600 mr-2 text-sm"></i> Mi Asistencia y Progreso
@@ -594,7 +594,7 @@
                     </div>
                 </div>
 
-                <!-- NUEVO PANEL DE ASISTENCIA DENTRO DEL PANEL DE GESTIÓN -->
+                <!-- PANEL DE ASISTENCIA DENTRO DEL PANEL DE GESTIÓN -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-1 flex items-center">
                         <i class="fas fa-users-cog text-emerald-600 mr-2"></i> Control Numérico de Asistencias
@@ -638,7 +638,7 @@
         const db = getFirestore(app);
         const intranetDocRef = doc(db, "settings", "intranet_data");
 
-        // Valores iniciales por defecto cargados desde la planilla Excel real
+        // Valores iniciales de asistencia
         let defaultAttendance = {
             "101": { attended: 8, absent: 0 }, "102": { attended: 6, absent: 2 }, "103": { attended: 7, absent: 1 },
             "104": { attended: 2, absent: 6 }, "105": { attended: 1, absent: 7 }, "106": { attended: 8, absent: 0 },
@@ -650,13 +650,20 @@
             "122": { attended: 2, absent: 0 }, "123": { attended: 2, absent: 0 }
         };
 
+        // INTEGRACIÓN COMPLETA DE TODAS TUS CLASES RESPALDADAS EN EL ESTADO INICIAL
         let defaultState = {
             zoomLink: "https://meet.google.com/ksk-pezo-ojq",
             dailyTip: "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!",
-            dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases",
+            dailyReminder: "No te olvides de participar en las clases y ser puntual, ya que eso te ayudará a ser constante en las clases Atte: Mr Nunez",
             classVideos: [
                 { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
-                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" }
+                { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
+                { id: 3, title: "Clase 3: FRASES ÚTILES PARA USAR EN INGLÉS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
+                { id: 4, title: "Clase 4: INGLÉS PARA VIAJES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600" },
+                { id: 5, title: "Clase 5: PREGUNTAS Y RESPUESTAS MÁS FRECUENTES", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1517842082775-24e71211746a?q=80&w=600" },
+                { id: 6, title: "Clase 6: ENGLISH VERBS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=600" },
+                { id: 7, title: "Clase 7: TALKING ABOUT MY FUTURE PLANS", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600" },
+                { id: 8, title: "Clase 8: FINAL SUMMARY REVIEW", url: "#", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=600" }
             ],
             classTopics: [
                 { id: 1, title: "NEXT CLASS: LISTENING SKILL", desc: "NEXT CLASS: SPEAKING SKILLS", completed: false }
@@ -696,7 +703,6 @@
             const updatedTip = document.getElementById('adminTipInput').value.trim();
             const updatedReminder = document.getElementById('adminReminderInput').value.trim();
 
-            // Guardar inputs dinámicos de asistencia
             window.studentDatabase.forEach(s => {
                 const attInput = document.getElementById(`att-${s.code}`);
                 const absInput = document.getElementById(`abs-${s.code}`);
@@ -1063,7 +1069,6 @@
             document.getElementById('adminTipInput').value = window.dailyTip;
             document.getElementById('adminReminderInput').value = window.dailyReminder;
 
-            // Cargar el listado completo de estudiantes de forma muy limpia en el panel
             const container = document.getElementById('adminAttendanceContainer');
             if (container && window.studentAttendance) {
                 container.innerHTML = '';
