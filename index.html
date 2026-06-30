@@ -542,12 +542,12 @@
                     </div>
                 </div>
 
-                <!-- Registrar Video -->
+                <!-- Registrar / Editar Video -->
                 <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
-                        <i class="fas fa-plus-circle text-red-500 mr-2"></i> Registrar Video de Clase Grabada
+                        <i class="fas fa-plus-circle text-red-500 mr-2"></i> <span id="adminVideoFormTitle">Registrar Video de Clase Grabada</span>
                     </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Título</label>
                             <input type="text" id="adminVideoTitle" placeholder="Ej: Clase 9: Modales" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
@@ -560,10 +560,27 @@
                             <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Descripción / Nota</label>
                             <input type="text" id="adminVideoDesc" placeholder="Ej: Video de la clase listo" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
                         </div>
+                        <div>
+                            <label class="block text-[9px] uppercase font-black text-gray-500 mb-1">Imagen de portada (opcional)</label>
+                            <input type="text" id="adminVideoThumb" placeholder="Pega una URL de imagen, o déjalo vacío" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-bold outline-none">
+                        </div>
                     </div>
-                    <button onclick="addAdminVideo()" class="mt-4 px-4 py-2 bg-brandDarkBlue text-white hover:bg-slate-800 rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
-                        Publicar en Videoteca
-                    </button>
+                    <div class="flex gap-2 mt-4">
+                        <button id="btnAdminVideoSubmit" onclick="addAdminVideo()" class="px-4 py-2 bg-brandDarkBlue text-white hover:bg-slate-800 rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
+                            Publicar en Videoteca
+                        </button>
+                        <button id="btnAdminVideoCancel" onclick="cancelEditAdminVideo()" class="hidden px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl text-xs font-black transition">
+                            Cancelar Edición
+                        </button>
+                    </div>
+
+                    <!-- Listado de clases existentes: editar / borrar -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h5 class="text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-3">Clases Publicadas</h5>
+                        <div id="adminVideoListContainer" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+                            <!-- Inyectado dinámicamente -->
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Agendar Próximo Tema (Syllabus) -->
@@ -1088,6 +1105,8 @@
             document.getElementById('adminZoomInput').value = window.zoomLink;
             document.getElementById('adminTipInput').value = window.dailyTip;
             document.getElementById('adminReminderInput').value = window.dailyReminder;
+            cancelEditAdminVideo();
+            window.renderAdminVideoList();
 
             const container = document.getElementById('adminAttendanceContainer');
             if (container && window.studentAttendance) {
@@ -1124,31 +1143,111 @@
             document.getElementById('loginView').classList.remove('hidden');
         }
 
+        const DEFAULT_VIDEO_THUMB = "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600";
+        window.editingVideoId = null;
+
         function addAdminVideo() {
             const title = document.getElementById('adminVideoTitle').value.trim();
             const url = document.getElementById('adminVideoUrl').value.trim();
             const desc = document.getElementById('adminVideoDesc').value.trim();
+            const thumb = document.getElementById('adminVideoThumb').value.trim() || DEFAULT_VIDEO_THUMB;
 
             if (!title || !url || !desc) {
                 showNotification("Campos Incompletos", "Por favor ingresa todos los detalles del video.", false);
                 return;
             }
 
-            const newVid = {
-                id: window.classVideos.length + 1,
-                title: title,
-                url: url,
-                date: desc,
-                thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600"
-            };
+            if (window.editingVideoId !== null) {
+                const idx = window.classVideos.findIndex(v => v.id === window.editingVideoId);
+                if (idx !== -1) {
+                    window.classVideos[idx] = { ...window.classVideos[idx], title, url, date: desc, thumb };
+                }
+                showNotification("Clase Actualizada", "Presiona el botón verde 'Guardar' para sincronizar el cambio con la nube.");
+                cancelEditAdminVideo();
+            } else {
+                const nextId = window.classVideos.reduce((max, v) => Math.max(max, v.id), 0) + 1;
+                const newVid = { id: nextId, title: title, url: url, date: desc, thumb: thumb };
+                window.classVideos.unshift(newVid);
+                document.getElementById('adminVideoTitle').value = '';
+                document.getElementById('adminVideoUrl').value = '';
+                document.getElementById('adminVideoDesc').value = '';
+                document.getElementById('adminVideoThumb').value = '';
+                showNotification("Guardado Temporal", "Video preparado. Presiona el botón verde de abajo para sincronizar con la nube.");
+            }
 
-            window.classVideos.unshift(newVid);
             window.renderVideos();
+            window.renderAdminVideoList();
+        }
 
+        window.editAdminVideo = function(id) {
+            const vid = window.classVideos.find(v => v.id === id);
+            if (!vid) return;
+
+            window.editingVideoId = id;
+            document.getElementById('adminVideoTitle').value = vid.title;
+            document.getElementById('adminVideoUrl').value = vid.url;
+            document.getElementById('adminVideoDesc').value = vid.date;
+            document.getElementById('adminVideoThumb').value = vid.thumb === DEFAULT_VIDEO_THUMB ? '' : vid.thumb;
+
+            document.getElementById('adminVideoFormTitle').innerText = `Editando: ${vid.title}`;
+            document.getElementById('btnAdminVideoSubmit').innerText = 'Guardar Cambios de la Clase';
+            document.getElementById('btnAdminVideoCancel').classList.remove('hidden');
+            document.getElementById('adminVideoTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        window.cancelEditAdminVideo = function() {
+            window.editingVideoId = null;
             document.getElementById('adminVideoTitle').value = '';
             document.getElementById('adminVideoUrl').value = '';
             document.getElementById('adminVideoDesc').value = '';
-            showNotification("Guardado Temporal", "Video preparado. Presiona el botón verde de abajo para sincronizar con la nube.");
+            document.getElementById('adminVideoThumb').value = '';
+            document.getElementById('adminVideoFormTitle').innerText = 'Registrar Video de Clase Grabada';
+            document.getElementById('btnAdminVideoSubmit').innerText = 'Publicar en Videoteca';
+            document.getElementById('btnAdminVideoCancel').classList.add('hidden');
+        }
+
+        window.deleteAdminVideo = function(id) {
+            const vid = window.classVideos.find(v => v.id === id);
+            if (!vid) return;
+            if (!confirm(`¿Borrar "${vid.title}"? Esto se hará permanente al presionar "Guardar e Imprimir Cambios en la Nube".`)) return;
+
+            window.classVideos = window.classVideos.filter(v => v.id !== id);
+            if (window.editingVideoId === id) cancelEditAdminVideo();
+
+            window.renderVideos();
+            window.renderAdminVideoList();
+            showNotification("Clase Eliminada", "Presiona el botón verde 'Guardar' para confirmar el borrado en la nube.");
+        }
+
+        window.renderAdminVideoList = function() {
+            const container = document.getElementById('adminVideoListContainer');
+            if (!container || !window.classVideos) return;
+            container.innerHTML = '';
+
+            if (window.classVideos.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 font-semibold p-2">No hay clases publicadas todavía.</p>`;
+                return;
+            }
+
+            window.classVideos.forEach(v => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between gap-3 p-2 bg-white border border-gray-200 rounded-xl";
+                row.innerHTML = `
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-12 h-9 rounded-md bg-cover bg-center flex-shrink-0 border border-gray-200" style="background-image: url('${v.thumb}');"></div>
+                        <span class="text-xs font-bold text-brandDarkBlue truncate">${v.title}</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button onclick="editAdminVideo(${v.id})" class="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-brandBlue rounded-lg text-[10px] font-black border border-brandBlue/30 transition">
+                            <i class="fas fa-pen"></i> Editar
+                        </button>
+                        <button onclick="deleteAdminVideo(${v.id})" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-[10px] font-black border border-rose-300 transition">
+                            <i class="fas fa-trash-alt"></i> Borrar
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
         }
 
         function addAdminTopic() {
