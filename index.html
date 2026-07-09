@@ -697,6 +697,9 @@
         window.classTopics = defaultState.classTopics;
         window.studentAttendance = defaultState.studentAttendance;
 
+        const adminPanelEl = () => document.getElementById('teacherView');
+        const isAdminOpen = () => adminPanelEl() && !adminPanelEl().classList.contains('hidden');
+
         onSnapshot(intranetDocRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
@@ -706,23 +709,25 @@
                 window.classTopics = data.classTopics || defaultState.classTopics;
                 window.studentAttendance = data.studentAttendance || defaultState.studentAttendance;
 
-                // SOLUCIÓN DEFENSIVA CRUCIAL: Si la nube viene recortada, fusionar con el respaldo local
-                let cloudVideos = data.classVideos || [];
-                // Reparar cualquier video con link roto/placeholder usando el respaldo local por título
-                cloudVideos = cloudVideos.map(v => {
-                    if (!v.url || v.url === "#") {
-                        const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
-                        return backup ? { ...v, url: backup.url } : v;
+                // No sobreescribir classVideos si el admin tiene el panel abierto (evita perder ediciones)
+                if (!isAdminOpen()) {
+                    let cloudVideos = data.classVideos || [];
+                    cloudVideos = cloudVideos.map(v => {
+                        if (!v.url || v.url === "#") {
+                            const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
+                            return backup ? { ...v, url: backup.url } : v;
+                        }
+                        return v;
+                    });
+                    if (cloudVideos.length < localBackupVideos.length) {
+                        let existingTitles = cloudVideos.map(v => v.title.toLowerCase());
+                        let missingVideos = localBackupVideos.filter(v => !existingTitles.includes(v.title.toLowerCase()));
+                        window.classVideos = [...cloudVideos, ...missingVideos];
+                    } else {
+                        window.classVideos = cloudVideos;
                     }
-                    return v;
-                });
-                if (cloudVideos.length < localBackupVideos.length) {
-                    // Mantener los de la nube al principio y rellenar con los faltantes del respaldo
-                    let existingTitles = cloudVideos.map(v => v.title.toLowerCase());
-                    let missingVideos = localBackupVideos.filter(v => !existingTitles.includes(v.title.toLowerCase()));
-                    window.classVideos = [...cloudVideos, ...missingVideos];
-                } else {
-                    window.classVideos = cloudVideos;
+                    // Ordenar siempre por número de clase
+                    window.classVideos.sort((a, b) => a.id - b.id);
                 }
             } else {
                 setDoc(intranetDocRef, defaultState);
@@ -734,6 +739,15 @@
             window.renderTopics();
             if (window.currentUser) window.updateStudentAttendanceUI();
         });
+
+        window.saveVideosToCloud = async function() {
+            try {
+                await setDoc(intranetDocRef, { classVideos: window.classVideos }, { merge: true });
+                window.showNotification("Guardado en la Nube ✓", "La videoteca fue actualizada correctamente.", true);
+            } catch(e) {
+                window.showNotification("Error de Red", "No se pudo guardar en la nube. Intenta de nuevo.", false);
+            }
+        };
 
         window.saveAdminSettings = async function() {
             const updatedZoom = document.getElementById('adminZoomInput').value.trim();
@@ -1162,21 +1176,21 @@
                 if (idx !== -1) {
                     window.classVideos[idx] = { ...window.classVideos[idx], title, url, date: desc, thumb };
                 }
-                showNotification("Clase Actualizada", "Presiona el botón verde 'Guardar' para sincronizar el cambio con la nube.");
                 cancelEditAdminVideo();
             } else {
                 const nextId = window.classVideos.reduce((max, v) => Math.max(max, v.id), 0) + 1;
                 const newVid = { id: nextId, title: title, url: url, date: desc, thumb: thumb };
-                window.classVideos.unshift(newVid);
+                window.classVideos.push(newVid);
                 document.getElementById('adminVideoTitle').value = '';
                 document.getElementById('adminVideoUrl').value = '';
                 document.getElementById('adminVideoDesc').value = '';
                 document.getElementById('adminVideoThumb').value = '';
-                showNotification("Guardado Temporal", "Video preparado. Presiona el botón verde de abajo para sincronizar con la nube.");
             }
 
+            window.classVideos.sort((a, b) => a.id - b.id);
             window.renderVideos();
             window.renderAdminVideoList();
+            window.saveVideosToCloud();
         }
 
         window.editAdminVideo = function(id) {
@@ -1214,9 +1228,10 @@
             window.classVideos = window.classVideos.filter(v => v.id !== id);
             if (window.editingVideoId === id) cancelEditAdminVideo();
 
+            window.classVideos.sort((a, b) => a.id - b.id);
             window.renderVideos();
             window.renderAdminVideoList();
-            showNotification("Clase Eliminada", "Presiona el botón verde 'Guardar' para confirmar el borrado en la nube.");
+            window.saveVideosToCloud();
         }
 
         window.renderAdminVideoList = function() {
