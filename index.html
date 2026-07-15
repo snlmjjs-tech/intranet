@@ -713,6 +713,7 @@
                 // No sobreescribir classVideos si el admin tiene el panel abierto (evita perder ediciones)
                 if (!isAdminOpen()) {
                     let cloudVideos = data.classVideos || [];
+                    // Reparar links rotos usando el respaldo local por título
                     cloudVideos = cloudVideos.map(v => {
                         if (!v.url || v.url === "#") {
                             const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
@@ -720,13 +721,10 @@
                         }
                         return v;
                     });
-                    if (cloudVideos.length < localBackupVideos.length) {
-                        let existingTitles = cloudVideos.map(v => v.title.toLowerCase());
-                        let missingVideos = localBackupVideos.filter(v => !existingTitles.includes(v.title.toLowerCase()));
-                        window.classVideos = [...cloudVideos, ...missingVideos];
-                    } else {
-                        window.classVideos = cloudVideos;
-                    }
+                    // Agregar siempre los del respaldo local que no estén en la nube (por id)
+                    const cloudIds = cloudVideos.map(v => v.id);
+                    const missingVideos = localBackupVideos.filter(v => !cloudIds.includes(v.id));
+                    window.classVideos = [...cloudVideos, ...missingVideos];
                     // Ordenar siempre por número de clase
                     window.classVideos.sort((a, b) => a.id - b.id);
                 }
