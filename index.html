@@ -667,7 +667,10 @@
             "122": { attended: 2, absent: 0 }, "123": { attended: 2, absent: 0 }
         };
 
-        // LAS 6 CLASES EXACTAS DE TU FOTO RESPALDADAS DE FORMA SÓLIDA
+        // RESPALDO SÓLIDO DE TODAS LAS CLASES: sirve como red de seguridad.
+        // Si una clase desaparece de Firestore (borrado accidental, reset, etc.),
+        // el sistema la vuelve a agregar automáticamente comparando por "id".
+        // Por eso es crucial que TODA clase publicada quede registrada aquí también.
         let localBackupVideos = [
             { id: 1, title: "Clase 1: INTRODUCING MYSELF", url: "https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view", date: "Video de la clase listo para visualizar", thumb: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600" },
             { id: 2, title: "Clase 2: Setting up a conversation", url: "https://drive.google.com/file/d/1GGMkw_LQA3hxdjmiuCT8BdkYS4QrZD45/view?usp=sharing", date: "Video de la clase listo para visualizar", thumb: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600" },
@@ -677,6 +680,8 @@
             { id: 6, title: "Clase 6: ENGLISH VERBS", url: "https://drive.google.com/file/d/1Kd8u7ppMUaIt4Rh5G9oKWOQOrCByZBhI/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=600" },
             { id: 7, title: "Clase 7: PRONUNCIATION TIPS", url: "https://drive.google.com/file/d/1tG2LtpIkJFmVdonS_5qsk36lKWv9VyQq/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600" },
             { id: 8, title: "Clase 8: ENGLISH FOR WORK", url: "https://drive.google.com/file/d/1YmmiaUOUeeui_crDsHWxgeG2rPOp8sMP/view", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=600" },
+            { id: 9, title: "Clase 9: English Listening Skill", url: "https://drive.google.com/file/d/1XSGFXUoVaRLusGexrb-UlfWL7X0pExW4/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=600" },
+            { id: 10, title: "Clase 10: English Speaking Skill", url: "https://drive.google.com/file/d/1awY7emjp4ToaTEsE6Snd_dijl1qSCBJ9/view?usp=sharing", date: "Video de la clase listo", thumb: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=600" },
             { id: 11, title: "Clase 11: English Connectors", url: "https://drive.google.com/file/d/1qaVN0UW3U2dui7pdWBGCrtx1WIAHFjDJ/view?usp=sharing", date: "Video de la clase listo", thumb: "https://www.britishcouncil.org.mx/sites/default/files/lista-de-conectores-en-ingles.png" }
         ];
 
@@ -1222,7 +1227,12 @@
         window.deleteAdminVideo = function(id) {
             const vid = window.classVideos.find(v => v.id === id);
             if (!vid) return;
-            if (!confirm(`¿Borrar "${vid.title}"? Esto se hará permanente al presionar "Guardar e Imprimir Cambios en la Nube".`)) return;
+            if (!confirm(`¿Borrar "${vid.title}"? Esta acción es PERMANENTE e INMEDIATA: se guarda en la nube al instante, sin necesidad de presionar ningún otro botón.`)) return;
+            const typed = prompt(`Para confirmar el borrado, escribe BORRAR en mayúsculas:`);
+            if (typed !== 'BORRAR') {
+                window.showNotification("Borrado Cancelado", "No se eliminó ninguna clase.");
+                return;
+            }
 
             window.classVideos = window.classVideos.filter(v => v.id !== id);
             if (window.editingVideoId === id) cancelEditAdminVideo();
