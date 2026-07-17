@@ -640,7 +640,7 @@
     <!-- FIREBASE SYSTEM INTEGRATION MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAT3rVceLdDoieMF9w4qMUXNAzALN6TnEg",
@@ -744,8 +744,38 @@
             if (window.currentUser) window.updateStudentAttendanceUI();
         });
 
-        window.saveVideosToCloud = async function() {
+        // Antes de guardar, trae la versión más reciente de la nube y le suma
+        // cualquier clase local que aún no tenga (nunca elimina nada por su cuenta).
+        // Esto evita que una pestaña vieja/desactualizada sobreescriba y borre
+        // clases que se agregaron desde otro dispositivo mientras tanto.
+        window.syncClassVideosWithCloud = async function() {
             try {
+                const snap = await getDoc(intranetDocRef);
+                if (snap.exists()) {
+                    const cloudVideos = snap.data().classVideos || [];
+                    const localIds = window.classVideos.map(v => v.id);
+                    const missingFromLocal = cloudVideos.filter(v => !localIds.includes(v.id));
+                    if (missingFromLocal.length > 0) {
+                        window.classVideos = [...window.classVideos, ...missingFromLocal];
+                    }
+                }
+            } catch (e) {
+                console.error("No se pudo sincronizar con la nube antes de guardar: ", e);
+            }
+        };
+
+        // Agregar, editar y borrar clases operan siempre sobre la versión más
+        // reciente de la nube (no sobre la copia local, que puede estar
+        // desactualizada si esta pestaña llevaba rato abierta). "mutator" recibe
+        // los videos frescos de la nube y devuelve el array ya modificado.
+        window.saveVideosToCloud = async function(mutator) {
+            try {
+                const snap = await getDoc(intranetDocRef);
+                const freshVideos = (snap.exists() && snap.data().classVideos) || [];
+                window.classVideos = (typeof mutator === 'function' ? mutator(freshVideos) : freshVideos);
+                window.classVideos.sort((a, b) => a.id - b.id);
+                window.renderVideos();
+                window.renderAdminVideoList();
                 await setDoc(intranetDocRef, { classVideos: window.classVideos }, { merge: true });
                 window.showNotification("Guardado en la Nube ✓", "La videoteca fue actualizada correctamente.", true);
             } catch(e) {
@@ -768,6 +798,11 @@
                     };
                 }
             });
+
+            // Evita que esta pestaña, si quedó desactualizada, borre clases
+            // que se hayan agregado desde otro dispositivo mientras tanto.
+            await window.syncClassVideosWithCloud();
+            window.classVideos.sort((a, b) => a.id - b.id);
 
             try {
                 await setDoc(intranetDocRef, {
@@ -1164,7 +1199,7 @@
         const DEFAULT_VIDEO_THUMB = "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=600";
         window.editingVideoId = null;
 
-        function addAdminVideo() {
+        async function addAdminVideo() {
             const title = document.getElementById('adminVideoTitle').value.trim();
             const url = document.getElementById('adminVideoUrl').value.trim();
             const desc = document.getElementById('adminVideoDesc').value.trim();
@@ -1175,26 +1210,27 @@
                 return;
             }
 
-            if (window.editingVideoId !== null) {
-                const idx = window.classVideos.findIndex(v => v.id === window.editingVideoId);
-                if (idx !== -1) {
-                    window.classVideos[idx] = { ...window.classVideos[idx], title, url, date: desc, thumb };
-                }
+            const editingId = window.editingVideoId;
+
+            if (editingId !== null) {
                 cancelEditAdminVideo();
+                await window.saveVideosToCloud(freshVideos => {
+                    const idx = freshVideos.findIndex(v => v.id === editingId);
+                    if (idx !== -1) {
+                        freshVideos[idx] = { ...freshVideos[idx], title, url, date: desc, thumb };
+                    }
+                    return freshVideos;
+                });
             } else {
-                const nextId = window.classVideos.reduce((max, v) => Math.max(max, v.id), 0) + 1;
-                const newVid = { id: nextId, title: title, url: url, date: desc, thumb: thumb };
-                window.classVideos.push(newVid);
                 document.getElementById('adminVideoTitle').value = '';
                 document.getElementById('adminVideoUrl').value = '';
                 document.getElementById('adminVideoDesc').value = '';
                 document.getElementById('adminVideoThumb').value = '';
+                await window.saveVideosToCloud(freshVideos => {
+                    const nextId = freshVideos.reduce((max, v) => Math.max(max, v.id), 0) + 1;
+                    return [...freshVideos, { id: nextId, title, url, date: desc, thumb }];
+                });
             }
-
-            window.classVideos.sort((a, b) => a.id - b.id);
-            window.renderVideos();
-            window.renderAdminVideoList();
-            window.saveVideosToCloud();
         }
 
         window.editAdminVideo = function(id) {
@@ -1224,7 +1260,7 @@
             document.getElementById('btnAdminVideoCancel').classList.add('hidden');
         }
 
-        window.deleteAdminVideo = function(id) {
+        window.deleteAdminVideo = async function(id) {
             const vid = window.classVideos.find(v => v.id === id);
             if (!vid) return;
             if (!confirm(`¿Borrar "${vid.title}"? Esta acción es PERMANENTE e INMEDIATA: se guarda en la nube al instante, sin necesidad de presionar ningún otro botón.`)) return;
@@ -1234,13 +1270,8 @@
                 return;
             }
 
-            window.classVideos = window.classVideos.filter(v => v.id !== id);
             if (window.editingVideoId === id) cancelEditAdminVideo();
-
-            window.classVideos.sort((a, b) => a.id - b.id);
-            window.renderVideos();
-            window.renderAdminVideoList();
-            window.saveVideosToCloud();
+            await window.saveVideosToCloud(freshVideos => freshVideos.filter(v => v.id !== id));
         }
 
         window.renderAdminVideoList = function() {
