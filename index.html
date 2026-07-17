@@ -823,9 +823,14 @@
         };
 
         window.resetToDefaults = async function() {
-            if (confirm("¿Estás seguro de restablecer los valores en la nube?")) {
+            if (confirm("¿Estás seguro de restablecer los valores en la nube? (La videoteca de clases NO se toca, solo Zoom/tip/recordatorio/temario/asistencia)")) {
                 try {
-                    await setDoc(intranetDocRef, defaultState);
+                    // La videoteca nunca se restablece con esto: se conserva la que
+                    // esté publicada en la nube en ese momento (incluye clases nuevas
+                    // que no estén en el respaldo fijo del código).
+                    const snap = await getDoc(intranetDocRef);
+                    const currentVideos = (snap.exists() && snap.data().classVideos) || defaultState.classVideos;
+                    await setDoc(intranetDocRef, { ...defaultState, classVideos: currentVideos });
                     window.showNotification("Restablecido", "Valores por defecto guardados en la nube.");
                 } catch (error) {
                     window.showNotification("Error", "No se pudo restablecer.", false);
