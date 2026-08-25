@@ -706,42 +706,60 @@
         const adminPanelEl = () => document.getElementById('teacherView');
         const isAdminOpen = () => adminPanelEl() && !adminPanelEl().classList.contains('hidden');
 
-        onSnapshot(intranetDocRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-                window.zoomLink = data.zoomLink || defaultState.zoomLink;
-                window.dailyTip = data.dailyTip || defaultState.dailyTip;
-                window.dailyReminder = data.dailyReminder || defaultState.dailyReminder;
-                window.classTopics = data.classTopics || defaultState.classTopics;
-                window.studentAttendance = data.studentAttendance || defaultState.studentAttendance;
+        // Aplica los datos de la nube al estado local y refresca la pantalla.
+        // Se usa tanto para el listener en tiempo real (onSnapshot) como para
+        // una carga inicial de respaldo (getDoc) que no depende de que el
+        // navegador logre abrir una conexión persistente con Firestore
+        // (algunas redes de colegios/oficinas la bloquean, aunque las
+        // peticiones HTTPS normales sí funcionen).
+        function applyCloudData(data) {
+            window.zoomLink = data.zoomLink || defaultState.zoomLink;
+            window.dailyTip = data.dailyTip || defaultState.dailyTip;
+            window.dailyReminder = data.dailyReminder || defaultState.dailyReminder;
+            window.classTopics = data.classTopics || defaultState.classTopics;
+            window.studentAttendance = data.studentAttendance || defaultState.studentAttendance;
 
-                // No sobreescribir classVideos si el admin tiene el panel abierto (evita perder ediciones)
-                if (!isAdminOpen()) {
-                    let cloudVideos = data.classVideos || [];
-                    // Reparar links rotos usando el respaldo local por título
-                    cloudVideos = cloudVideos.map(v => {
-                        if (!v.url || v.url === "#") {
-                            const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
-                            return backup ? { ...v, url: backup.url } : v;
-                        }
-                        return v;
-                    });
-                    // Agregar siempre los del respaldo local que no estén en la nube (por id)
-                    const cloudIds = cloudVideos.map(v => v.id);
-                    const missingVideos = localBackupVideos.filter(v => !cloudIds.includes(v.id));
-                    window.classVideos = [...cloudVideos, ...missingVideos];
-                    // Ordenar siempre por número de clase
-                    window.classVideos.sort((a, b) => a.id - b.id);
-                }
-            } else {
-                setDoc(intranetDocRef, defaultState);
+            // No sobreescribir classVideos si el admin tiene el panel abierto (evita perder ediciones)
+            if (!isAdminOpen()) {
+                let cloudVideos = data.classVideos || [];
+                // Reparar links rotos usando el respaldo local por título
+                cloudVideos = cloudVideos.map(v => {
+                    if (!v.url || v.url === "#") {
+                        const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
+                        return backup ? { ...v, url: backup.url } : v;
+                    }
+                    return v;
+                });
+                // Agregar siempre los del respaldo local que no estén en la nube (por id)
+                const cloudIds = cloudVideos.map(v => v.id);
+                const missingVideos = localBackupVideos.filter(v => !cloudIds.includes(v.id));
+                window.classVideos = [...cloudVideos, ...missingVideos];
+                // Ordenar siempre por número de clase
+                window.classVideos.sort((a, b) => a.id - b.id);
             }
+
             document.getElementById('zoomLinkButton').href = window.zoomLink;
             document.getElementById('dailyTipText').innerText = window.dailyTip;
             document.getElementById('reminderText').innerText = window.dailyReminder;
             window.renderVideos();
             window.renderTopics();
             if (window.currentUser) window.updateStudentAttendanceUI();
+        }
+
+        // Carga inicial de respaldo: una petición HTTPS normal (getDoc), que
+        // suele pasar redes restrictivas donde el listener en tiempo real no
+        // logra conectar. Si el listener sí conecta, sus datos más frescos
+        // toman el control de todas formas.
+        getDoc(intranetDocRef).then(snap => {
+            if (snap.exists()) applyCloudData(snap.data());
+        }).catch(e => console.error("No se pudo hacer la carga inicial de respaldo: ", e));
+
+        onSnapshot(intranetDocRef, (snapshot) => {
+            if (snapshot.exists()) {
+                applyCloudData(snapshot.data());
+            } else {
+                setDoc(intranetDocRef, defaultState);
+            }
         });
 
         // Antes de guardar, trae la versión más reciente de la nube y le suma
