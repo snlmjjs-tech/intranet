@@ -101,6 +101,43 @@
         </div>
     </div>
 
+    <!-- MODAL: ENCUESTA DE SATISFACCIÓN -->
+    <div id="surveyModal" class="hidden fixed inset-0 bg-brandDarkBlue/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-brandBg w-full max-w-lg rounded-[2rem] border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f] max-h-[90vh] overflow-y-auto">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <span class="text-[10px] font-black uppercase text-violet-700 tracking-wider">Tu Opinión</span>
+                        <h3 class="text-xl font-black text-brandDarkBlue">Encuesta de Satisfacción</h3>
+                    </div>
+                    <button onclick="window.closeSurveyModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-brandDarkBlue shrink-0">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="bg-violet-50 border-2 border-violet-200 rounded-xl p-3 mb-6 flex gap-2 items-start">
+                    <i class="fas fa-lock text-violet-600 text-xs mt-0.5"></i>
+                    <p class="text-[11px] text-violet-900 font-semibold leading-relaxed">
+                        Tus respuestas son <strong>confidenciales</strong>: no se comparten con tus compañeros. Quedan asociadas a tu usuario (no son anónimas) para que el Teacher Seba pueda darles seguimiento si hace falta.
+                    </p>
+                </div>
+
+                <div class="space-y-5" id="surveyRatingsContainer">
+                    <!-- Inyectado dinámicamente -->
+                </div>
+
+                <div class="mt-5">
+                    <label class="text-xs font-black uppercase text-brandDarkBlue/70 tracking-wider mb-2 block">¿Algo que quieras compartir o sugerir? (opcional)</label>
+                    <textarea id="surveyComment" rows="3" placeholder="Escribe aquí tu comentario..." class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
+                </div>
+
+                <button id="btnSubmitSurvey" onclick="window.submitSurvey()" class="w-full mt-6 flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd] font-extrabold text-xs uppercase tracking-widest">
+                    <i class="fas fa-paper-plane"></i> Enviar Respuesta
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- VIEW: LOGIN -->
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
         
@@ -344,6 +381,31 @@
                                 <i class="fas fa-arrow-right text-xs"></i>
                             </div>
                         </a>
+                    </div>
+
+                    <!-- ENCUESTA DE SATISFACCIÓN -->
+                    <div class="bg-white rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0] relative overflow-hidden">
+                        <div class="flex items-center space-x-3 mb-4 mt-2">
+                            <div class="w-10 h-10 bg-violet-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md">
+                                📝
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black uppercase text-violet-700 tracking-wider">Tu Opinión</span>
+                                <h3 class="text-base font-black text-brandDarkBlue">Encuesta de Satisfacción</h3>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-brandDarkBlue/80 font-semibold mb-6 leading-relaxed">
+                            Cuéntanos qué te parecen las clases. Tus respuestas son confidenciales: no se comparten con tus compañeros.
+                        </p>
+
+                        <button onclick="window.openSurveyModal()"
+                           class="w-full flex items-center justify-between p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd]">
+                            <span class="font-extrabold text-xs uppercase tracking-widest pl-2">RESPONDER ENCUESTA</span>
+                            <div class="flex items-center justify-center bg-white text-violet-700 w-9 h-9 rounded-xl border-2 border-violet-700 shrink-0 ml-2">
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </button>
                     </div>
 
                     <!-- CAJA DE ASISTENCIA COMPACTA -->
@@ -623,6 +685,23 @@
                     </div>
                 </div>
 
+                <!-- RESPUESTAS DE LA ENCUESTA DE SATISFACCIÓN -->
+                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                    <div class="flex items-center justify-between mb-1 gap-2 flex-wrap">
+                        <h4 class="text-sm font-black text-brandDarkBlue flex items-center">
+                            <i class="fas fa-clipboard-list text-violet-600 mr-2"></i> Respuestas de la Encuesta de Satisfacción
+                        </h4>
+                        <button onclick="window.loadSurveyResponses()" class="px-3 py-1.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-lg text-[10px] font-black border border-violet-300 transition">
+                            <i class="fas fa-sync-alt mr-1"></i> Cargar Respuestas
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-500 mb-4 font-semibold">Quedan asociadas al alumno para seguimiento interno; no se muestran así al curso.</p>
+
+                    <div class="max-h-72 overflow-y-auto border border-gray-200 rounded-xl bg-white p-2 space-y-2" id="adminSurveyContainer">
+                        <p class="text-xs text-gray-400 font-semibold p-2">Presiona "Cargar Respuestas" para ver los resultados.</p>
+                    </div>
+                </div>
+
                 <!-- Botones de Acción -->
                 <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
                     <button id="btnSaveAdmin" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
@@ -640,7 +719,7 @@
     <!-- FIREBASE SYSTEM INTEGRATION MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAT3rVceLdDoieMF9w4qMUXNAzALN6TnEg",
@@ -858,6 +937,130 @@
 
         document.getElementById('btnSaveAdmin').addEventListener('click', window.saveAdminSettings);
         document.getElementById('btnResetAdmin').addEventListener('click', window.resetToDefaults);
+
+        // ===== ENCUESTA DE SATISFACCIÓN =====
+        function escapeHtml(str) {
+            return String(str == null ? '' : str).replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+        }
+
+        const SURVEY_QUESTIONS = [
+            { key: 'overall', label: '¿Qué tan satisfecho estás con las clases en general?' },
+            { key: 'clarity', label: 'Claridad de las explicaciones' },
+            { key: 'pace', label: 'Ritmo de las clases' },
+            { key: 'materials', label: 'Material y recursos (videos, actividades)' }
+        ];
+        let surveyRatings = {};
+
+        function renderSurveyStars() {
+            const container = document.getElementById('surveyRatingsContainer');
+            container.innerHTML = SURVEY_QUESTIONS.map(q => `
+                <div>
+                    <label class="text-xs font-bold text-brandDarkBlue block mb-1.5">${q.label}</label>
+                    <div class="flex gap-1">
+                        ${[1,2,3,4,5].map(n => `
+                            <button type="button" onclick="window.setSurveyRating('${q.key}', ${n})"
+                                class="text-2xl leading-none transition ${(surveyRatings[q.key]||0) >= n ? 'text-amber-400' : 'text-gray-300'}">
+                                <i class="fas fa-star"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.setSurveyRating = function(key, value) {
+            surveyRatings[key] = value;
+            renderSurveyStars();
+        };
+
+        window.openSurveyModal = async function() {
+            if (!window.currentUser) return;
+            surveyRatings = {};
+            document.getElementById('surveyComment').value = '';
+            renderSurveyStars();
+            document.getElementById('surveyModal').classList.remove('hidden');
+
+            try {
+                const snap = await getDoc(doc(db, 'surveyResponses', window.currentUser.code));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    surveyRatings = data.ratings || {};
+                    document.getElementById('surveyComment').value = data.comment || '';
+                    renderSurveyStars();
+                }
+            } catch (e) {
+                console.error("No se pudo cargar tu respuesta anterior: ", e);
+            }
+        };
+
+        window.closeSurveyModal = function() {
+            document.getElementById('surveyModal').classList.add('hidden');
+        };
+
+        window.submitSurvey = async function() {
+            if (!window.currentUser) return;
+            const allAnswered = SURVEY_QUESTIONS.every(q => surveyRatings[q.key] > 0);
+            if (!allAnswered) {
+                window.showNotification("Faltan preguntas", "Por favor califica todas las preguntas antes de enviar.", false);
+                return;
+            }
+            const comment = document.getElementById('surveyComment').value.trim();
+            try {
+                await setDoc(doc(db, 'surveyResponses', window.currentUser.code), {
+                    studentCode: window.currentUser.code,
+                    studentName: window.currentUser.name,
+                    ratings: surveyRatings,
+                    comment: comment,
+                    updatedAt: new Date().toISOString()
+                });
+                window.showNotification("¡Gracias!", "Tu respuesta fue registrada correctamente.", true);
+                window.closeSurveyModal();
+            } catch (e) {
+                window.showNotification("Error de Red", "No se pudo enviar tu respuesta. Intenta de nuevo.", false);
+            }
+        };
+
+        window.loadSurveyResponses = async function() {
+            const container = document.getElementById('adminSurveyContainer');
+            container.innerHTML = `<p class="text-xs text-gray-400 font-semibold p-2">Cargando...</p>`;
+            try {
+                const snap = await getDocs(collection(db, 'surveyResponses'));
+                if (snap.empty) {
+                    container.innerHTML = `<p class="text-xs text-gray-400 font-semibold p-2">Todavía no hay respuestas.</p>`;
+                    return;
+                }
+                const responses = [];
+                snap.forEach(d => responses.push(d.data()));
+                responses.sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+
+                const starsHtml = (val) => `<span class="text-amber-400">${'★'.repeat(val || 0)}</span><span class="text-gray-300">${'★'.repeat(5 - (val || 0))}</span>`;
+
+                container.innerHTML = responses.map(r => {
+                    const ratingsHtml = SURVEY_QUESTIONS.map(q => `
+                        <div class="flex items-center justify-between text-[10px]">
+                            <span class="text-gray-500">${escapeHtml(q.label)}</span>
+                            <span>${starsHtml((r.ratings || {})[q.key])}</span>
+                        </div>
+                    `).join('');
+                    const dateLabel = r.updatedAt ? new Date(r.updatedAt).toLocaleDateString('es-CL') : '';
+                    return `
+                        <div class="p-3 border border-gray-200 rounded-xl">
+                            <div class="flex items-center justify-between mb-1 gap-2">
+                                <span class="text-xs font-black text-brandDarkBlue">${escapeHtml(r.studentName)} <span class="text-gray-400 font-semibold">#${escapeHtml(r.studentCode)}</span></span>
+                                <span class="text-[9px] text-gray-400 shrink-0">${dateLabel}</span>
+                            </div>
+                            <div class="space-y-0.5 mb-2">${ratingsHtml}</div>
+                            ${r.comment ? `<p class="text-[11px] text-brandDarkBlue/80 italic bg-gray-50 p-2 rounded-lg">"${escapeHtml(r.comment)}"</p>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<p class="text-xs text-rose-500 font-semibold p-2">No se pudieron cargar las respuestas.</p>`;
+            }
+        };
     </script>
 
     <!-- LOGICAL INTERACTIVE CORE SCRIPT -->
