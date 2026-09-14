@@ -765,6 +765,37 @@
             { id: 19, title: "Clase 19: ENGLISH MOST COMMON MISTAKE & HOW TO LEARN ENGLISH WITH IA", url: "https://drive.google.com/file/d/1uNsKxk3C7f3rdBGjiqSqOhleRQQdJs6R/view?usp=sharing", date: "Errores comunes en Inglés", thumb: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgOAQ0FTjJptTSbe-_SZZnwt2WPSnJaw7kN9EykE5KnMoas4MTWOGhO7c&s=10" }
         ];
 
+        // RESPALDO AUTOMÁTICO EN LA NUBE: además del respaldo fijo de arriba
+        // (que solo se actualiza cuando se edita el código), se guarda una
+        // copia espejo de classVideos en un documento aparte cada vez que se
+        // guarda algo desde el panel admin. Así, las clases que se agreguen
+        // de ahora en adelante quedan protegidas automáticamente, sin tener
+        // que tocar el código cada vez. liveBackupVideos combina ambas
+        // fuentes: arranca con el respaldo fijo y se actualiza con lo último
+        // que haya en el documento espejo.
+        const classVideosBackupRef = doc(db, "backups", "classVideosBackup");
+        let liveBackupVideos = localBackupVideos;
+
+        async function mirrorClassVideosBackup(videos) {
+            try {
+                await setDoc(classVideosBackupRef, { classVideos: videos, updatedAt: new Date().toISOString() });
+            } catch (e) {
+                console.error("No se pudo actualizar el respaldo automático de clases: ", e);
+            }
+        }
+
+        getDoc(classVideosBackupRef).then(snap => {
+            if (snap.exists() && Array.isArray(snap.data().classVideos) && snap.data().classVideos.length > 0) {
+                liveBackupVideos = snap.data().classVideos;
+            }
+        }).catch(e => console.error("No se pudo leer el respaldo automático de clases: ", e));
+
+        onSnapshot(classVideosBackupRef, (snap) => {
+            if (snap.exists() && Array.isArray(snap.data().classVideos) && snap.data().classVideos.length > 0) {
+                liveBackupVideos = snap.data().classVideos;
+            }
+        });
+
         let defaultState = {
             zoomLink: "https://meet.google.com/ksk-pezo-ojq",
             dailyTip: "Para sonar más natural al usar 'should' (debería), recuerda que la letra 'L' no se pronuncia. Di: /shud/. ¡Igual con 'would' /wud/ y 'could' /kud/!",
@@ -802,17 +833,17 @@
             // No sobreescribir classVideos si el admin tiene el panel abierto (evita perder ediciones)
             if (!isAdminOpen()) {
                 let cloudVideos = data.classVideos || [];
-                // Reparar links rotos usando el respaldo local por título
+                // Reparar links rotos usando el respaldo (por título)
                 cloudVideos = cloudVideos.map(v => {
                     if (!v.url || v.url === "#") {
-                        const backup = localBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
+                        const backup = liveBackupVideos.find(b => b.title.toLowerCase() === v.title.toLowerCase());
                         return backup ? { ...v, url: backup.url } : v;
                     }
                     return v;
                 });
-                // Agregar siempre los del respaldo local que no estén en la nube (por id)
+                // Agregar siempre los del respaldo que no estén en la nube (por id)
                 const cloudIds = cloudVideos.map(v => v.id);
-                const missingVideos = localBackupVideos.filter(v => !cloudIds.includes(v.id));
+                const missingVideos = liveBackupVideos.filter(v => !cloudIds.includes(v.id));
                 window.classVideos = [...cloudVideos, ...missingVideos];
                 // Ordenar siempre por número de clase
                 window.classVideos.sort((a, b) => a.id - b.id);
@@ -875,6 +906,7 @@
                 window.renderVideos();
                 window.renderAdminVideoList();
                 await setDoc(intranetDocRef, { classVideos: window.classVideos }, { merge: true });
+                mirrorClassVideosBackup(window.classVideos);
                 window.showNotification("Guardado en la Nube ✓", "La videoteca fue actualizada correctamente.", true);
             } catch(e) {
                 window.showNotification("Error de Red", "No se pudo guardar en la nube. Intenta de nuevo.", false);
@@ -911,6 +943,7 @@
                     classTopics: window.classTopics,
                     studentAttendance: window.studentAttendance
                 }, { merge: true });
+                mirrorClassVideosBackup(window.classVideos);
 
                 window.showNotification("Éxito en la Nube", "Cambios y registros de asistencia sincronizados.", true);
                 window.exitTeacherMode();
