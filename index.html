@@ -197,7 +197,7 @@
                     <textarea id="rubricComment" rows="2" placeholder="Comentarios adicionales sobre el desempeño..." class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
                 </div>
 
-                <button onclick="window.saveRubricEvaluation()" class="w-full flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd] font-extrabold text-xs uppercase tracking-widest">
+                <button id="btnSaveRubric" onclick="window.saveRubricEvaluation()" class="w-full flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd] font-extrabold text-xs uppercase tracking-widest">
                     <i class="fas fa-save"></i> Guardar Evaluación en el Panel
                 </button>
             </div>
@@ -1339,6 +1339,7 @@
         };
 
         let currentRubricType = null;
+        let currentRubricEditId = null;
         let rubricScores = {};
 
         function renderRubricTable() {
@@ -1404,15 +1405,50 @@
             const config = RUBRIC_TYPES[rubricType];
             if (!config) return;
             currentRubricType = rubricType;
+            currentRubricEditId = null;
             rubricScores = {};
             document.getElementById('rubricModalTitle').textContent = config.displayName;
             document.getElementById('rubricModalSubtitle').textContent = `Cada criterio se evalúa de ${config.levels[config.levels.length - 1]} a ${config.levels[0]} puntos. Puntaje total: 20 puntos.`;
             document.getElementById('rubricStudentName').value = '';
             document.getElementById('rubricStudentCourse').innerHTML = config.courseOptions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
             document.getElementById('rubricComment').value = '';
+            document.getElementById('btnSaveRubric').innerHTML = '<i class="fas fa-save"></i> Guardar Evaluación en el Panel';
             renderRubricTable();
             updateRubricTotals();
             document.getElementById('rubricModal').classList.remove('hidden');
+        };
+
+        window.editRubricEvaluation = async function(id, rubricType) {
+            const config = RUBRIC_TYPES[rubricType];
+            if (!config) return;
+            try {
+                const snap = await getDoc(doc(db, 'rubricEvaluations', id));
+                if (!snap.exists()) {
+                    window.showNotification("No Encontrada", "Esta evaluación ya no existe.", false);
+                    return;
+                }
+                const data = snap.data();
+                currentRubricType = rubricType;
+                currentRubricEditId = id;
+                rubricScores = {};
+                (data.criteria || []).forEach(c => {
+                    const match = config.criteria.find(x => x.label === c.label);
+                    if (match) rubricScores[match.key] = c.points;
+                });
+
+                document.getElementById('rubricModalTitle').textContent = `Editar: ${config.displayName}`;
+                document.getElementById('rubricModalSubtitle').textContent = `Cada criterio se evalúa de ${config.levels[config.levels.length - 1]} a ${config.levels[0]} puntos. Puntaje total: 20 puntos.`;
+                document.getElementById('rubricStudentName').value = data.studentName || '';
+                document.getElementById('rubricStudentCourse').innerHTML = config.courseOptions.map(c => `<option value="${escapeHtml(c)}" ${c === data.course ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('');
+                document.getElementById('rubricComment').value = data.comment || '';
+                document.getElementById('btnSaveRubric').innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+                renderRubricTable();
+                updateRubricTotals();
+                document.getElementById('rubricModal').classList.remove('hidden');
+            } catch (e) {
+                console.error(e);
+                window.showNotification("Error de Red", "No se pudo cargar la evaluación para editar.", false);
+            }
         };
 
         window.closeRubricModal = function() {
@@ -1442,7 +1478,7 @@
             const comment = document.getElementById('rubricComment').value.trim();
 
             try {
-                await addDoc(collection(db, 'rubricEvaluations'), {
+                const baseRecord = {
                     rubricType: currentRubricType,
                     rubricName: config.displayName,
                     studentName: name,
@@ -1451,10 +1487,16 @@
                     totalScore: total,
                     grade: gradeStr,
                     approved: approved,
-                    comment: comment,
-                    createdAt: new Date().toISOString()
-                });
-                window.showNotification("Evaluación Guardada", `${name}: ${total}/20 puntos (nota ${gradeStr}).`, true);
+                    comment: comment
+                };
+
+                if (currentRubricEditId) {
+                    await setDoc(doc(db, 'rubricEvaluations', currentRubricEditId), baseRecord, { merge: true });
+                    window.showNotification("Evaluación Actualizada", `${name}: ${total}/20 puntos (nota ${gradeStr}).`, true);
+                } else {
+                    await addDoc(collection(db, 'rubricEvaluations'), { ...baseRecord, createdAt: new Date().toISOString() });
+                    window.showNotification("Evaluación Guardada", `${name}: ${total}/20 puntos (nota ${gradeStr}).`, true);
+                }
                 window.closeRubricModal();
                 window.loadRubricEvaluations(currentRubricType);
             } catch (e) {
@@ -1495,6 +1537,7 @@
                                 <span class="text-xs font-black text-brandDarkBlue">${escapeHtml(r.studentName)} <span class="text-gray-400 font-semibold">— ${escapeHtml(r.course)}</span></span>
                                 <div class="flex items-center gap-2 shrink-0">
                                     <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${r.approved ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'}">${escapeHtml(r.grade)} · ${r.totalScore}/20</span>
+                                    <button onclick="window.editRubricEvaluation('${r.id}', '${rubricType}')" class="text-[10px] text-violet-500 hover:text-violet-700 font-bold"><i class="fas fa-pen"></i></button>
                                     <button onclick="window.deleteRubricEvaluation('${r.id}', '${rubricType}')" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
@@ -1518,6 +1561,10 @@
                 window.showNotification("Error de Red", "No se pudo borrar la evaluación.", false);
             }
         };
+
+        // Logo del colegio para el pie de página de las rúbricas impresas
+        // (se completa como imagen embebida en base64 una vez que se suba el archivo).
+        const SCHOOL_LOGO_DATA_URI = '';
 
         const RUBRIC_PRINT_PALETTE = {
             violet: { header: '#4c1d95', border: '#a78bfa', bg: '#f5f3ff', text: '#3b0764', selectedBg: '#ede9fe', selectedBadge: '#581c87' },
@@ -1582,6 +1629,13 @@
                     <div>
                         <div style="font-size:10px;font-weight:700;color:${pal.text};margin-bottom:2px;">Observaciones:</div>
                         <p style="font-size:10px;color:#334155;border-bottom:1px dotted ${pal.border};padding-bottom:4px;min-height:14px;">${record.comment ? escapeHtml(record.comment) : '—'}</p>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding-top:8px;border-top:1px solid #e5e7eb;">
+                        ${SCHOOL_LOGO_DATA_URI ? `<img src="${SCHOOL_LOGO_DATA_URI}" style="height:36px;width:auto;">` : ''}
+                        <div style="text-align:center;">
+                            <div style="font-size:11px;font-weight:800;color:#111;">Sebastián Núñez López</div>
+                            <div style="font-size:9px;font-weight:600;color:#6b7280;letter-spacing:0.05em;text-transform:uppercase;">English Presentation</div>
+                        </div>
                     </div>
                 </div>
             `;
