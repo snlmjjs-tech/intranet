@@ -88,6 +88,20 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #8ea4b0;
         }
+
+        /* Reporte de notas por curso: al imprimir, se oculta toda la app y
+           solo se muestra el contenido inyectado en #printReportContainer. */
+        body.printing-rubric-report > *:not(#printReportContainer) {
+            display: none !important;
+        }
+        body.printing-rubric-report #printReportContainer {
+            display: block !important;
+        }
+        @media print {
+            body.printing-rubric-report {
+                background: #fff !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
@@ -131,15 +145,15 @@
         </div>
     </div>
 
-    <!-- MODAL: RÚBRICA 1° MEDIO -->
+    <!-- MODAL: RÚBRICAS DE EVALUACIÓN (genérico, sirve para 1° y 2° Medio) -->
     <div id="rubricModal" class="hidden fixed inset-0 bg-brandDarkBlue/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-brandBg w-full max-w-3xl rounded-[2rem] border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f] max-h-[92vh] overflow-y-auto">
             <div class="p-6 sm:p-8">
                 <div class="flex items-start justify-between mb-4">
                     <div>
                         <span class="text-[10px] font-black uppercase text-violet-700 tracking-wider">Evaluación</span>
-                        <h3 class="text-xl font-black text-brandDarkBlue">Rúbrica 1° Medio</h3>
-                        <p class="text-[11px] text-gray-500 font-semibold mt-1">Cada criterio se evalúa de 1 a 4 puntos. Puntaje total: 20 puntos.</p>
+                        <h3 id="rubricModalTitle" class="text-xl font-black text-brandDarkBlue">Rúbrica</h3>
+                        <p id="rubricModalSubtitle" class="text-[11px] text-gray-500 font-semibold mt-1">Puntaje total: 20 puntos.</p>
                     </div>
                     <button onclick="window.closeRubricModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-brandDarkBlue shrink-0">
                         <i class="fas fa-times text-xs"></i>
@@ -153,7 +167,9 @@
                     </div>
                     <div class="sm:col-span-4">
                         <label class="text-[10px] font-black uppercase text-violet-700 tracking-wider block mb-1">Curso</label>
-                        <input type="text" id="rubricStudentCourse" value="1° Medio" class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400">
+                        <select id="rubricStudentCourse" class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400 bg-white">
+                            <!-- Inyectado dinámicamente -->
+                        </select>
                     </div>
                 </div>
 
@@ -187,6 +203,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Reporte imprimible de notas por curso (oculto en pantalla, visible solo al imprimir) -->
+    <div id="printReportContainer" style="display:none;"></div>
 
     <!-- VIEW: LOGIN -->
     <div id="loginView" class="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
@@ -742,17 +761,67 @@
                             <i class="fas fa-clipboard-check text-violet-600 mr-2"></i> Rúbrica 1° Medio
                         </h4>
                         <div class="flex items-center gap-2">
-                            <button onclick="window.openRubricModal()" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-[10px] font-black transition">
+                            <button onclick="window.openRubricModal('1medio')" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-[10px] font-black transition">
                                 <i class="fas fa-plus mr-1"></i> Nueva Evaluación
                             </button>
-                            <button onclick="window.loadRubricEvaluations()" class="px-3 py-1.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-lg text-[10px] font-black border border-violet-300 transition">
+                            <button onclick="window.loadRubricEvaluations('1medio')" class="px-3 py-1.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-lg text-[10px] font-black border border-violet-300 transition">
                                 <i class="fas fa-sync-alt mr-1"></i> Cargar
+                            </button>
+                            <button onclick="window.printRubricReport('1medio')" class="px-3 py-1.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-lg text-[10px] font-black border border-violet-300 transition">
+                                <i class="fas fa-print mr-1"></i> Imprimir PDF
                             </button>
                         </div>
                     </div>
-                    <p class="text-[11px] text-gray-500 mb-4 font-semibold">Evalúa a un estudiante con la rúbrica y guarda el resultado (nombre, curso, puntaje y nota) directamente en este panel.</p>
+                    <p class="text-[11px] text-gray-500 mb-3 font-semibold">Evalúa a un estudiante con la rúbrica y guarda el resultado (nombre, curso, puntaje y nota) directamente en este panel.</p>
 
-                    <div class="max-h-72 overflow-y-auto border border-gray-200 rounded-xl bg-white p-2 space-y-2" id="adminRubricContainer">
+                    <div class="flex items-center gap-2 mb-3">
+                        <label class="text-[10px] font-black uppercase text-gray-500 tracking-wider">Curso:</label>
+                        <select id="rubricCourseFilter_1medio" class="px-2 py-1 border border-gray-200 rounded-lg text-[11px] font-semibold outline-none bg-white">
+                            <option value="Todos">Todos los cursos</option>
+                            <option value="1°A">1°A</option>
+                            <option value="1°B">1°B</option>
+                            <option value="1°C">1°C</option>
+                            <option value="1°D">1°D</option>
+                            <option value="1°E">1°E</option>
+                            <option value="1°F">1°F</option>
+                        </select>
+                    </div>
+
+                    <div class="max-h-72 overflow-y-auto border border-gray-200 rounded-xl bg-white p-2 space-y-2" id="adminRubricContainer_1medio">
+                        <p class="text-xs text-gray-400 font-semibold p-2">Presiona "Cargar" para ver las evaluaciones guardadas.</p>
+                    </div>
+                </div>
+
+                <!-- RÚBRICA 2° MEDIO -->
+                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                    <div class="flex items-center justify-between mb-1 gap-2 flex-wrap">
+                        <h4 class="text-sm font-black text-brandDarkBlue flex items-center">
+                            <i class="fas fa-clipboard-check text-sky-600 mr-2"></i> Rúbrica 2° Medio
+                        </h4>
+                        <div class="flex items-center gap-2">
+                            <button onclick="window.openRubricModal('2medio')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[10px] font-black transition">
+                                <i class="fas fa-plus mr-1"></i> Nueva Evaluación
+                            </button>
+                            <button onclick="window.loadRubricEvaluations('2medio')" class="px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg text-[10px] font-black border border-sky-300 transition">
+                                <i class="fas fa-sync-alt mr-1"></i> Cargar
+                            </button>
+                            <button onclick="window.printRubricReport('2medio')" class="px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded-lg text-[10px] font-black border border-sky-300 transition">
+                                <i class="fas fa-print mr-1"></i> Imprimir PDF
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-gray-500 mb-3 font-semibold">Evalúa a un estudiante con la rúbrica y guarda el resultado (nombre, curso, puntaje y nota) directamente en este panel.</p>
+
+                    <div class="flex items-center gap-2 mb-3">
+                        <label class="text-[10px] font-black uppercase text-gray-500 tracking-wider">Curso:</label>
+                        <select id="rubricCourseFilter_2medio" class="px-2 py-1 border border-gray-200 rounded-lg text-[11px] font-semibold outline-none bg-white">
+                            <option value="Todos">Todos los cursos</option>
+                            <option value="2°F">2°F</option>
+                            <option value="2°G">2°G</option>
+                        </select>
+                    </div>
+
+                    <div class="max-h-72 overflow-y-auto border border-gray-200 rounded-xl bg-white p-2 space-y-2" id="adminRubricContainer_2medio">
                         <p class="text-xs text-gray-400 font-semibold p-2">Presiona "Cargar" para ver las evaluaciones guardadas.</p>
                     </div>
                 </div>
@@ -1175,74 +1244,127 @@
             }
         };
 
-        // ===== RÚBRICA 1° MEDIO =====
-        const RUBRIC_CRITERIA = [
-            { key: 'vocabulario', label: 'Vocabulario', levels: {
-                4: 'Usa 8 o más palabras de la guía correctamente.',
-                3: 'Usa 6-7 palabras de la guía, pocos errores.',
-                2: 'Usa 4-5 palabras o con varios errores.',
-                1: 'Usa menos de 4 palabras de la guía.'
-            }},
-            { key: 'creatividad', label: 'Creatividad y diseño', levels: {
-                4: 'Trabajo muy creativo, ordenado y atractivo (cartulina/block).',
-                3: 'Trabajo creativo y ordenado.',
-                2: 'Trabajo simple o poco ordenado.',
-                1: 'Trabajo descuidado o incompleto.'
-            }},
-            { key: 'expresionOral', label: 'Expresión oral', levels: {
-                4: 'Habla con claridad y responde al profesor en inglés.',
-                3: 'Habla la mayoría en inglés con apoyo.',
-                2: 'Habla con dificultad o mezcla mucho español.',
-                1: 'No logra hablar sobre su trabajo.'
-            }},
-            { key: 'avance', label: 'Avance del trabajo', levels: {
-                4: 'Cumple todos los plazos y trae el trabajo completo.',
-                3: 'Cumple casi todos los plazos.',
-                2: 'Trabajo atrasado o parcialmente completo.',
-                1: 'No presenta avance o está muy incompleto.'
-            }},
-            { key: 'conocimiento', label: 'Conocimiento del tema', levels: {
-                4: 'Sabe y explica todo lo que puso en su trabajo.',
-                3: 'Sabe y explica la mayor parte.',
-                2: 'Explica solo algunas partes.',
-                1: 'No sabe explicar lo que puso.'
-            }}
-        ];
-
+        // ===== RÚBRICAS DE EVALUACIÓN (1° y 2° Medio) =====
         const RUBRIC_GRADE_SCALE = {
             0: "1,0", 1: "1,3", 2: "1,5", 3: "1,8", 4: "2,0", 5: "2,3", 6: "2,5",
             7: "2,8", 8: "3,0", 9: "3,3", 10: "3,5", 11: "3,8", 12: "4,0", 13: "4,4",
             14: "4,8", 15: "5,1", 16: "5,5", 17: "5,9", 18: "6,3", 19: "6,6", 20: "7,0"
         };
 
+        const RUBRIC_TYPES = {
+            '1medio': {
+                displayName: 'Rúbrica 1° Medio',
+                headerColor: 'violet',
+                courseOptions: ['1°A', '1°B', '1°C', '1°D', '1°E', '1°F'],
+                levels: [4, 3, 2, 1],
+                levelHeaders: { 4: '4 • Excelente', 3: '3 • Bueno', 2: '2 • Suficiente', 1: '1 • Por lograr' },
+                criteria: [
+                    { key: 'vocabulario', label: 'Vocabulario', levels: {
+                        4: 'Usa 8 o más palabras de la guía correctamente.',
+                        3: 'Usa 6-7 palabras de la guía, pocos errores.',
+                        2: 'Usa 4-5 palabras o con varios errores.',
+                        1: 'Usa menos de 4 palabras de la guía.'
+                    }},
+                    { key: 'creatividad', label: 'Creatividad y diseño', levels: {
+                        4: 'Trabajo muy creativo, ordenado y atractivo (cartulina/block).',
+                        3: 'Trabajo creativo y ordenado.',
+                        2: 'Trabajo simple o poco ordenado.',
+                        1: 'Trabajo descuidado o incompleto.'
+                    }},
+                    { key: 'expresionOral', label: 'Expresión oral', levels: {
+                        4: 'Habla con claridad y responde al profesor en inglés.',
+                        3: 'Habla la mayoría en inglés con apoyo.',
+                        2: 'Habla con dificultad o mezcla mucho español.',
+                        1: 'No logra hablar sobre su trabajo.'
+                    }},
+                    { key: 'avance', label: 'Avance del trabajo', levels: {
+                        4: 'Cumple todos los plazos y trae el trabajo completo.',
+                        3: 'Cumple casi todos los plazos.',
+                        2: 'Trabajo atrasado o parcialmente completo.',
+                        1: 'No presenta avance o está muy incompleto.'
+                    }},
+                    { key: 'conocimiento', label: 'Conocimiento del tema', levels: {
+                        4: 'Sabe y explica todo lo que puso en su trabajo.',
+                        3: 'Sabe y explica la mayor parte.',
+                        2: 'Explica solo algunas partes.',
+                        1: 'No sabe explicar lo que puso.'
+                    }}
+                ]
+            },
+            '2medio': {
+                displayName: 'Rúbrica 2° Medio',
+                headerColor: 'sky',
+                courseOptions: ['2°F', '2°G'],
+                levels: [4, 3, 2, 1, 0],
+                levelHeaders: { 4: '4 puntos', 3: '3 puntos', 2: '2 puntos', 1: '1 punto', 0: '0 puntos' },
+                criteria: [
+                    { key: 'vocabulario', label: 'A. Uso del vocabulario', levels: {
+                        4: 'Utiliza correctamente todas o casi todas las palabras requeridas (mín. 10 de 18); excelente dominio.',
+                        3: 'Utiliza correctamente una gran cantidad de palabras; pocos errores.',
+                        2: 'Utiliza una parte importante del vocabulario, pero con algunos errores o uso limitado.',
+                        1: 'Utiliza pocas palabras del vocabulario y presenta varios errores.',
+                        0: 'No utiliza el vocabulario trabajado, o no se observa.'
+                    }},
+                    { key: 'gramatica', label: 'B. Gramática', levels: {
+                        4: 'Excelente uso gramatical; estructuras claras, prácticamente sin errores.',
+                        3: 'Buen uso gramatical; pocos errores que no afectan la comprensión.',
+                        2: 'Uso adecuado en general, pero con varios errores.',
+                        1: 'Errores gramaticales frecuentes que afectan parcialmente la comprensión.',
+                        0: 'No se observa un uso adecuado de estructuras gramaticales.'
+                    }},
+                    { key: 'diseno', label: 'C. Diseño y creatividad', levels: {
+                        4: 'Afiche altamente creativo, atractivo, ordenado y cuidadosamente elaborado.',
+                        3: 'Afiche creativo y bien presentado, con buena organización visual.',
+                        2: 'Afiche adecuado, pero con poca creatividad o algunos problemas de organización.',
+                        1: 'Afiche poco elaborado, desordenado o con escaso esfuerzo visual.',
+                        0: 'El diseño no evidencia creatividad, organización ni dedicación.'
+                    }},
+                    { key: 'conocimiento', label: 'D. Conocimiento del tema', levels: {
+                        4: 'Domina completamente el contenido de su afiche; responde con seguridad y claridad sobre su trabajo el día de la presentación.',
+                        3: 'Conoce bien el contenido de su afiche; responde correctamente, con dudas menores.',
+                        2: 'Conoce el contenido de manera parcial; responde con cierta dificultad o ayuda.',
+                        1: 'Conoce muy poco el contenido de su propio trabajo; responde con mucha dificultad.',
+                        0: 'No conoce el contenido de su afiche ni puede explicarlo.'
+                    }},
+                    { key: 'trabajoClases', label: 'E. Trabajo en clases y avances', levels: {
+                        4: 'Trabaja activamente en todas las clases; aprovecha el tiempo; avances claros y constantes.',
+                        3: 'Trabaja adecuadamente durante las clases; avances importantes.',
+                        2: 'Trabaja de manera irregular, pero logra mostrar algunos avances.',
+                        1: 'Presenta muy poco trabajo durante las clases; avances mínimos.',
+                        0: 'No trabaja en clases ni presenta avances durante la actividad.'
+                    }}
+                ]
+            }
+        };
+
+        let currentRubricType = null;
         let rubricScores = {};
 
         function renderRubricTable() {
+            const config = RUBRIC_TYPES[currentRubricType];
             const container = document.getElementById('rubricTableContainer');
+            const colWidth = (90 / config.levels.length).toFixed(2);
             container.innerHTML = `
                 <table class="w-full border-collapse text-left text-[11px]">
                     <thead>
-                        <tr class="bg-violet-800 text-white font-extrabold text-center">
-                            <th class="p-1.5 border border-violet-400 w-[19%] text-left">Criterio</th>
-                            <th class="p-1.5 border border-violet-400 w-[20.25%]">4 • Excelente</th>
-                            <th class="p-1.5 border border-violet-400 w-[20.25%]">3 • Bueno</th>
-                            <th class="p-1.5 border border-violet-400 w-[20.25%]">2 • Suficiente</th>
-                            <th class="p-1.5 border border-violet-400 w-[20.25%]">1 • Por lograr</th>
+                        <tr class="bg-${config.headerColor}-800 text-white font-extrabold text-center">
+                            <th class="p-1.5 border border-${config.headerColor}-400 w-[10%] text-left">Criterio</th>
+                            ${config.levels.map(pt => `<th class="p-1.5 border border-${config.headerColor}-400" style="width:${colWidth}%">${escapeHtml(config.levelHeaders[pt])}</th>`).join('')}
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-violet-200">
-                        ${RUBRIC_CRITERIA.map(c => `
+                    <tbody class="divide-y divide-${config.headerColor}-200">
+                        ${config.criteria.map(c => `
                             <tr class="bg-white">
-                                <td class="p-1.5 border border-violet-200 font-bold text-violet-950 bg-violet-50/80 align-middle">
+                                <td class="p-1.5 border border-${config.headerColor}-200 font-bold text-${config.headerColor}-950 bg-${config.headerColor}-50/80 align-middle">
                                     <div class="flex items-center justify-between">
                                         <span>${escapeHtml(c.label)}</span>
-                                        <span class="text-[10px] font-black text-violet-700">${rubricScores[c.key] ? rubricScores[c.key] + ' pts' : '-'}</span>
+                                        <span class="text-[10px] font-black text-${config.headerColor}-700">${rubricScores[c.key] !== undefined ? rubricScores[c.key] + ' pts' : '-'}</span>
                                     </div>
                                 </td>
-                                ${[4, 3, 2, 1].map(pt => `
+                                ${config.levels.map(pt => `
                                     <td onclick="window.selectRubricScore('${c.key}', ${pt})"
-                                        class="rubric-cell p-1.5 border border-violet-200 align-top cursor-pointer transition ${rubricScores[c.key] === pt ? 'bg-violet-100 outline outline-2 outline-violet-700 -outline-offset-2' : 'hover:bg-violet-50'}">
-                                        <div class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold mb-0.5 ${rubricScores[c.key] === pt ? 'bg-violet-800 text-white' : 'bg-slate-100 text-slate-700'}">${pt} pt${pt > 1 ? 's' : ''}</div>
+                                        class="rubric-cell p-1.5 border border-${config.headerColor}-200 align-top cursor-pointer transition ${rubricScores[c.key] === pt ? `bg-${config.headerColor}-100 outline outline-2 outline-${config.headerColor}-700 -outline-offset-2` : `hover:bg-${config.headerColor}-50`}">
+                                        <div class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold mb-0.5 ${rubricScores[c.key] === pt ? `bg-${config.headerColor}-800 text-white` : 'bg-slate-100 text-slate-700'}">${pt} pt${pt === 1 ? '' : 's'}</div>
                                         <p class="text-slate-700 leading-snug">${escapeHtml(c.levels[pt])}</p>
                                     </td>
                                 `).join('')}
@@ -1254,7 +1376,8 @@
         }
 
         function updateRubricTotals() {
-            const total = RUBRIC_CRITERIA.reduce((sum, c) => sum + (rubricScores[c.key] || 0), 0);
+            const config = RUBRIC_TYPES[currentRubricType];
+            const total = config.criteria.reduce((sum, c) => sum + (rubricScores[c.key] || 0), 0);
             const gradeStr = RUBRIC_GRADE_SCALE[total] || "1,0";
             const numericGrade = parseFloat(gradeStr.replace(',', '.'));
             const approved = numericGrade >= 4.0;
@@ -1276,10 +1399,15 @@
             updateRubricTotals();
         };
 
-        window.openRubricModal = function() {
+        window.openRubricModal = function(rubricType) {
+            const config = RUBRIC_TYPES[rubricType];
+            if (!config) return;
+            currentRubricType = rubricType;
             rubricScores = {};
+            document.getElementById('rubricModalTitle').textContent = config.displayName;
+            document.getElementById('rubricModalSubtitle').textContent = `Cada criterio se evalúa de ${config.levels[config.levels.length - 1]} a ${config.levels[0]} puntos. Puntaje total: 20 puntos.`;
             document.getElementById('rubricStudentName').value = '';
-            document.getElementById('rubricStudentCourse').value = '1° Medio';
+            document.getElementById('rubricStudentCourse').innerHTML = config.courseOptions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
             document.getElementById('rubricComment').value = '';
             renderRubricTable();
             updateRubricTotals();
@@ -1297,13 +1425,14 @@
         };
 
         window.saveRubricEvaluation = async function() {
+            const config = RUBRIC_TYPES[currentRubricType];
             const name = document.getElementById('rubricStudentName').value.trim();
             const course = document.getElementById('rubricStudentCourse').value.trim();
             if (!name || !course) {
                 window.showNotification("Faltan datos", "Ingresa el nombre y el curso del estudiante.", false);
                 return;
             }
-            const allScored = RUBRIC_CRITERIA.every(c => rubricScores[c.key] > 0);
+            const allScored = config.criteria.every(c => rubricScores[c.key] !== undefined);
             if (!allScored) {
                 window.showNotification("Faltan criterios", "Califica los 5 criterios antes de guardar.", false);
                 return;
@@ -1313,10 +1442,11 @@
 
             try {
                 await addDoc(collection(db, 'rubricEvaluations'), {
-                    rubricName: 'Rúbrica 1° Medio',
+                    rubricType: currentRubricType,
+                    rubricName: config.displayName,
                     studentName: name,
                     course: course,
-                    criteria: RUBRIC_CRITERIA.map(c => ({ label: c.label, points: rubricScores[c.key] })),
+                    criteria: config.criteria.map(c => ({ label: c.label, points: rubricScores[c.key] })),
                     totalScore: total,
                     grade: gradeStr,
                     approved: approved,
@@ -1325,24 +1455,35 @@
                 });
                 window.showNotification("Evaluación Guardada", `${name}: ${total}/20 puntos (nota ${gradeStr}).`, true);
                 window.closeRubricModal();
-                window.loadRubricEvaluations();
+                window.loadRubricEvaluations(currentRubricType);
             } catch (e) {
                 console.error(e);
                 window.showNotification("Error de Red", "No se pudo guardar la evaluación. Intenta de nuevo.", false);
             }
         };
 
-        window.loadRubricEvaluations = async function() {
-            const container = document.getElementById('adminRubricContainer');
+        async function fetchRubricEvaluations(rubricType, courseFilter) {
+            const snap = await getDocs(collection(db, 'rubricEvaluations'));
+            let evals = [];
+            snap.forEach(d => evals.push({ id: d.id, ...d.data() }));
+            evals = evals.filter(r => (r.rubricType || '1medio') === rubricType);
+            if (courseFilter && courseFilter !== 'Todos') {
+                evals = evals.filter(r => r.course === courseFilter);
+            }
+            evals.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
+            return evals;
+        }
+
+        window.loadRubricEvaluations = async function(rubricType) {
+            const container = document.getElementById(`adminRubricContainer_${rubricType}`);
+            const courseFilter = document.getElementById(`rubricCourseFilter_${rubricType}`).value;
             container.innerHTML = `<p class="text-xs text-gray-400 font-semibold p-2">Cargando...</p>`;
             try {
-                const snap = await getDocs(collection(db, 'rubricEvaluations'));
-                if (snap.empty) {
+                const evals = await fetchRubricEvaluations(rubricType, courseFilter);
+                if (evals.length === 0) {
                     container.innerHTML = `<p class="text-xs text-gray-400 font-semibold p-2">Todavía no hay evaluaciones guardadas.</p>`;
                     return;
                 }
-                const evals = [];
-                snap.forEach(d => evals.push({ id: d.id, ...d.data() }));
                 evals.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 
                 container.innerHTML = evals.map(r => {
@@ -1353,7 +1494,7 @@
                                 <span class="text-xs font-black text-brandDarkBlue">${escapeHtml(r.studentName)} <span class="text-gray-400 font-semibold">— ${escapeHtml(r.course)}</span></span>
                                 <div class="flex items-center gap-2 shrink-0">
                                     <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${r.approved ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'}">${escapeHtml(r.grade)} · ${r.totalScore}/20</span>
-                                    <button onclick="window.deleteRubricEvaluation('${r.id}')" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold"><i class="fas fa-trash-alt"></i></button>
+                                    <button onclick="window.deleteRubricEvaluation('${r.id}', '${rubricType}')" class="text-[10px] text-rose-500 hover:text-rose-700 font-bold"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
                             <div class="text-[9px] text-gray-400 mb-1">${dateLabel}</div>
@@ -1367,15 +1508,74 @@
             }
         };
 
-        window.deleteRubricEvaluation = async function(id) {
+        window.deleteRubricEvaluation = async function(id, rubricType) {
             if (!confirm("¿Borrar esta evaluación? Esta acción es permanente.")) return;
             try {
                 await deleteDoc(doc(db, 'rubricEvaluations', id));
-                window.loadRubricEvaluations();
+                window.loadRubricEvaluations(rubricType);
             } catch (e) {
                 window.showNotification("Error de Red", "No se pudo borrar la evaluación.", false);
             }
         };
+
+        window.printRubricReport = async function(rubricType) {
+            const config = RUBRIC_TYPES[rubricType];
+            const courseFilter = document.getElementById(`rubricCourseFilter_${rubricType}`).value;
+            try {
+                const evals = await fetchRubricEvaluations(rubricType, courseFilter);
+                if (evals.length === 0) {
+                    window.showNotification("Sin datos", "No hay evaluaciones guardadas para imprimir con ese filtro.", false);
+                    return;
+                }
+
+                const rows = evals.map((r, i) => {
+                    const cells = config.criteria.map(c => {
+                        const found = (r.criteria || []).find(x => x.label === c.label);
+                        return `<td style="text-align:center;padding:4px;border:1px solid #ccc;">${found ? found.points : '-'}</td>`;
+                    }).join('');
+                    return `
+                        <tr>
+                            <td style="padding:4px;border:1px solid #ccc;">${i + 1}</td>
+                            <td style="padding:4px;border:1px solid #ccc;">${escapeHtml(r.studentName)}</td>
+                            <td style="padding:4px;border:1px solid #ccc;">${escapeHtml(r.course)}</td>
+                            ${cells}
+                            <td style="padding:4px;border:1px solid #ccc;text-align:center;font-weight:bold;">${r.totalScore}/20</td>
+                            <td style="padding:4px;border:1px solid #ccc;text-align:center;font-weight:bold;">${escapeHtml(r.grade)}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                document.getElementById('printReportContainer').innerHTML = `
+                    <div style="font-family: Arial, sans-serif; padding: 20px; color: #111;">
+                        <h1 style="font-size:18px;margin-bottom:4px;">${escapeHtml(config.displayName)} — Reporte de Notas</h1>
+                        <p style="font-size:12px;margin-top:0;margin-bottom:14px;">Curso: ${escapeHtml(courseFilter)} · Generado: ${new Date().toLocaleDateString('es-CL')}</p>
+                        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+                            <thead>
+                                <tr style="background:#f1f5f9;">
+                                    <th style="padding:4px;border:1px solid #ccc;">#</th>
+                                    <th style="padding:4px;border:1px solid #ccc;">Nombre</th>
+                                    <th style="padding:4px;border:1px solid #ccc;">Curso</th>
+                                    ${config.criteria.map(c => `<th style="padding:4px;border:1px solid #ccc;">${escapeHtml(c.label)}</th>`).join('')}
+                                    <th style="padding:4px;border:1px solid #ccc;">Total</th>
+                                    <th style="padding:4px;border:1px solid #ccc;">Nota</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                `;
+
+                document.body.classList.add('printing-rubric-report');
+                window.print();
+            } catch (e) {
+                console.error(e);
+                window.showNotification("Error", "No se pudo generar el reporte para imprimir.", false);
+            }
+        };
+
+        window.addEventListener('afterprint', () => {
+            document.body.classList.remove('printing-rubric-report');
+        });
     </script>
 
     <!-- LOGICAL INTERACTIVE CORE SCRIPT -->
