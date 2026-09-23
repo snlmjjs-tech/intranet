@@ -1255,6 +1255,8 @@
         const RUBRIC_TYPES = {
             '1medio': {
                 displayName: 'Rúbrica 1° Medio',
+                unit: 'Unidad 3: The Arts',
+                objective: 'Evaluar conocimientos previos de vocabulario de la Unidad 3 de forma oral y escrita, a través de la creación de un póster sobre arte.',
                 headerColor: 'violet',
                 courseOptions: ['1°A', '1°B', '1°C', '1°D', '1°E', '1°F', '1°G'],
                 levels: [4, 3, 2, 1],
@@ -1294,6 +1296,8 @@
             },
             '2medio': {
                 displayName: 'Rúbrica 2° Medio',
+                unit: 'Unidad 3: Outstanding Persons',
+                objective: 'Evaluar conocimientos previos de vocabulario de la Unidad 3 de forma oral y escrita, a través de la creación de un póster sobre personas que nos inspiren.',
                 headerColor: 'sky',
                 courseOptions: ['2°F', '2°G'],
                 levels: [4, 3, 2, 1, 0],
@@ -1630,7 +1634,11 @@
                         <div style="font-size:10px;font-weight:700;color:${pal.text};margin-bottom:2px;">Observaciones:</div>
                         <p style="font-size:10px;color:#334155;border-bottom:1px dotted ${pal.border};padding-bottom:4px;min-height:14px;">${record.comment ? escapeHtml(record.comment) : '—'}</p>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding-top:8px;border-top:1px solid #e5e7eb;">
+                    <div style="margin-top:12px;padding-top:8px;border-top:1px dashed ${pal.border};">
+                        <div style="font-size:9px;font-weight:800;color:${pal.text};text-transform:uppercase;letter-spacing:0.03em;">${escapeHtml(config.unit || '')}</div>
+                        <p style="font-size:9px;color:#6b7280;margin:2px 0 0;line-height:1.3;">Objetivo: ${escapeHtml(config.objective || '')}</p>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid #e5e7eb;">
                         ${SCHOOL_LOGO_DATA_URI ? `<img src="${SCHOOL_LOGO_DATA_URI}" style="height:36px;width:auto;">` : ''}
                         <div style="text-align:center;">
                             <div style="font-size:11px;font-weight:800;color:#111;">Sebastián Núñez López</div>
