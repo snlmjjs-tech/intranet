@@ -8,8 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Playpen Sans (manuscrita) y Plus Jakarta Sans (UI) -->
-    <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter (sustituto de SF Pro) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Canvas Confetti para celebraciones -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -18,19 +18,20 @@
             theme: {
                 extend: {
                     colors: {
-                        brandBrown: '#c5b39e',
-                        brandLightBrown: '#dfd2c4',
-                        brandPaper: '#efe6dd',
-                        brandDarkBlue: '#2e3e4f',
-                        brandBlue: '#8ea4b0',
-                        brandStickyYellow: '#f2e3c6',
-                        brandStickyPink: '#eed1d1',
-                        brandStickyBlue: '#d1e3ee',
-                        brandBg: '#fcfaf7'
+                        brandBrown: '#d2d2d7',
+                        brandLightBrown: '#e8e8ed',
+                        brandPaper: '#fbfbfd',
+                        brandDarkBlue: '#1d1d1f',
+                        brandBlue: '#0071e3',
+                        brandStickyYellow: '#fff4dd',
+                        brandStickyPink: '#ffe9ec',
+                        brandStickyBlue: '#e3f2ff',
+                        brandBg: '#f5f5f7',
+                        brandHairline: '#d2d2d7'
                     },
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        hand: ['Playpen Sans', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                        hand: ['Inter', 'sans-serif'],
                     }
                 }
             }
@@ -61,7 +62,7 @@
         }
 
         .notebook-spiral {
-            background-image: radial-gradient(#2e3e4f 30%, transparent 35%);
+            background-image: radial-gradient(#1d1d1f 30%, transparent 35%);
             background-size: 24px 24px;
             background-position: 0 0;
         }
@@ -78,15 +79,15 @@
             width: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1ebd9;
+            background: #f5f5f7;
         }
         ::-webkit-scrollbar-thumb {
-            background: #c5b39e;
+            background: #d2d2d7;
             border-radius: 5px;
-            border: 2px solid #f1ebd9;
+            border: 2px solid #f5f5f7;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #8ea4b0;
+            background: #86868b;
         }
 
         /* Reporte de notas por curso: al imprimir, se oculta toda la app y
@@ -107,7 +108,7 @@
 <body class="bg-brandBg min-h-screen font-sans text-brandDarkBlue relative overflow-x-hidden selection:bg-brandBlue selection:text-white">
 
     <!-- Custom Notification Toast -->
-    <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-2xl border-2 border-brandBrown flex items-center space-x-3 max-w-sm">
+    <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-x-96 transition-all duration-300 bg-brandDarkBlue text-white px-6 py-4 rounded-2xl shadow-sm border border-brandBrown flex items-center space-x-3 max-w-sm">
         <div id="toastIcon" class="text-xl text-yellow-400"><i class="fas fa-bell"></i></div>
         <div>
             <p id="toastTitle" class="font-bold text-sm">Notificación</p>
@@ -117,7 +118,7 @@
 
     <!-- MODAL: ENCUESTA DE SATISFACCIÓN -->
     <div id="surveyModal" class="hidden fixed inset-0 bg-brandDarkBlue/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-brandBg w-full max-w-lg rounded-[2rem] border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f] max-h-[90vh] overflow-y-auto">
+        <div class="bg-brandBg w-full max-w-lg rounded-[2rem] border border-brandHairline max-h-[90vh] overflow-y-auto">
             <div class="p-6 sm:p-8">
                 <div class="flex items-start justify-between mb-4">
                     <div>
@@ -135,10 +136,10 @@
 
                 <div class="mt-5">
                     <label class="text-xs font-black uppercase text-brandDarkBlue/70 tracking-wider mb-2 block">¿Algo que quieras compartir o sugerir? (opcional)</label>
-                    <textarea id="surveyComment" rows="3" placeholder="Escribe aquí tu comentario..." class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
+                    <textarea id="surveyComment" rows="3" placeholder="Escribe aquí tu comentario..." class="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
                 </div>
 
-                <button id="btnSubmitSurvey" onclick="window.submitSurvey()" class="w-full mt-6 flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd] font-extrabold text-xs uppercase tracking-widest">
+                <button id="btnSubmitSurvey" onclick="window.submitSurvey()" class="w-full mt-6 flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border border-violet-800 transition-all active:translate-y-1 font-extrabold text-xs uppercase tracking-widest">
                     <i class="fas fa-paper-plane"></i> Enviar Respuesta
                 </button>
             </div>
@@ -147,7 +148,7 @@
 
     <!-- MODAL: RÚBRICAS DE EVALUACIÓN (genérico, sirve para 1° y 2° Medio) -->
     <div id="rubricModal" class="hidden fixed inset-0 bg-brandDarkBlue/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-brandBg w-full max-w-3xl rounded-[2rem] border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f] max-h-[92vh] overflow-y-auto">
+        <div class="bg-brandBg w-full max-w-3xl rounded-[2rem] border border-brandHairline max-h-[92vh] overflow-y-auto">
             <div class="p-6 sm:p-8">
                 <div class="flex items-start justify-between mb-4">
                     <div>
@@ -163,11 +164,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4">
                     <div class="sm:col-span-8">
                         <label class="text-[10px] font-black uppercase text-violet-700 tracking-wider block mb-1">Nombre del Estudiante</label>
-                        <input type="text" id="rubricStudentName" placeholder="Nombre completo..." class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400">
+                        <input type="text" id="rubricStudentName" placeholder="Nombre completo..." class="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400">
                     </div>
                     <div class="sm:col-span-4">
                         <label class="text-[10px] font-black uppercase text-violet-700 tracking-wider block mb-1">Curso</label>
-                        <select id="rubricStudentCourse" class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400 bg-white">
+                        <select id="rubricStudentCourse" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400 bg-white">
                             <!-- Inyectado dinámicamente -->
                         </select>
                     </div>
@@ -177,7 +178,7 @@
                     <!-- Inyectado dinámicamente -->
                 </div>
 
-                <div class="bg-violet-50/80 border-2 border-violet-200 rounded-xl p-3 flex items-center justify-between flex-wrap gap-2 mb-4">
+                <div class="bg-violet-50/80 border border-violet-200 rounded-xl p-3 flex items-center justify-between flex-wrap gap-2 mb-4">
                     <div class="flex items-center gap-4 sm:gap-8">
                         <div>
                             <span class="text-xs font-black uppercase text-violet-900 tracking-wider">Puntaje total:</span>
@@ -194,10 +195,10 @@
 
                 <div class="mb-5">
                     <label class="text-xs font-black uppercase text-brandDarkBlue/70 tracking-wider mb-2 block">Observaciones (opcional)</label>
-                    <textarea id="rubricComment" rows="2" placeholder="Comentarios adicionales sobre el desempeño..." class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
+                    <textarea id="rubricComment" rows="2" placeholder="Comentarios adicionales sobre el desempeño..." class="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs font-semibold outline-none focus:border-violet-400"></textarea>
                 </div>
 
-                <button id="btnSaveRubric" onclick="window.saveRubricEvaluation()" class="w-full flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd] font-extrabold text-xs uppercase tracking-widest">
+                <button id="btnSaveRubric" onclick="window.saveRubricEvaluation()" class="w-full flex items-center justify-center gap-2 p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border border-violet-800 transition-all active:translate-y-1 font-extrabold text-xs uppercase tracking-widest">
                     <i class="fas fa-save"></i> Guardar Evaluación en el Panel
                 </button>
             </div>
@@ -212,9 +213,9 @@
         
         <!-- Left Side: Interactive Mascot & Brand Logo -->
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
-            <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border-2 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
+            <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border border-brandHairline">
                 <!-- Bandera Británica y Americana Unidas -->
-                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border-4 border-brandBrown shadow select-none">
+                <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border border-brandBrown shadow select-none">
                     🇬🇧🇺🇸
                 </div>
                 <div class="text-left">
@@ -225,11 +226,11 @@
             </div>
 
             <div class="relative animate-mascot mt-4">
-                <div class="absolute -top-12 -left-8 bg-white text-brandDarkBlue border-2 border-brandDarkBlue rounded-2xl p-3 shadow-md font-hand font-bold text-xs max-w-[180px] text-center rotate-[-3deg]">
+                <div class="absolute -top-12 -left-8 bg-white text-brandDarkBlue border border-brandHairline rounded-2xl p-3 shadow-sm font-hand font-bold text-xs max-w-[180px] text-center rotate-[-3deg]">
                     "Welcome to my page! 👋 ¡Listos para aprender inglés hoy?"
                 </div>
                 
-                <div class="w-48 h-48 bg-[#eae2d8] rounded-full border-4 border-brandDarkBlue shadow-2xl relative flex items-center justify-center overflow-hidden">
+                <div class="w-48 h-48 bg-[#f5f5f7] rounded-full border border-brandHairline shadow-sm relative flex items-center justify-center overflow-hidden">
                     <div class="text-center">
                         <!-- Emoji de Profesor Cool con Gafas de Sol -->
                         <span class="text-8xl block select-none">😎</span>
@@ -246,8 +247,8 @@
         </div>
 
         <!-- Right Side: PIN Card -->
-        <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border-4 border-brandDarkBlue shadow-[12px_12px_0px_0px_#2e3e4f] relative">
-            <div class="absolute top-4 right-4 bg-white/60 border border-brandDarkBlue/20 rounded-full w-8 h-8 flex items-center justify-center text-xs">
+        <div class="w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border border-brandHairline relative">
+            <div class="absolute top-4 right-4 bg-white/60 border border-brandHairline rounded-full w-8 h-8 flex items-center justify-center text-xs">
                 📌
             </div>
 
@@ -262,18 +263,18 @@
                         <i class="fas fa-key text-brandBlue mr-1"></i> Código del Alumno (PIN)
                     </label>
                     <input type="password" id="studentCode" maxlength="3"
-                           class="w-full py-4 px-2 bg-white border-3 border-brandDarkBlue rounded-2xl text-center text-3xl font-black tracking-[0.5em] focus:ring-4 focus:ring-brandBlue/30 focus:border-brandBlue outline-none transition-all placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-gray-400" 
+                           class="w-full py-4 px-2 bg-white border border-brandHairline rounded-2xl text-center text-3xl font-black tracking-[0.5em] focus:ring-4 focus:ring-brandBlue/30 focus:border-brandBlue outline-none transition-all placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-gray-400" 
                            placeholder="***"
                            onkeydown="if(event.key==='Enter') attemptLogin()">
                 </div>
 
-                <div id="loginErrorMsg" class="hidden bg-rose-50 border-2 border-rose-400 text-rose-800 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center space-x-2">
+                <div id="loginErrorMsg" class="hidden bg-rose-50 border border-rose-400 text-rose-800 px-4 py-3 rounded-2xl text-xs font-semibold flex items-center space-x-2">
                     <i class="fas fa-exclamation-triangle text-rose-600 text-lg"></i>
                     <span id="loginErrorText">Código no encontrado. Intenta con tu PIN oficial.</span>
                 </div>
 
                 <button onclick="attemptLogin()" 
-                        class="w-full py-4 bg-brandDarkBlue hover:bg-brandDarkBlue/95 active:translate-y-0.5 text-white font-extrabold text-base rounded-2xl shadow-[0_5px_0_0_#1a242f] transition-all flex items-center justify-center space-x-2">
+                        class="w-full py-4 bg-brandDarkBlue hover:bg-brandDarkBlue/95 active:translate-y-0.5 text-white font-extrabold text-base rounded-2xl transition-all flex items-center justify-center space-x-2">
                     <span>INGRESAR A MI INTRANET</span>
                     <i class="fas fa-chevron-right text-sm"></i>
                 </button>
@@ -287,10 +288,10 @@
 
     <!-- VIEW: STUDENT PORTAL DASHBOARD -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
-        <header class="bg-brandPaper border-b-4 border-brandDarkBlue px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-md">
+        <header class="bg-brandPaper border-b border-brandHairline px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-sm">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border-2 border-brandBrown">
+                    <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border border-brandBrown">
                         😎
                     </div>
                     <div>
@@ -300,13 +301,13 @@
                 </div>
 
                 <div class="flex items-center flex-wrap gap-3">
-                    <div class="bg-white border-2 border-brandDarkBlue rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
+                    <div class="bg-white border border-brandHairline rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
                         <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
                         <span class="text-xs font-black text-brandDarkBlue">Welcome, <span id="portalStudentName" class="text-brandBlue font-extrabold">Student</span>!</span>
                         <span class="bg-brandLightBrown text-[10px] font-bold px-2 py-0.5 rounded-lg text-brandDarkBlue" id="portalStudentPIN">#777</span>
                     </div>
 
-                    <button onclick="logout()" class="px-3.5 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-black border-2 border-brandDarkBlue transition-all shadow-sm flex items-center space-x-1">
+                    <button onclick="logout()" class="px-3.5 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-black border border-brandHairline transition-all shadow-sm flex items-center space-x-1">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Salir</span>
                     </button>
@@ -318,7 +319,7 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Card 1: Online Class -->
-                <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0]">
+                <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border border-brandHairline">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBlue/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
                         <div class="space-y-2">
@@ -331,7 +332,7 @@
                         </div>
                         <div>
                             <a id="zoomLinkButton" href="https://meet.google.com/ksk-pezo-ojq" target="_blank" 
-                               class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-brandStickyYellow hover:bg-yellow-200 text-amber-950 font-black text-base rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
+                               class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-brandStickyYellow hover:bg-yellow-200 text-amber-950 font-black text-base rounded-xl border border-brandHairline hover:-translate-y-0.5 transition-all active:translate-y-0">
                                 <span>UNIRSE A LA CLASE</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
                             </a>
@@ -340,7 +341,7 @@
                 </div>
 
                 <!-- Card 2: Google Classroom -->
-                <div class="bg-[#efe5db] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#c5b39e]">
+                <div class="bg-[#fbfbfd] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBrown/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
                         <div class="space-y-2">
@@ -353,7 +354,7 @@
                         </div>
                         <div>
                             <a href="https://classroom.google.com/c/ODYyODUyNzE0ODE5?cjc=xgivkbnb" target="_blank" 
-                               class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
+                               class="w-full inline-flex items-center justify-center space-x-3 px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-xl border border-brandHairline hover:-translate-y-0.5 transition-all active:translate-y-0">
                                 <span>VER MATERIALES DE CLASE</span>
                                 <i class="fas fa-download text-xs"></i>
                             </a>
@@ -362,7 +363,7 @@
                 </div>
 
                 <!-- Card 3: Online Test -->
-                <div class="bg-[#eed1d1] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border-4 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] lg:col-span-2">
+                <div class="bg-[#ffe9ec] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline lg:col-span-2">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
                         <div class="space-y-1 text-center md:text-left">
@@ -375,7 +376,7 @@
                         </div>
                         <div class="w-full md:w-auto shrink-0">
                             <a href="https://test.teacherseba.com/" target="_blank" 
-                               class="inline-flex w-full items-center justify-center space-x-3 px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-xl border-3 border-brandDarkBlue shadow-[0_4px_0_0_#2e3e4f] hover:-translate-y-0.5 transition-all active:translate-y-0">
+                               class="inline-flex w-full items-center justify-center space-x-3 px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-xl border border-brandHairline hover:-translate-y-0.5 transition-all active:translate-y-0">
                                 <span>INICIAR MI PRUEBA</span>
                                 <i class="fas fa-arrow-right text-xs"></i>
                             </a>
@@ -389,8 +390,8 @@
                 
                 <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-[#efe5db] rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-md relative">
-                        <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-brandBrown pb-3">
+                    <div class="bg-[#fbfbfd] rounded-[2.5rem] p-6 border border-brandHairline shadow-sm relative">
+                        <div class="flex items-center justify-between mb-6 border-b border-dashed border-brandBrown pb-3">
                             <h3 class="text-lg font-black text-brandDarkBlue flex items-center">
                                 <i class="fas fa-thumbtack text-rose-500 mr-2"></i> English Tips & Notes
                             </h3>
@@ -400,7 +401,7 @@
                         <!-- Sticky Notes Stack -->
                         <div class="space-y-8 pt-2">
                             <!-- Dynamic Daily Sticky Note -->
-                            <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-lg rotate-1 sticky-tape transform transition hover:rotate-0 duration-300 border border-amber-300/40">
+                            <div class="bg-brandStickyYellow p-6 rounded-2xl shadow-sm rotate-1 sticky-tape transform transition hover:rotate-0 duration-300 border border-amber-300/40">
                                 <div class="font-hand text-xs text-amber-800 font-bold uppercase tracking-wider mb-2">💡 Tip del Día</div>
                                 <p class="font-hand text-sm text-amber-950 font-extrabold leading-relaxed mb-4" id="dailyTipText">
                                     Sincronizando tip desde la nube...
@@ -412,7 +413,7 @@
                             </div>
 
                             <!-- Dynamic Reminder Sticky Note -->
-                            <div class="bg-brandStickyPink p-6 rounded-2xl shadow-lg -rotate-2 sticky-tape transform transition hover:rotate-0 duration-300 border border-rose-300/40">
+                            <div class="bg-brandStickyPink p-6 rounded-2xl shadow-sm -rotate-2 sticky-tape transform transition hover:rotate-0 duration-300 border border-rose-300/40">
                                 <div class="font-hand text-xs text-rose-800 font-bold uppercase tracking-wider mb-2">📢 Recordatorio</div>
                                 <p class="font-hand text-sm text-rose-950 font-extrabold leading-relaxed mb-4" id="reminderText">
                                     Sincronizando recordatorio...
@@ -426,11 +427,11 @@
                     </div>
 
                     <!-- SUBMIT ZONE -->
-                    <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#2e3e4f] relative overflow-hidden group">
+                    <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden group">
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200/60 w-32 h-6 border-l border-r border-dashed border-amber-900/10 rotate-1"></div>
                         
                         <div class="flex items-center space-x-3 mb-4 mt-2">
-                            <div class="w-10 h-10 bg-amber-800 text-white rounded-xl flex items-center justify-center text-xl shadow-md">
+                            <div class="w-10 h-10 bg-amber-800 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
                                 📤
                             </div>
                             <div>
@@ -444,18 +445,18 @@
                         </p>
 
                         <a href="https://tally.so/r/BzoN0K" target="_blank"
-                           class="w-full flex items-center justify-between p-4 bg-brandDarkBlue hover:bg-slate-800 text-white rounded-2xl border-3 border-brandDarkBlue transition-all shadow-[4px_4px_0px_0px_#c5b39e] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c5b39e]">
+                           class="w-full flex items-center justify-between p-4 bg-brandDarkBlue hover:bg-slate-800 text-white rounded-2xl border border-brandHairline transition-all active:translate-y-1">
                             <span class="font-extrabold text-xs uppercase tracking-widest pl-2">SUBIR MI TRABAJO</span>
-                            <div class="flex items-center justify-center bg-white text-brandDarkBlue w-9 h-9 rounded-xl border-2 border-brandDarkBlue shrink-0 ml-2">
+                            <div class="flex items-center justify-center bg-white text-brandDarkBlue w-9 h-9 rounded-xl border border-brandHairline shrink-0 ml-2">
                                 <i class="fas fa-arrow-right text-xs"></i>
                             </div>
                         </a>
                     </div>
 
                     <!-- ENCUESTA DE SATISFACCIÓN -->
-                    <div class="bg-white rounded-[2.5rem] p-6 border-3 border-brandDarkBlue shadow-[6px_6px_0px_0px_#8ea4b0] relative overflow-hidden">
+                    <div class="bg-white rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden">
                         <div class="flex items-center space-x-3 mb-4 mt-2">
-                            <div class="w-10 h-10 bg-violet-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md">
+                            <div class="w-10 h-10 bg-violet-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
                                 📝
                             </div>
                             <div>
@@ -469,16 +470,16 @@
                         </p>
 
                         <button onclick="window.openSurveyModal()"
-                           class="w-full flex items-center justify-between p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border-3 border-violet-800 transition-all shadow-[4px_4px_0px_0px_#c4b5fd] active:translate-y-1 active:shadow-[1px_1px_0px_0px_#c4b5fd]">
+                           class="w-full flex items-center justify-between p-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl border border-violet-800 transition-all active:translate-y-1">
                             <span class="font-extrabold text-xs uppercase tracking-widest pl-2">RESPONDER ENCUESTA</span>
-                            <div class="flex items-center justify-center bg-white text-violet-700 w-9 h-9 rounded-xl border-2 border-violet-700 shrink-0 ml-2">
+                            <div class="flex items-center justify-center bg-white text-violet-700 w-9 h-9 rounded-xl border border-violet-700 shrink-0 ml-2">
                                 <i class="fas fa-arrow-right text-xs"></i>
                             </div>
                         </button>
                     </div>
 
                     <!-- CAJA DE ASISTENCIA COMPACTA -->
-                    <div class="bg-white rounded-[2rem] p-5 border-3 border-brandDarkBlue shadow-[4px_4px_0px_0px_#8ea4b0]">
+                    <div class="bg-white rounded-[2rem] p-5 border border-brandHairline">
                         <h4 class="text-xs font-black uppercase tracking-wider text-brandDarkBlue flex items-center mb-3">
                             <i class="fas fa-calendar-check text-emerald-600 mr-2 text-sm"></i> Mi Asistencia y Progreso
                         </h4>
@@ -503,8 +504,8 @@
                 <div class="lg:col-span-2 space-y-8">
                     
                     <!-- VIDEOTECA -->
-                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#2e3e4f]">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b-2 border-gray-100">
+                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-gray-100">
                             <div>
                                 <h3 class="text-xl font-black text-brandDarkBlue flex items-center">
                                     <i class="fas fa-film text-red-500 mr-2 text-2xl animate-pulse"></i> Videoteca del Alumno
@@ -518,7 +519,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-6 bg-slate-950 rounded-2xl aspect-video relative overflow-hidden group border-2 border-brandDarkBlue shadow-md">
+                        <div class="mb-6 bg-slate-950 rounded-2xl aspect-video relative overflow-hidden group border border-brandHairline shadow-sm">
                             <div class="absolute inset-0 bg-cover bg-center opacity-80 transition-all group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200');" id="videoPlayerThumbnail"></div>
                             
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent flex flex-col justify-between p-6">
@@ -527,11 +528,11 @@
                                     <span class="text-xs text-white/95 bg-black/60 px-2 py-1 rounded-md font-bold" id="videoPlayerDuration">Google Drive</span>
                                 </div>
                                 <div class="space-y-1">
-                                    <h4 class="text-white text-lg md:text-xl font-black leading-tight drop-shadow-md" id="videoPlayerTitle">Clase 1: INTRODUCING MYSELF</h4>
+                                    <h4 class="text-white text-lg md:text-xl font-black leading-tight drop-shadow-sm" id="videoPlayerTitle">Clase 1: INTRODUCING MYSELF</h4>
                                     <p class="text-gray-300 text-xs font-semibold" id="videoPlayerDate">Video de la clase listo para visualizar</p>
                                     
                                     <a id="videoPlayerExternalLink" href="https://drive.google.com/file/d/1c0L2DA2DU_3y7Z9IImTcnQcC4eY5IMKA/view" target="_blank"
-                                       class="mt-4 inline-flex px-5 py-2.5 bg-white hover:bg-brandLightBrown text-brandDarkBlue font-black text-xs rounded-xl items-center space-x-2 transition-all shadow-md">
+                                       class="mt-4 inline-flex px-5 py-2.5 bg-white hover:bg-brandLightBrown text-brandDarkBlue font-black text-xs rounded-xl items-center space-x-2 transition-all shadow-sm">
                                         <i class="fas fa-play-circle text-red-500 text-sm"></i>
                                         <span>REPRODUCIR CLASE EN DRIVE</span>
                                     </a>
@@ -545,8 +546,8 @@
                     </div>
 
                     <!-- PLAN DE PRÓXIMAS CLASES -->
-                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#c5b39e] relative">
-                        <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
+                        <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
                             <div>
                                 <h3 class="text-xl font-black text-brandDarkBlue flex items-center">
                                     <i class="fas fa-calendar-alt text-brandBlue mr-2 text-2xl"></i> Plan de Próximas Clases
@@ -562,8 +563,8 @@
                     </div>
 
                     <!-- INTERACTIVE ENGLISH GAME (SPELLING BEE) -->
-                    <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border-3 border-brandDarkBlue shadow-[8px_8px_0px_0px_#8ea4b0] relative">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b-2 border-dashed border-brandDarkBlue/10">
+                    <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-dashed border-brandHairline">
                             <div>
                                 <div class="flex items-center space-x-2 text-cyan-800">
                                     <i class="fas fa-gamepad text-xl"></i>
@@ -574,32 +575,32 @@
                             </div>
 
                             <div class="flex items-center space-x-3 flex-shrink-0">
-                                <div class="bg-white px-4 py-2 rounded-2xl border-2 border-brandDarkBlue text-center shadow-sm">
+                                <div class="bg-white px-4 py-2 rounded-2xl border border-brandHairline text-center shadow-sm">
                                     <div class="text-[9px] font-black text-gray-500 uppercase tracking-widest">Score</div>
                                     <div class="text-xl font-black text-cyan-600" id="gameScore">0</div>
                                 </div>
-                                <div class="bg-white px-4 py-2 rounded-2xl border-2 border-brandDarkBlue text-center shadow-sm">
+                                <div class="bg-white px-4 py-2 rounded-2xl border border-brandHairline text-center shadow-sm">
                                     <div class="text-[9px] font-black text-gray-500 uppercase tracking-widest">Record</div>
                                     <div class="text-xl font-black text-purple-600" id="gameHighscore">0</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-3xl p-6 border-3 border-brandDarkBlue flex flex-col lg:flex-row gap-6 items-center">
+                        <div class="bg-white rounded-3xl p-6 border border-brandHairline flex flex-col lg:flex-row gap-6 items-center">
                             <div class="w-full lg:w-1/2 space-y-4">
-                                <div class="bg-[#f0f7fc] p-5 rounded-2xl border-2 border-brandStickyBlue text-center">
+                                <div class="bg-[#e3f2ff] p-5 rounded-2xl border border-brandStickyBlue text-center">
                                     <span class="text-[9px] text-cyan-800 font-black uppercase tracking-widest block mb-1">Concepto / Definición</span>
                                     <p class="text-sm font-extrabold text-cyan-950 leading-relaxed" id="spellingDefinition">Cargando...</p>
                                 </div>
 
-                                <div class="p-4 bg-gray-50 rounded-2xl border-2 border-gray-200 text-center">
+                                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200 text-center">
                                     <p class="text-[10px] text-gray-500 uppercase font-black tracking-wider mb-2">Escucha la pronunciación en inglés:</p>
                                     <div class="flex justify-center space-x-2">
-                                        <button onclick="speakSpellingWord(1.0)" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 active:translate-y-0.5 text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 transition border-2 border-brandDarkBlue shadow">
+                                        <button onclick="speakSpellingWord(1.0)" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 active:translate-y-0.5 text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 transition border border-brandHairline shadow">
                                             <i class="fas fa-volume-up text-sm"></i>
                                             <span>Escuchar</span>
                                         </button>
-                                        <button onclick="speakSpellingWord(0.55)" class="px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 active:translate-y-0.5 text-brandDarkBlue font-extrabold text-xs rounded-xl flex items-center space-x-2 transition border-2 border-brandDarkBlue shadow">
+                                        <button onclick="speakSpellingWord(0.55)" class="px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 active:translate-y-0.5 text-brandDarkBlue font-extrabold text-xs rounded-xl flex items-center space-x-2 transition border border-brandHairline shadow">
                                             <i class="fas fa-clock text-xs"></i>
                                             <span>Lento</span>
                                         </button>
@@ -610,7 +611,7 @@
                             <div class="w-full lg:w-1/2 space-y-4">
                                 <div>
                                     <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">Deletrea la palabra:</label>
-                                    <input type="text" id="spellingAnswer" onkeydown="if(event.key==='Enter') checkSpellingWord()" autocomplete="off" class="w-full px-4 py-3 bg-gray-50 border-3 border-brandDarkBlue rounded-2xl text-center text-xl font-black tracking-wider focus:bg-white focus:ring-4 focus:ring-cyan-100 outline-none transition" placeholder="Type here...">
+                                    <input type="text" id="spellingAnswer" onkeydown="if(event.key==='Enter') checkSpellingWord()" autocomplete="off" class="w-full px-4 py-3 bg-gray-50 border border-brandHairline rounded-2xl text-center text-xl font-black tracking-wider focus:bg-white focus:ring-4 focus:ring-cyan-100 outline-none transition" placeholder="Type here...">
                                 </div>
 
                                 <div id="spellingFeedback" class="hidden text-center py-2.5 rounded-xl font-extrabold text-xs">
@@ -618,7 +619,7 @@
                                 </div>
 
                                 <div class="flex gap-2">
-                                    <button onclick="checkSpellingWord()" class="flex-grow py-3 bg-cyan-600 hover:bg-cyan-700 active:translate-y-0.5 text-white font-black text-xs rounded-xl transition border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
+                                    <button onclick="checkSpellingWord()" class="flex-grow py-3 bg-cyan-600 hover:bg-cyan-700 active:translate-y-0.5 text-white font-black text-xs rounded-xl transition border border-brandHairline">
                                         <i class="fas fa-check-circle mr-1"></i> Enviar
                                     </button>
                                     <button onclick="skipSpellingWord()" class="px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs rounded-xl transition border border-gray-300">
@@ -636,13 +637,13 @@
 
     <!-- VIEW: TEACHER/ADMIN CONTROL PANEL -->
     <div id="teacherView" class="hidden min-h-screen bg-brandBg flex flex-col justify-between p-4 sm:p-6 lg:p-12">
-        <div class="max-w-4xl w-full mx-auto bg-white border-4 border-brandDarkBlue rounded-[3rem] shadow-2xl p-6 lg:p-10 relative">
+        <div class="max-w-4xl w-full mx-auto bg-white border border-brandHairline rounded-[3rem] shadow-sm p-6 lg:p-10 relative">
             
             <button onclick="exitTeacherMode()" class="absolute top-6 right-6 text-3xl text-gray-400 hover:text-rose-500 transition">
                 <i class="fas fa-times-circle"></i>
             </button>
 
-            <div class="flex items-center space-x-3 mb-6 pb-4 border-b-2 border-gray-200">
+            <div class="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-200">
                 <div class="text-3xl">🔑</div>
                 <div>
                     <h2 class="text-2xl font-black text-brandDarkBlue">Panel de Gestión | Teacher Seba</h2>
@@ -652,29 +653,29 @@
 
             <div class="space-y-8">
                 <!-- Inputs de configuración general -->
-                <div class="bg-brandPaper p-6 rounded-2xl border-2 border-brandDarkBlue grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-brandPaper p-6 rounded-2xl border border-brandHairline grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
                             <i class="fas fa-video text-cyan-600 mr-1"></i> Link de Clase Online (Google Meet):
                         </label>
-                        <input type="text" id="adminZoomInput" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold">
+                        <input type="text" id="adminZoomInput" class="w-full px-3 py-2 bg-white border border-brandHairline rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold">
                     </div>
                     <div>
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
                             <i class="fas fa-lightbulb text-yellow-600 mr-1"></i> Tip de Inglés del Día:
                         </label>
-                        <textarea id="adminTipInput" rows="3" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
+                        <textarea id="adminTipInput" rows="3" class="w-full px-3 py-2 bg-white border border-brandHairline rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
                     </div>
                     <div>
                         <label class="block text-xs font-black text-brandDarkBlue uppercase tracking-wider mb-2">
                             <i class="fas fa-bell text-rose-600 mr-1"></i> Recordatorio (Reminder):
                         </label>
-                        <textarea id="adminReminderInput" rows="3" class="w-full px-3 py-2 bg-white border-2 border-brandDarkBlue rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
+                        <textarea id="adminReminderInput" rows="3" class="w-full px-3 py-2 bg-white border border-brandHairline rounded-xl text-sm focus:ring-2 focus:ring-brandBlue outline-none font-bold"></textarea>
                     </div>
                 </div>
 
                 <!-- Registrar / Editar Video -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-3 flex items-center">
                         <i class="fas fa-plus-circle text-red-500 mr-2"></i> <span id="adminVideoFormTitle">Registrar Video de Clase Grabada</span>
                     </h4>
@@ -697,7 +698,7 @@
                         </div>
                     </div>
                     <div class="flex gap-2 mt-4">
-                        <button id="btnAdminVideoSubmit" onclick="addAdminVideo()" class="px-4 py-2 bg-brandDarkBlue text-white hover:bg-slate-800 rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
+                        <button id="btnAdminVideoSubmit" onclick="addAdminVideo()" class="px-4 py-2 bg-brandDarkBlue text-white hover:bg-slate-800 rounded-xl text-xs font-black border border-brandHairline transition shadow-sm">
                             Publicar en Videoteca
                         </button>
                         <button id="btnAdminVideoCancel" onclick="cancelEditAdminVideo()" class="hidden px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl text-xs font-black transition">
@@ -715,7 +716,7 @@
                 </div>
 
                 <!-- Agendar Próximo Tema (Syllabus) -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-gray-200">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-gray-200">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-1 flex items-center">
                         <i class="fas fa-calendar-plus text-brandBlue mr-2"></i> Control y Edición del Plan de Clases
                     </h4>
@@ -733,7 +734,7 @@
                     </div>
                     
                     <div class="flex gap-2 mt-4">
-                        <button onclick="addAdminTopic()" class="px-4 py-2 bg-brandBlue text-white hover:bg-brandDarkBlue rounded-xl text-xs font-black border border-brandDarkBlue transition shadow-sm">
+                        <button onclick="addAdminTopic()" class="px-4 py-2 bg-brandBlue text-white hover:bg-brandDarkBlue rounded-xl text-xs font-black border border-brandHairline transition shadow-sm">
                             Añadir Tema al Cronograma
                         </button>
                         <button onclick="clearAdminTopics()" class="px-4 py-2 bg-rose-600 text-white hover:bg-rose-700 rounded-xl text-xs font-black transition shadow-sm">
@@ -743,7 +744,7 @@
                 </div>
 
                 <!-- PANEL DE ASISTENCIA DENTRO DEL PANEL DE GESTIÓN -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-brandHairline">
                     <h4 class="text-sm font-black text-brandDarkBlue mb-1 flex items-center">
                         <i class="fas fa-users-cog text-emerald-600 mr-2"></i> Control Numérico de Asistencias
                     </h4>
@@ -755,7 +756,7 @@
                 </div>
 
                 <!-- RÚBRICA 1° MEDIO -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-brandHairline">
                     <div class="flex items-center justify-between mb-1 gap-2 flex-wrap">
                         <h4 class="text-sm font-black text-brandDarkBlue flex items-center">
                             <i class="fas fa-clipboard-check text-violet-600 mr-2"></i> Rúbrica 1° Medio
@@ -794,7 +795,7 @@
                 </div>
 
                 <!-- RÚBRICA 2° MEDIO -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-brandHairline">
                     <div class="flex items-center justify-between mb-1 gap-2 flex-wrap">
                         <h4 class="text-sm font-black text-brandDarkBlue flex items-center">
                             <i class="fas fa-clipboard-check text-sky-600 mr-2"></i> Rúbrica 2° Medio
@@ -828,7 +829,7 @@
                 </div>
 
                 <!-- RESPUESTAS DE LA ENCUESTA DE SATISFACCIÓN -->
-                <div class="p-6 bg-slate-50 rounded-2xl border-2 border-brandDarkBlue">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-brandHairline">
                     <div class="flex items-center justify-between mb-1 gap-2 flex-wrap">
                         <h4 class="text-sm font-black text-brandDarkBlue flex items-center">
                             <i class="fas fa-clipboard-list text-violet-600 mr-2"></i> Respuestas de la Encuesta de Satisfacción
@@ -845,8 +846,8 @@
                 </div>
 
                 <!-- Botones de Acción -->
-                <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
-                    <button id="btnSaveAdmin" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border-2 border-brandDarkBlue shadow-[0_3px_0_0_#2e3e4f]">
+                <div class="flex flex-wrap gap-3 justify-between items-center pt-4 border-t border-dashed border-gray-200">
+                    <button id="btnSaveAdmin" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl transition shadow border border-brandHairline">
                         <i class="fas fa-save mr-1.5"></i> Guardar e Imprimir Cambios en la Nube
                     </button>
                     
@@ -1821,13 +1822,13 @@
 
             window.classVideos.forEach(v => {
                 const card = document.createElement('div');
-                card.className = "bg-gray-50 hover:bg-amber-50/40 border-2 border-brandDarkBlue hover:border-brandBlue rounded-2xl p-3 flex flex-col justify-between gap-3 transition cursor-pointer shadow-sm";
+                card.className = "bg-gray-50 hover:bg-amber-50/40 border border-brandHairline hover:border-brandBlue rounded-2xl p-3 flex flex-col justify-between gap-3 transition cursor-pointer shadow-sm";
                 card.onclick = () => selectVideo(v);
 
                 card.innerHTML = `
                     <div class="aspect-video w-full rounded-xl bg-slate-900 bg-cover bg-center flex items-center justify-center relative overflow-hidden" style="background-image: url('${v.thumb}');">
                         <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                            <div class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-red-500 shadow-md">
+                            <div class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-red-500 shadow-sm">
                                 <i class="fas fa-play text-xs"></i>
                             </div>
                         </div>
@@ -1857,13 +1858,13 @@
 
             filtered.forEach(v => {
                 const card = document.createElement('div');
-                card.className = "bg-gray-50 hover:bg-amber-50/40 border-2 border-brandDarkBlue hover:border-brandBlue rounded-2xl p-3 flex flex-col justify-between gap-3 transition cursor-pointer shadow-sm";
+                card.className = "bg-gray-50 hover:bg-amber-50/40 border border-brandHairline hover:border-brandBlue rounded-2xl p-3 flex flex-col justify-between gap-3 transition cursor-pointer shadow-sm";
                 card.onclick = () => selectVideo(v);
 
                 card.innerHTML = `
                     <div class="aspect-video w-full rounded-xl bg-slate-900 bg-cover bg-center flex items-center justify-center relative overflow-hidden" style="background-image: url('${v.thumb}');">
                         <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                            <div class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-red-500 shadow-md">
+                            <div class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-red-500 shadow-sm">
                                 <i class="fas fa-play text-xs"></i>
                             </div>
                         </div>
@@ -1898,10 +1899,10 @@
 
             window.classTopics.forEach((t, i) => {
                 const row = document.createElement('div');
-                row.className = `p-4 rounded-2xl border-2 flex gap-3 items-start transition-all ${t.completed ? 'bg-emerald-50/60 border-emerald-300' : 'bg-gray-50 border-brandDarkBlue hover:bg-gray-100/50'}`;
+                row.className = `p-4 rounded-2xl border flex gap-3 items-start transition-all ${t.completed ? 'bg-emerald-50/60 border-emerald-300' : 'bg-gray-50 border-brandHairline hover:bg-gray-100/50'}`;
                 
                 row.innerHTML = `
-                    <button onclick="toggleTopicStatus(${i})" class="w-6 h-6 rounded-lg border-2 border-brandDarkBlue flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${t.completed ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white'}">
+                    <button onclick="toggleTopicStatus(${i})" class="w-6 h-6 rounded-lg border border-brandHairline flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${t.completed ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white'}">
                         ${t.completed ? '<i class="fas fa-check text-xs"></i>' : ''}
                     </button>
                     <div class="flex-grow">
