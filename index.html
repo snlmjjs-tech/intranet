@@ -242,6 +242,89 @@
             50%      { transform: scale(1.05); opacity: 0.75; }
         }
 
+        /* Student dashboard: Apple-style ambient stage, scroll reveals, tilt cards */
+        .apple-stage {
+            position: relative;
+        }
+        .apple-stage::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 0;
+            right: 0;
+            height: 900px;
+            background:
+                radial-gradient(circle at 12% 10%, rgba(0,113,227,0.14), transparent 38%),
+                radial-gradient(circle at 88% 18%, rgba(175,82,222,0.13), transparent 40%),
+                radial-gradient(circle at 50% 38%, rgba(255,105,180,0.10), transparent 42%);
+            filter: blur(60px);
+            animation: apple-stage-drift 22s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes apple-stage-drift {
+            0%   { transform: translate3d(0,0,0) scale(1); }
+            100% { transform: translate3d(-1.5%,2%,0) scale(1.06); }
+        }
+        .apple-stage > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-header {
+            background: rgba(251,251,253,0.72);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+        }
+
+        /* Scroll reveals: cards rise into view like an Apple product page */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+            will-change: opacity, transform;
+        }
+        .reveal-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-d1 { transition-delay: 0.08s; }
+        .reveal-d2 { transition-delay: 0.16s; }
+        .reveal-d3 { transition-delay: 0.24s; }
+        .reveal-d4 { transition-delay: 0.32s; }
+
+        /* Hero welcome pop when the dashboard first appears */
+        @keyframes hero-pop-in {
+            0%   { opacity: 0; transform: translateY(-10px) scale(0.92); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .hero-pop {
+            animation: hero-pop-in 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+
+        /* Tilt + cursor spotlight for the three hero CTA cards */
+        .tilt-card {
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+            transform-style: preserve-3d;
+        }
+        .tilt-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.22), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .tilt-card:hover::after {
+            opacity: 1;
+        }
+        .tilt-card:hover {
+            box-shadow: 0 24px 48px -12px rgba(29,29,31,0.28);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .runway-stage::before,
             .runway-stage::after,
@@ -252,12 +335,22 @@
             .runway-emoji-badge,
             .runway-emoji-pop,
             .runway-cta-wrap::before,
+            .apple-stage::before,
+            .hero-pop,
             .animate-mascot {
                 animation: none !important;
             }
             .runway-in-left, .runway-in-right {
                 opacity: 1;
                 transform: none;
+            }
+            .reveal-up {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+            .tilt-card {
+                transition: none;
             }
         }
 
@@ -494,7 +587,7 @@
 
     <!-- VIEW: STUDENT PORTAL DASHBOARD -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
-        <header class="bg-brandPaper border-b border-brandHairline px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-sm">
+        <header class="glass-header border-b border-brandHairline px-4 lg:px-8 py-4 sticky top-0 z-40 shadow-sm">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-brandDarkBlue rounded-2xl flex items-center justify-center text-white text-2xl border border-brandBrown">
@@ -507,8 +600,8 @@
                 </div>
 
                 <div class="flex items-center flex-wrap gap-3">
-                    <div class="bg-white border border-brandHairline rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
-                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
+                    <div id="dashboardWelcomePill" class="bg-white border border-brandHairline rounded-2xl px-4 py-2 flex items-center space-x-2 shadow-sm">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
                         <span class="text-xs font-black text-brandDarkBlue">Welcome, <span id="portalStudentName" class="text-brandBlue font-extrabold">Student</span>!</span>
                         <span class="bg-brandLightBrown text-[10px] font-bold px-2 py-0.5 rounded-lg text-brandDarkBlue" id="portalStudentPIN">#777</span>
                     </div>
@@ -521,11 +614,11 @@
             </div>
         </header>
 
-        <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+        <main class="apple-stage flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Card 1: Online Class -->
-                <div class="bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border border-brandHairline">
+                <div class="tilt-card reveal-up reveal-d1 bg-gradient-to-r from-brandDarkBlue to-slate-800 rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden border border-brandHairline">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBlue/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
                         <div class="space-y-2">
@@ -547,7 +640,7 @@
                 </div>
 
                 <!-- Card 2: Google Classroom -->
-                <div class="bg-[#fbfbfd] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline">
+                <div class="tilt-card reveal-up reveal-d2 bg-[#fbfbfd] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-brandBrown/20 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col justify-between h-full space-y-6">
                         <div class="space-y-2">
@@ -569,7 +662,7 @@
                 </div>
 
                 <!-- Card 3: Online Test -->
-                <div class="bg-[#ffe9ec] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline lg:col-span-2">
+                <div class="tilt-card reveal-up reveal-d3 bg-[#ffe9ec] rounded-[2.5rem] p-6 lg:p-8 text-brandDarkBlue relative overflow-hidden border border-brandHairline lg:col-span-2">
                     <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
                         <div class="space-y-1 text-center md:text-left">
@@ -596,7 +689,7 @@
                 
                 <!-- COLUMN 1: BULLETIN BOARD & HOMEWORK ZONE -->
                 <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-[#fbfbfd] rounded-[2.5rem] p-6 border border-brandHairline shadow-sm relative">
+                    <div class="reveal-up bg-[#fbfbfd] rounded-[2.5rem] p-6 border border-brandHairline shadow-sm relative">
                         <div class="flex items-center justify-between mb-6 border-b border-dashed border-brandBrown pb-3">
                             <h3 class="text-lg font-black text-brandDarkBlue flex items-center">
                                 <i class="fas fa-thumbtack text-rose-500 mr-2"></i> English Tips & Notes
@@ -633,7 +726,7 @@
                     </div>
 
                     <!-- SUBMIT ZONE -->
-                    <div class="bg-brandStickyYellow rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden group">
+                    <div class="reveal-up reveal-d1 bg-brandStickyYellow rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden group">
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-200/60 w-32 h-6 border-l border-r border-dashed border-amber-900/10 rotate-1"></div>
                         
                         <div class="flex items-center space-x-3 mb-4 mt-2">
@@ -660,7 +753,7 @@
                     </div>
 
                     <!-- ENCUESTA DE SATISFACCIÓN -->
-                    <div class="bg-white rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden">
+                    <div class="reveal-up reveal-d2 bg-white rounded-[2.5rem] p-6 border border-brandHairline relative overflow-hidden">
                         <div class="flex items-center space-x-3 mb-4 mt-2">
                             <div class="w-10 h-10 bg-violet-600 text-white rounded-xl flex items-center justify-center text-xl shadow-sm">
                                 📝
@@ -685,7 +778,7 @@
                     </div>
 
                     <!-- CAJA DE ASISTENCIA COMPACTA -->
-                    <div class="bg-white rounded-[2rem] p-5 border border-brandHairline">
+                    <div class="reveal-up reveal-d3 bg-white rounded-[2rem] p-5 border border-brandHairline">
                         <h4 class="text-xs font-black uppercase tracking-wider text-brandDarkBlue flex items-center mb-3">
                             <i class="fas fa-calendar-check text-emerald-600 mr-2 text-sm"></i> Mi Asistencia y Progreso
                         </h4>
@@ -710,7 +803,7 @@
                 <div class="lg:col-span-2 space-y-8">
                     
                     <!-- VIDEOTECA -->
-                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline">
+                    <div class="reveal-up bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-gray-100">
                             <div>
                                 <h3 class="text-xl font-black text-brandDarkBlue flex items-center">
@@ -752,7 +845,7 @@
                     </div>
 
                     <!-- PLAN DE PRÓXIMAS CLASES -->
-                    <div class="bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
+                    <div class="reveal-up reveal-d1 bg-white rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
                             <div>
                                 <h3 class="text-xl font-black text-brandDarkBlue flex items-center">
@@ -769,7 +862,7 @@
                     </div>
 
                     <!-- INTERACTIVE ENGLISH GAME (SPELLING BEE) -->
-                    <div class="bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
+                    <div class="reveal-up reveal-d2 bg-brandStickyBlue rounded-[2.5rem] p-6 lg:p-8 border border-brandHairline relative">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-dashed border-brandHairline">
                             <div>
                                 <div class="flex items-center space-x-2 text-cyan-800">
@@ -2013,6 +2106,7 @@
                 document.getElementById('dashboardView').classList.remove('hidden');
 
                 window.updateStudentAttendanceUI();
+                initDashboardFx();
 
                 confetti({
                     particleCount: 120,
@@ -2030,13 +2124,83 @@
         window.updateStudentAttendanceUI = function() {
             if (!window.currentUser || !window.studentAttendance) return;
             const record = window.studentAttendance[window.currentUser.code] || { attended: 0, absent: 0 };
-            
+
             const total = record.attended + record.absent;
             const percent = total > 0 ? ((record.attended / total) * 100).toFixed(0) : 0;
 
-            document.getElementById('boxAttended').innerText = record.attended;
-            document.getElementById('boxAbsent').innerText = record.absent;
-            document.getElementById('boxPercent').innerText = `${percent}%`;
+            animateCountUp('boxAttended', record.attended);
+            animateCountUp('boxAbsent', record.absent);
+            animateCountUp('boxPercent', Number(percent), '%');
+        }
+
+        /* Student dashboard "produced" effects: scroll reveals, cursor-tilt
+           hero cards, animated counters and a welcome pop, Apple product-page
+           style. Safe to call more than once; the observer is only built once. */
+        let dashboardRevealObserver = null;
+
+        function initDashboardFx() {
+            const welcomePill = document.getElementById('dashboardWelcomePill');
+            if (welcomePill) {
+                welcomePill.classList.remove('hero-pop');
+                void welcomePill.offsetWidth;
+                welcomePill.classList.add('hero-pop');
+            }
+
+            if (!dashboardRevealObserver) {
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                dashboardRevealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            dashboardRevealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+                if (prefersReducedMotion) {
+                    document.querySelectorAll('#dashboardView .reveal-up').forEach(el => el.classList.add('is-visible'));
+                } else {
+                    document.querySelectorAll('#dashboardView .reveal-up').forEach(el => dashboardRevealObserver.observe(el));
+                }
+
+                document.querySelectorAll('#dashboardView .tilt-card').forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        card.style.setProperty('--mx', `${x}px`);
+                        card.style.setProperty('--my', `${y}px`);
+                        if (!prefersReducedMotion) {
+                            const rotateY = ((x / rect.width) - 0.5) * 6;
+                            const rotateX = ((y / rect.height) - 0.5) * -6;
+                            card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+                        }
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = '';
+                    });
+                });
+            }
+        }
+
+        function animateCountUp(elementId, endValue, suffix = '') {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                el.innerText = `${endValue}${suffix}`;
+                return;
+            }
+            const duration = 700;
+            const startValue = 0;
+            const startTime = performance.now();
+            const step = (now) => {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(startValue + (endValue - startValue) * eased);
+                el.innerText = `${current}${suffix}`;
+                if (progress < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
         }
 
         function logout() {
