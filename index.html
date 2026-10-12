@@ -533,11 +533,30 @@
         <!-- Left Side: Interactive Mascot & Brand Logo -->
         <div class="runway-in-left w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border border-brandHairline">
-                <!-- Bandera Británica y Americana Unidas: SVG en vez de emoji de texto,
-                     porque Windows no compone el emoji de doble bandera y muestra "GBUS" -->
+                <!-- Bandera Británica y Americana Unidas: SVG inline (no emoji, no CDN externo),
+                     porque Windows no compone el emoji de doble bandera (muestra "GBUS") y un
+                     CDN externo puede estar bloqueado por la red del colegio -->
                 <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center gap-0.5 border border-brandBrown shadow select-none">
-                    <img src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f1ec-1f1e7.svg" alt="UK" class="w-5 h-5" width="20" height="20">
-                    <img src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f1fa-1f1f8.svg" alt="US" class="w-5 h-5" width="20" height="20">
+                    <svg viewBox="0 0 60 36" class="w-5 h-5 rounded-sm" role="img" aria-label="UK">
+                        <rect width="60" height="36" fill="#00247d"/>
+                        <path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="8"/>
+                        <path d="M0,0 L60,36 M60,0 L0,36" stroke="#cf142b" stroke-width="3"/>
+                        <path d="M30,0 V36 M0,18 H60" stroke="#fff" stroke-width="12"/>
+                        <path d="M30,0 V36 M0,18 H60" stroke="#cf142b" stroke-width="6"/>
+                    </svg>
+                    <svg viewBox="0 0 60 36" class="w-5 h-5 rounded-sm" role="img" aria-label="US">
+                        <rect width="60" height="36" fill="#fff"/>
+                        <g fill="#b22234">
+                            <rect y="0" width="60" height="2.77"/>
+                            <rect y="5.54" width="60" height="2.77"/>
+                            <rect y="11.08" width="60" height="2.77"/>
+                            <rect y="16.62" width="60" height="2.77"/>
+                            <rect y="22.16" width="60" height="2.77"/>
+                            <rect y="27.7" width="60" height="2.77"/>
+                            <rect y="33.24" width="60" height="2.77"/>
+                        </g>
+                        <rect width="24" height="19.4" fill="#3c3b6e"/>
+                    </svg>
                 </div>
                 <div class="text-left">
                     <h1 class="text-2xl font-black text-brandDarkBlue tracking-tight leading-none">Sebastián Núñez López</h1>
