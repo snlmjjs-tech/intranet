@@ -98,43 +98,48 @@
             50%  { transform: translate3d(2%,-3%,0) rotate(5deg) scale(1.08); }
             100% { transform: translate3d(-2%,3%,0) rotate(-4deg) scale(1.04); }
         }
-        /* Slowly rotating spotlight beam sweeping the stage, like a show opening */
+        /* Continuous diagonal shimmer sweeping the stage, like a show opening.
+           A wide moving band (not a thin rotating wedge) so it's visible most
+           of the time instead of flashing past once every ~11 seconds. */
         .runway-stage::after {
             content: '';
             position: absolute;
-            inset: -35%;
-            background: conic-gradient(from 0deg,
-                transparent 0deg,
-                rgba(255,255,255,0.75) 14deg,
-                transparent 30deg,
-                transparent 165deg,
-                rgba(0,113,227,0.55) 185deg,
-                transparent 205deg,
-                transparent 360deg);
+            inset: 0;
+            background: linear-gradient(100deg,
+                transparent 15%,
+                rgba(255,255,255,0.65) 42%,
+                rgba(255,255,255,0.85) 50%,
+                rgba(255,255,255,0.65) 58%,
+                transparent 85%);
+            background-size: 320% 320%;
             mix-blend-mode: screen;
-            opacity: 0.75;
-            animation: spotlight-rotate 11s linear infinite;
+            opacity: 0.85;
+            animation: shimmer-sweep 7s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
         }
-        @keyframes spotlight-rotate {
-            to { transform: rotate(360deg); }
+        @keyframes shimmer-sweep {
+            0%   { background-position: 130% 50%; }
+            100% { background-position: -30% 50%; }
         }
         .runway-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
-        /* Drifting English-class confetti: letters and study icons rising through the stage */
+        /* Drifting English-class confetti: letters and study icons rising through the stage.
+           Sits above the ambient background/shimmer (z-index 1) so the "screen"
+           blend mode on the shimmer doesn't wash them out, but below the real
+           card content (z-index 2). */
         .runway-letter {
             position: absolute;
             bottom: -10%;
             font-weight: 800;
             color: #0071e3;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+            text-shadow: 0 2px 6px rgba(255,255,255,0.9);
             opacity: 0;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
             animation: runway-letter-drift linear infinite;
         }
         .runway-letter:nth-child(2) { color: #d6336c; }
@@ -144,8 +149,8 @@
         .runway-letter:nth-child(6) { color: #0071e3; }
         @keyframes runway-letter-drift {
             0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10%  { opacity: 0.48; }
-            85%  { opacity: 0.38; }
+            10%  { opacity: 0.68; }
+            85%  { opacity: 0.55; }
             100% { transform: translateY(-130vh) rotate(18deg); opacity: 0; }
         }
 
