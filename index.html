@@ -363,6 +363,23 @@
             .tilt-card {
                 transition: none;
             }
+
+            /* With motion disabled the letters/shimmer lose the animation that
+               gave them their opacity and position; show them as a static
+               (non-moving) decoration instead of nothing. */
+            .runway-letter {
+                bottom: auto;
+                opacity: 0.4;
+            }
+            .runway-letter:nth-child(1) { top: 6%; }
+            .runway-letter:nth-child(2) { top: 70%; }
+            .runway-letter:nth-child(3) { top: 32%; }
+            .runway-letter:nth-child(4) { top: 55%; }
+            .runway-letter:nth-child(5) { top: 16%; }
+            .runway-letter:nth-child(6) { top: 46%; }
+            .runway-stage::after {
+                background-position: 55% 50%;
+            }
         }
 
         ::-webkit-scrollbar {
