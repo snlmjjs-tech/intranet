@@ -488,9 +488,11 @@
     <div id="printReportContainer" style="display:none;"></div>
 
     <!-- VIEW: LOGIN -->
-    <div id="loginView" class="runway-stage min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8 lg:p-12 gap-12 max-w-7xl mx-auto">
+    <div id="loginView" class="runway-stage min-h-screen w-full flex items-center justify-center px-4 py-8 lg:p-12">
 
-        <!-- Drifting English-class confetti: letters and study icons rising through the stage -->
+        <!-- Drifting English-class confetti: letters and study icons rising through the stage.
+             Kept outside the max-w content wrapper so they span the full viewport width,
+             not just the centered column, on wide desktop screens. -->
         <span class="runway-letter text-5xl" style="left: 6%; animation-duration: 9s; animation-delay: 0s;">A</span>
         <span class="runway-letter text-4xl" style="left: 18%; animation-duration: 12s; animation-delay: 2s;">📖</span>
         <span class="runway-letter text-5xl" style="left: 32%; animation-duration: 10s; animation-delay: 4.5s;">B</span>
@@ -498,8 +500,10 @@
         <span class="runway-letter text-5xl" style="left: 78%; animation-duration: 9.5s; animation-delay: 3.3s;">C</span>
         <span class="runway-letter text-4xl" style="left: 90%; animation-duration: 13s; animation-delay: 5.5s;">Hi!</span>
 
+        <div class="runway-content w-full max-w-7xl mx-auto flex flex-col lg:flex-row justify-center items-center gap-12">
+
         <!-- Left Side: Interactive Mascot & Brand Logo -->
-        <div class="runway-content runway-in-left w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
+        <div class="runway-in-left w-full lg:w-1/2 flex flex-col items-center lg:items-end text-center lg:text-right space-y-6">
             <div class="flex items-center space-x-4 bg-white p-5 rounded-3xl border border-brandHairline">
                 <!-- Bandera Británica y Americana Unidas -->
                 <div class="w-16 h-16 bg-brandDarkBlue rounded-full flex items-center justify-center text-white text-2xl border border-brandBrown shadow select-none">
@@ -544,7 +548,7 @@
         </div>
 
         <!-- Right Side: PIN Card -->
-        <div class="runway-content runway-in-right w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border border-brandHairline relative">
+        <div class="runway-in-right w-full lg:w-5/12 bg-brandPaper rounded-[2.5rem] p-8 lg:p-10 border border-brandHairline relative">
             <div class="absolute top-4 right-4 bg-white/60 border border-brandHairline rounded-full w-8 h-8 flex items-center justify-center text-xs">
                 📌
             </div>
@@ -582,6 +586,8 @@
             <div class="text-center mt-6">
                 <span class="text-[11px] font-bold text-brandDarkBlue/60">© English Workshop Teacher Seba</span>
             </div>
+        </div>
+
         </div>
     </div>
 
